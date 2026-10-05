@@ -1,0 +1,659 @@
+{% extends 'admin/admin_home.html' %}
+{% block body %}
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Smart Tour · send notification</title>
+
+        <!-- CSS FILES -->
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{#        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">#}
+
+        <style>
+            /* Smart Tour Theme - Consistent with All Pages */
+            :root {
+                --white-color: #ffffff;
+                --primary-color: #3D405B;
+                --secondary-color: #81B29A;
+                --section-bg-color: black;
+                --custom-btn-bg-color: #81B29A;
+                --custom-btn-bg-hover-color: #3D405B;
+                --dark-color: #000000;
+                --p-color: #717275;
+                --border-color: #e9eaeb;
+                --link-hover-color: #81B29A;
+                --body-font-family: 'DM Sans', sans-serif;
+                --title-font-family: 'DM Sans', sans-serif;
+            }
+
+            body {
+    background: url("/media/images/pexels-jokassis-5534204.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+{#            body {#}
+{#                font-family: 'DM Sans', sans-serif;#}
+{#                background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fd 100%);#}
+{#                color: #0a1929;#}
+{#            }#}
+
+            /* Notification Container */
+            .notification-container {
+                padding: 3rem 1.2rem;
+                background: radial-gradient(circle at 90% 20%, rgba(10, 25, 41, 0.02) 0%, rgba(21, 45, 75, 0.04) 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* glass panel with navy tint */
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.92);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(10, 25, 41, 0.15);
+                border-radius: 32px;
+                box-shadow: 0 30px 45px -20px #0a1929;
+                padding: 2.5rem 2rem;
+                transition: box-shadow 0.2s;
+                max-width: 600px;
+                width: 100%;
+                margin: 0 auto;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .glass-panel:hover {
+                box-shadow: 0 35px 55px -20px #0f2a40;
+            }
+
+            /* wave decoration */
+            .wave-decoration {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                overflow: hidden;
+                line-height: 0;
+                opacity: 0.06;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .wave-decoration svg {
+                display: block;
+                width: 100%;
+                height: 40px;
+            }
+
+            /* corner decoration */
+            .corner-decoration {
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                border: 2px solid rgba(30, 58, 95, 0.1);
+                border-radius: 30px;
+                z-index: 1;
+                pointer-events: none;
+            }
+
+            .corner-tl {
+                top: -20px;
+                left: -20px;
+                border-right: none;
+                border-bottom: none;
+            }
+
+            .corner-br {
+                bottom: -20px;
+                right: -20px;
+                border-left: none;
+                border-top: none;
+            }
+
+            .page-header {
+                position: relative;
+                margin-bottom: 2rem;
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                z-index: 2;
+            }
+
+            .page-header i {
+                font-size: 2.4rem;
+                color: #1e3a5f;
+                filter: drop-shadow(0 6px 8px rgba(10, 25, 41, 0.2));
+                background: rgba(255, 255, 255, 0.5);
+                padding: 0.8rem;
+                border-radius: 20px;
+                backdrop-filter: blur(4px);
+            }
+
+            .page-header h2 {
+                font-size: 2rem;
+                font-weight: 600;
+                letter-spacing: -0.02em;
+                background: linear-gradient(145deg, #0a1929 0%, #1e3a5f 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                border-bottom: 3px solid #2c4c6e;
+                padding-bottom: 0.4rem;
+                margin-bottom: 0;
+            }
+
+            /* Form styling */
+            .notification-form {
+                position: relative;
+                z-index: 2;
+            }
+
+            .form-label {
+                font-weight: 600;
+                color: #1e3a5f;
+                font-size: 0.95rem;
+                letter-spacing: 0.02em;
+                margin-bottom: 0.5rem;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .form-label i {
+                color: #81B29A;
+                font-size: 1rem;
+            }
+
+            .notification-input {
+                border: 2px solid #e2e8f0;
+                border-radius: 20px;
+                padding: 0.9rem 1.2rem;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(4px);
+                width: 100%;
+            }
+
+            .notification-input:focus {
+                border-color: #1e3a5f;
+                outline: none;
+                box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.1);
+                background: white;
+            }
+
+            .notification-input::placeholder {
+                color: #a0b3c9;
+                font-style: italic;
+                font-size: 0.9rem;
+            }
+
+            /* Input group with icon */
+            .input-group-modern {
+                position: relative;
+            }
+
+            .input-icon {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #81B29A;
+                font-size: 1.2rem;
+                z-index: 3;
+            }
+
+            .input-with-icon {
+                padding-left: 45px;
+            }
+
+            /* Character count */
+            .char-count {
+                text-align: right;
+                font-size: 0.75rem;
+                color: #64748b;
+                margin-top: 5px;
+            }
+
+            .char-count i {
+                color: #81B29A;
+                margin-right: 3px;
+                font-size: 0.7rem;
+            }
+
+            /* Button styling */
+            .btn-modern {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                padding: 0.8rem 2rem;
+                border-radius: 50px;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                border: none;
+                cursor: pointer;
+                min-width: 150px;
+                box-shadow: 0 8px 20px -8px #1e3a5f;
+                background: linear-gradient(135deg, #1e3a5f, #2c4c6e);
+                color: white;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn-modern::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                transition: left 0.5s ease;
+            }
+
+            .btn-modern:hover::before {
+                left: 100%;
+            }
+
+            .btn-modern:hover {
+                background: linear-gradient(135deg, #2c4c6e, #1e3a5f);
+                transform: translateY(-3px);
+                box-shadow: 0 12px 25px -10px #1e3a5f;
+                color: white;
+            }
+
+            .btn-modern i {
+                font-size: 1.1rem;
+                transition: transform 0.3s ease;
+            }
+
+            .btn-modern:hover i {
+                transform: translateX(3px);
+            }
+
+            /* Button container */
+            .button-container {
+                margin-top: 2rem;
+                display: flex;
+                gap: 1rem;
+                justify-content: flex-end;
+            }
+
+            /* Secondary button */
+            .btn-secondary-modern {
+                background: white;
+                color: #1e3a5f;
+                border: 2px solid #e2e8f0;
+                box-shadow: 0 4px 10px -4px rgba(0,0,0,0.05);
+            }
+
+            .btn-secondary-modern:hover {
+                background: #f8fafc;
+                color: #1e3a5f;
+                border-color: #1e3a5f;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 15px -6px #1e3a5f;
+            }
+
+            .btn-secondary-modern::before {
+                display: none;
+            }
+
+            /* Success message styling */
+            .success-message {
+                background: linear-gradient(135deg, #e6f4ea, #d1e7dd);
+                border-left: 4px solid #1b5e3f;
+                border-radius: 16px;
+                padding: 1rem 1.5rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #1b5e3f;
+                font-weight: 500;
+                backdrop-filter: blur(4px);
+                box-shadow: 0 4px 12px -6px #1b5e3f;
+            }
+
+            .success-message i {
+                font-size: 1.5rem;
+                color: #1b5e3f;
+            }
+
+            /* Error message styling */
+            .error-message {
+                background: linear-gradient(135deg, #fef2f2, #fee2e2);
+                border-left: 4px solid #b83b2a;
+                border-radius: 16px;
+                padding: 1rem 1.5rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #b83b2a;
+                font-weight: 500;
+                backdrop-filter: blur(4px);
+                box-shadow: 0 4px 12px -6px #b83b2a;
+            }
+
+            .error-message i {
+                font-size: 1.5rem;
+                color: #b83b2a;
+            }
+
+            /* Recent notifications section */
+            .recent-notifications {
+                margin-top: 2rem;
+                border-top: 1px solid #e2e8f0;
+                padding-top: 1.5rem;
+            }
+
+            .recent-title {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: #1e3a5f;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .recent-title i {
+                color: #81B29A;
+                font-size: 1rem;
+            }
+
+            .notification-item {
+                background: rgba(255, 255, 255, 0.5);
+                border-radius: 16px;
+                padding: 0.8rem 1rem;
+                margin-bottom: 0.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border: 1px solid #e2e8f0;
+                backdrop-filter: blur(4px);
+                transition: all 0.2s;
+            }
+
+            .notification-item:hover {
+                background: white;
+                transform: translateX(3px);
+                border-color: #81B29A;
+            }
+
+            .notification-text {
+                font-size: 0.85rem;
+                color: #334155;
+            }
+
+            .notification-time {
+                font-size: 0.7rem;
+                color: #64748b;
+                display: flex;
+                align-items: center;
+                gap: 3px;
+            }
+
+            .notification-time i {
+                color: #81B29A;
+                font-size: 0.7rem;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .notification-container {
+                    padding: 2rem 1rem;
+                }
+
+                .glass-panel {
+                    padding: 1.8rem 1.2rem;
+                }
+
+                .page-header h2 {
+                    font-size: 1.6rem;
+                }
+
+                .page-header i {
+                    font-size: 2rem;
+                    padding: 0.6rem;
+                }
+
+                .button-container {
+                    flex-direction: column;
+                }
+
+                .btn-modern {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <!-- Notification Container -->
+        <div class="notification-container">
+            <div class="container-fluid px-lg-4">
+
+                <!-- main panel -->
+                <div class="glass-panel position-relative">
+
+                    <!-- corner decorations -->
+                    <div class="corner-decoration corner-tl"></div>
+                    <div class="corner-decoration corner-br"></div>
+
+                    <!-- wave decoration -->
+                    <div class="wave-decoration">
+                        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                            <path fill="#1e3a5f" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- header -->
+                    <div class="page-header">
+                        <i class="bi bi-bell"></i>
+                        <h2>Send Notification</h2>
+                    </div>
+
+                    <!-- Success message example (show this when notification is sent) -->
+                    <!--
+                    <div class="success-message">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Notification sent successfully to all users!</span>
+                    </div>
+                    -->
+
+                    <!-- Error message example (show this when there's an error) -->
+                    <!--
+                    <div class="error-message">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span>Failed to send notification. Please try again.</span>
+                    </div>
+                    -->
+
+                    <!-- Notification Form -->
+                    <form action="/myapp/send_notification_post/" method="post" class="notification-form">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label for="notification" class="form-label">
+                                <i class="bi bi-pencil-square"></i>
+                                Notification Message
+                            </label>
+                            <div class="input-group-modern">
+                                <i class="bi bi-chat-dots input-icon"></i>
+                                <input type="text"
+                                       class="form-control notification-input input-with-icon"
+                                       name="notification"
+                                       id="notification"
+                                       placeholder="Type your notification here..."
+                                       maxlength="200"
+                                       required>
+                            </div>
+                            <div class="char-count">
+                                <i class="bi bi-info-circle"></i>
+                                <span id="charCounter">0</span>/200 characters
+                            </div>
+                        </div>
+
+                        <!-- Optional: Add recipient selection -->
+                        <!--
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-people"></i>
+                                Send To
+                            </label>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="recipient" id="allUsers" checked>
+                                    <label class="form-check-label" for="allUsers">
+                                        All Users
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="recipient" id="agencies">
+                                    <label class="form-check-label" for="agencies">
+                                        Agencies Only
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="recipient" id="guides">
+                                    <label class="form-check-label" for="guides">
+                                        Guides Only
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+
+                        <!-- Button container -->
+                        <div class="button-container">
+                            <button type="reset" class="btn-modern btn-secondary-modern">
+                                <i class="bi bi-x-lg"></i> Clear
+                            </button>
+                            <button type="submit" class="btn-modern">
+                                Send Notification <i class="bi bi-send"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Recent Notifications (optional) -->
+                    <!--
+                    <div class="recent-notifications">
+                        <div class="recent-title">
+                            <i class="bi bi-clock-history"></i>
+                            Recent Notifications
+                        </div>
+                        <div class="notification-item">
+                            <span class="notification-text">Welcome to Smart Tour! We're excited to have you.</span>
+                            <span class="notification-time">
+                                <i class="bi bi-clock"></i> 2 min ago
+                            </span>
+                        </div>
+                        <div class="notification-item">
+                            <span class="notification-text">System maintenance scheduled for tonight.</span>
+                            <span class="notification-time">
+                                <i class="bi bi-clock"></i> 1 hour ago
+                            </span>
+                        </div>
+                        <div class="notification-item">
+                            <span class="notification-text">New features added to the platform.</span>
+                            <span class="notification-time">
+                                <i class="bi bi-clock"></i> 3 hours ago
+                            </span>
+                        </div>
+                    </div>
+                    -->
+
+                </div> <!-- /glass-panel -->
+
+                <!-- navigation links -->
+                <div class="mt-4 d-flex justify-content-between align-items-center">
+                    <a href="/myapp/admin_index/" class="back-link-modern">
+                        <i class="bi bi-arrow-left"></i>Back to Dashboard
+                    </a>
+                    <span class="text-muted small">
+                        <i class="bi bi-bell" style="color:#1e3a5f;"></i> Notification Center
+                    </span>
+                </div>
+            </div> <!-- /container-fluid -->
+        </div>
+
+        <!-- Back link styling (reuse from other pages) -->
+        <style>
+            .back-link-modern {
+                color: #1e3a5f;
+                text-decoration: none;
+                font-weight: 500;
+                padding: 0.4rem 1rem;
+                background: white;
+                border-radius: 30px;
+                border: 1px solid #e2e8f0;
+                transition: all 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.8rem;
+            }
+
+            .back-link-modern:hover {
+                background: #1e3a5f;
+                color: white;
+                border-color: #1e3a5f;
+            }
+        </style>
+
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                // Character counter
+                $('#notification').on('input', function() {
+                    var length = $(this).val().length;
+                    $('#charCounter').text(length);
+
+                    // Change color when approaching limit
+                    if (length > 180) {
+                        $('#charCounter').css('color', '#b83b2a');
+                    } else if (length > 150) {
+                        $('#charCounter').css('color', '#b86e2c');
+                    } else {
+                        $('#charCounter').css('color', '#64748b');
+                    }
+                });
+
+                // Auto-focus on notification input
+                $('#notification').focus();
+
+                // Show success message if notification was sent (example)
+                // You can uncomment and modify this based on your backend response
+                /*
+                var urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('sent') === 'success') {
+                    var successHtml = '<div class="success-message"><i class="bi bi-check-circle-fill"></i><span>Notification sent successfully!</span></div>';
+                    $('.page-header').after(successHtml);
+                }
+                */
+            });
+        </script>
+    </body>
+</html>
+
+{% endblock %}

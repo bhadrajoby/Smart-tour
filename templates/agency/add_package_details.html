@@ -1,0 +1,72 @@
+
+{% extends 'agency/agency_home.html' %}
+{% block body %}<html>
+<head>
+    <title>Add Package</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container mt-5">
+    <div class="card shadow p-4">
+
+        <h3 class="mb-4">Add Package</h3>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Package Name -->
+            <div class="mb-3">
+                <label class="form-label">Day</label>
+                <input type="text" name="name" class="form-control">
+            </div>
+
+            <!-- PLACE DROPDOWN -->
+            <div class="mb-3">
+                <label class="form-label">Place</label>
+                <select name="place" class="form-select" required>
+                    <option value="">-- Choose Place --</option>
+
+                    {% for p in places %}
+                        <option value="{{ p.id }}">{{ p.name }}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <!-- Days -->
+            <div class="mb-3">
+                <label class="form-label">Details</label>
+                <input type="text" name="noofdays" class="form-control">
+            </div>
+
+            <!-- Photo -->
+            <div class="mb-3">
+                <label class="form-label">Photo</label>
+                <input type="file" name="photo" class="form-control">
+            </div>
+
+            <!-- Amount -->
+{#            <div class="mb-3">#}
+{#                <label class="form-label">Amount</label>#}
+{#                <input type="text" name="amount" class="form-control">#}
+{#            </div>#}
+
+            <!-- Description -->
+{#            <div class="mb-3">#}
+{#                <label class="form-label">Description</label>#}
+{#                <textarea name="description" class="form-control"></textarea>#}
+{#            </div>#}
+
+            <button type="submit" class="btn btn-primary w-100">Add Package</button>
+
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
+
+{% endblock %}

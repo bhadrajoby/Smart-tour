@@ -1,0 +1,898 @@
+{% extends 'agency/agency_home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tour · Edit Places</title>
+
+    <!-- Fonts & Core Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <style>
+        /* Navy Blue Theme - Matching other pages */
+        :root {
+            --navy-dark: #0a1929;
+            --navy-medium: #1e3a5f;
+            --navy-light: #2c4c6e;
+            --accent-color: #81B29A;
+            --border-light: #e9ecf0;
+            --bg-gradient: linear-gradient(135deg, #f5f9ff 0%, #e8f0fd 100%);
+            --input-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--navy-dark);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        /* Main Container */
+        .edit-place-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Glass Panel Effect */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(10, 25, 41, 0.15);
+            border-radius: 32px;
+            box-shadow: 0 30px 45px -20px #0a1929;
+            padding: 2rem 2.5rem;
+            transition: box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel:hover {
+            box-shadow: 0 35px 55px -20px #0f2a40;
+        }
+
+        /* Page Header */
+        .page-header {
+            position: relative;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 3px solid #2c4c6e;
+            padding-bottom: 1rem;
+        }
+
+        .page-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #0a1929 0%, #1e3a5f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .page-header i {
+            font-size: 2.5rem;
+            color: var(--navy-medium);
+            filter: drop-shadow(0 6px 8px rgba(10, 25, 41, 0.2));
+        }
+
+        /* Wave Decoration */
+        .wave-decoration {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wave-decoration svg {
+            display: block;
+            width: 100%;
+            height: 40px;
+        }
+
+        /* Form Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        /* Form Labels */
+        .form-label-custom {
+            font-weight: 600;
+            color: var(--navy-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label-custom i {
+            color: var(--navy-medium);
+            font-size: 1rem;
+            width: 20px;
+        }
+
+        /* Form Inputs */
+        .form-control-custom {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            color: var(--navy-dark);
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px -4px rgba(10, 25, 41, 0.1);
+            width: 100%;
+        }
+
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--navy-medium);
+            box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.15);
+            background: white;
+        }
+
+        .form-control-custom::placeholder {
+            color: #a0aec0;
+            font-size: 0.95rem;
+        }
+
+        /* Select Dropdown Styling */
+        .select-custom {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            color: var(--navy-dark);
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px -4px rgba(10, 25, 41, 0.1);
+            width: 100%;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231e3a5f' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.2rem center;
+            background-size: 16px;
+        }
+
+        .select-custom:focus {
+            outline: none;
+            border-color: var(--navy-medium);
+            box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.15);
+        }
+
+        /* Photo Gallery Section */
+        .photo-gallery {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #f8fafd 0%, #f0f4fa 100%);
+            border-radius: 24px;
+            padding: 1.5rem;
+            border: 2px solid #e2e8f0;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .photo-item {
+            background: white;
+            border-radius: 20px;
+            padding: 1.2rem;
+            box-shadow: 0 8px 20px -8px rgba(10, 25, 41, 0.15);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s;
+        }
+
+        .photo-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -10px #1e3a5f;
+        }
+
+        .current-photo {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 3px solid white;
+            box-shadow: 0 8px 16px -8px var(--navy-dark);
+            margin-bottom: 1rem;
+        }
+
+        .photo-label {
+            font-weight: 600;
+            color: var(--navy-medium);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+
+        .photo-label i {
+            color: var(--navy-medium);
+        }
+
+        /* File Input Styling */
+        .file-input-wrapper {
+            position: relative;
+            margin-top: 0.5rem;
+        }
+
+        .file-input-custom {
+            background: white;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 0.6rem 1rem;
+            width: 100%;
+            color: var(--navy-dark);
+            transition: all 0.2s;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .file-input-custom:hover {
+            border-color: var(--navy-medium);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .file-input-custom::file-selector-button {
+            background: linear-gradient(135deg, #1e3a5f, #2c4c6e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.4rem 1rem;
+            margin-right: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+        }
+
+        .file-input-custom::file-selector-button:hover {
+            background: linear-gradient(135deg, #2c4c6e, #1e3a5f);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px -2px #1e3a5f;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4c6e 100%);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 1rem 2.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px -6px #1e3a5f;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-submit:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px -8px #1e3a5f;
+        }
+
+        .btn-submit i {
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        /* Helper Text */
+        .helper-text {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .helper-text i {
+            color: var(--navy-medium);
+            font-size: 0.75rem;
+        }
+
+        /* Section Divider */
+        .section-divider {
+            grid-column: span 2;
+            margin: 1rem 0 0.5rem 0;
+            position: relative;
+        }
+
+        .section-divider h6 {
+            color: var(--navy-medium);
+            font-weight: 600;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-divider h6 i {
+            font-size: 1.1rem;
+        }
+
+        /* Back Link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--navy-medium);
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--navy-medium);
+            color: white;
+            border-color: var(--navy-medium);
+        }
+
+        /* Required Field Indicator */
+        .required-field::after {
+            content: '*';
+            color: #dc3545;
+            margin-left: 4px;
+            font-size: 1.1rem;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(129, 178, 154, 0.2);
+            color: #1b5e3f;
+            border: 1px solid #81B29A;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .edit-place-container {
+                padding: 0 1rem;
+            }
+
+            .glass-panel {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .full-width {
+                grid-column: span 1;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .page-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .button-container {
+                justify-content: center;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-panel {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Form row hover */
+        .form-row-hover {
+            transition: all 0.2s;
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+
+        .form-row-hover:hover {
+            background: rgba(30, 58, 95, 0.02);
+        }
+
+        /* Description textarea */
+        textarea.form-control-custom {
+            min-height: 100px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-place-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <i class="bi bi-pencil-square"></i>
+            <h2>Edit Place Details</h2>
+        </div>
+
+        <!-- Main Glass Panel -->
+        <div class="glass-panel position-relative">
+            <!-- Wave Decoration -->
+            <div class="wave-decoration">
+                <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                    <path fill="#1e3a5f" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+                </svg>
+            </div>
+
+            <!-- Form -->
+            <form action="/myapp/edit_places_post/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ data.id }}">
+
+                <div class="form-grid">
+                    <!-- Basic Information Section -->
+                    <div class="section-divider">
+                        <h6>
+                            <i class="bi bi-info-circle"></i>
+                            Basic Information
+                        </h6>
+                    </div>
+
+                    <!-- Place Name -->
+                    <div class="form-row-hover">
+                        <label class="form-label-custom">
+                            <i class="bi bi-signpost"></i>
+                            <span class="required-field">Place Name</span>
+                        </label>
+                        <input type="text" class="form-control-custom" name="names"
+                               value="{{ data.name }}" placeholder="Enter place name" required>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-row-hover">
+                        <label class="form-label-custom">
+                            <i class="bi bi-tags"></i>
+                            <span class="required-field">Category</span>
+                        </label>
+
+                          <select name="category" class="input-elegant form-control-custom" required>
+            <option value="">Select type</option>
+            <option value="City">City</option>
+            <option value="Hills">Hills</option>
+            <option value="Desert">Desert</option>
+            <option value="Beach">Beach</option>
+          </select>
+
+{#                        <input type="text" class="form-control-custom" name="category"#}
+{#                               value="{{ data.category }}" placeholder="e.g., Beach, Mountain, Temple" required>#}
+                    </div>
+
+                    <!-- Coordinates Section -->
+                    <div class="section-divider">
+                        <h6>
+                            <i class="bi bi-geo"></i>
+                            Geographic Coordinates
+                        </h6>
+                    </div>
+
+                    <!-- Latitude -->
+                    <div class="form-row-hover">
+                        <label class="form-label-custom">
+                            <i class="bi bi-arrow-up"></i>
+                            <span class="required-field">Latitude</span>
+                        </label>
+                        <input type="text" class="form-control-custom" name="lattitude"
+                               value="{{ data.lattitude }}" placeholder="e.g., 37.7749" required readonly>
+                    </div>
+
+                    <!-- Longitude -->
+                    <div class="form-row-hover">
+                        <label class="form-label-custom">
+                            <i class="bi bi-arrow-right"></i>
+                            <span class="required-field">Longitude</span>
+                        </label>
+                        <input type="text" class="form-control-custom" name="longitude"
+                               value="{{ data.longitude }}" placeholder="e.g., -122.4194" required readonly>
+                    </div>
+                <div class="full-width mt-3">
+
+                    <label class="form-label-custom">
+                    <i class="bi bi-search"></i> Search Location
+                    </label>
+
+                    <div class="input-group mb-2">
+                    <input type="text" id="placeSearch" class="form-control-custom"
+                    placeholder="Search place (ex: Kochi, Munnar)">
+                    <button type="button" class="btn btn-success" onclick="searchLocation()">
+                    Search
+                    </button>
+                    </div>
+
+                    <label class="form-label-custom">
+                    <i class="bi bi-map"></i> Select Location From Map
+                    </label>
+
+                    <div id="map" style="height:300px;border-radius:15px;"></div>
+
+                    </div>
+
+
+                    <!-- Classification Section -->
+                    <div class="section-divider">
+                        <h6>
+                            <i class="bi bi-diagram-3"></i>
+                            Classification
+                        </h6>
+                    </div>
+
+                    <!-- Type Dropdown -->
+                    <div class="form-row-hover">
+                        <label class="form-label-custom">
+                            <i class="bi bi-star"></i>
+                            <span class="required-field">Place Type</span>
+                        </label>
+                        <select name="type" class="select-custom" required>
+                            <option value="">Choose type</option>
+                            <option value="popular" {% if data.type == "popular" %}selected{% endif %}>
+                                ⭐ Popular
+                            </option>
+                            <option value="nonpopular" {% if data.type == "nonpopular" %}selected{% endif %}>
+                                ☆ Non Popular
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-row-hover">
+                        <label class="form-label-custom">
+                            <i class="bi bi-activity"></i>
+                            <span class="required-field">Status</span>
+                        </label>
+                        <input type="text" class="form-control-custom" name="status"
+                               value="{{ data.status }}" placeholder="e.g., Active, Inactive" required>
+                        {% if data.status %}
+                            <div class="helper-text">
+                                Current: <span class="status-badge">{{ data.status }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Description Section -->
+                    <div class="section-divider">
+                        <h6>
+                            <i class="bi bi-chat-text"></i>
+                            Description
+                        </h6>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="full-width form-row-hover">
+                        <label class="form-label-custom">
+                            <i class="bi bi-pencil"></i>
+                            <span class="required-field">Place Description</span>
+                        </label>
+                        <textarea class="form-control-custom" name="description"
+                                  placeholder="Describe the place, its features, attractions, etc."
+                                  rows="4" required>{{ data.description }}</textarea>
+                    </div>
+
+                    <!-- Photo Gallery Section -->
+                    <div class="full-width">
+                        <div class="photo-gallery">
+                            <h6 style="color: var(--navy-medium); margin-bottom: 1rem;">
+                                <i class="bi bi-images me-2"></i>
+                                Photo Gallery
+                            </h6>
+
+                            <div class="photo-grid">
+                                <!-- Photo 1 -->
+                                <div class="photo-item">
+                                    <div class="photo-label">
+                                        <i class="bi bi-image"></i>
+                                        Main Photo
+                                    </div>
+                                    {% if data.photo %}
+                                        <img src="/media/{{ data.photo }}" class="current-photo" alt="Place photo 1">
+                                    {% else %}
+                                        <div class="current-photo" style="background: #f0f4fa; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-image" style="font-size: 3rem; color: #cbd5e1;"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="file-input-wrapper">
+                                        <input type="file" class="file-input-custom" accept="image/*" name="photo">
+                                    </div>
+                                    {% if data.photo %}
+                                        <div class="helper-text mt-2">
+                                            <i class="bi bi-check-circle-fill" style="color: #28a745;"></i>
+                                            Current: {{ data.photo|slice:"20" }}{% if data.photo|length > 20 %}...{% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Photo 2 -->
+                                <div class="photo-item">
+                                    <div class="photo-label">
+                                        <i class="bi bi-image"></i>
+                                        Additional Photo 1
+                                    </div>
+                                    {% if data.photo1 %}
+                                        <img src="/media/{{ data.photo1 }}" class="current-photo" alt="Place photo 2">
+                                    {% else %}
+                                        <div class="current-photo" style="background: #f0f4fa; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-image" style="font-size: 3rem; color: #cbd5e1;"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="file-input-wrapper">
+                                        <input type="file" class="file-input-custom" accept="image/*" name="photo1">
+                                    </div>
+                                    {% if data.photo1 %}
+                                        <div class="helper-text mt-2">
+                                            <i class="bi bi-check-circle-fill" style="color: #28a745;"></i>
+                                            Current: {{ data.photo1|slice:"20" }}{% if data.photo1|length > 20 %}...{% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Photo 3 -->
+                                <div class="photo-item">
+                                    <div class="photo-label">
+                                        <i class="bi bi-image"></i>
+                                        Additional Photo 2
+                                    </div>
+                                    {% if data.photo2 %}
+                                        <img src="/media/{{ data.photo2 }}" class="current-photo" alt="Place photo 3">
+                                    {% else %}
+                                        <div class="current-photo" style="background: #f0f4fa; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-image" style="font-size: 3rem; color: #cbd5e1;"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="file-input-wrapper">
+                                        <input type="file" class="file-input-custom" accept="image/*" name="photo2">
+                                    </div>
+                                    {% if data.photo2 %}
+                                        <div class="helper-text mt-2">
+                                            <i class="bi bi-check-circle-fill" style="color: #28a745;"></i>
+                                            Current: {{ data.photo2|slice:"20" }}{% if data.photo2|length > 20 %}...{% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="helper-text mt-3">
+                                <i class="bi bi-info-circle"></i>
+                                Leave blank to keep current photos. Upload new images to replace existing ones.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="full-width button-container">
+                        <button type="submit" class="btn-submit">
+                            <i class="bi bi-check2-circle"></i>
+                            <span>Update Place</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Back Link -->
+        <a href="/myapp/view_places/" class="back-link">
+            <i class="bi bi-arrow-left"></i>
+            Back to Places List
+        </a>
+    </div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // File input enhancement - show filename
+        document.querySelectorAll('.file-input-custom').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const fileName = this.files[0]?.name;
+                if (fileName) {
+                    this.style.borderColor = '#28a745';
+                    // Update helper text in the same photo item
+                    const photoItem = this.closest('.photo-item');
+                    let helper = photoItem.querySelector('.helper-text:not(.mt-2)');
+                    if (!helper) {
+                        helper = document.createElement('div');
+                        helper.className = 'helper-text mt-2';
+                        photoItem.appendChild(helper);
+                    }
+                    helper.innerHTML = `<i class="bi bi-check-circle-fill" style="color:#28a745;"></i> Selected: ${fileName.slice(0, 20)}${fileName.length > 20 ? '...' : ''}`;
+                }
+            });
+        });
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#dc3545';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#e2e8f0';
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields');
+            }
+        });
+
+        // Preview image before upload (optional enhancement)
+        document.querySelectorAll('.file-input-custom').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const file = this.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    const photoItem = this.closest('.photo-item');
+                    const img = photoItem.querySelector('.current-photo');
+
+                    reader.onload = function(e) {
+                        if (img && img.tagName === 'IMG') {
+                            img.src = e.target.result;
+                        }
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+var lat = {{ data.lattitude|default:"10.8505" }};
+var lon = {{ data.longitude|default:"76.2711" }};
+
+var map = L.map('map').setView([lat, lon], 10);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap'
+}).addTo(map);
+
+var marker = L.marker([lat, lon]).addTo(map);
+
+map.on('click', function(e){
+
+    var newLat = e.latlng.lat.toFixed(6);
+    var newLng = e.latlng.lng.toFixed(6);
+
+    document.querySelector("input[name='lattitude']").value = newLat;
+    document.querySelector("input[name='longitude']").value = newLng;
+
+    marker.setLatLng([newLat,newLng]);
+
+});
+
+
+window.searchLocation = function(){
+
+var location = document.getElementById("placeSearch").value;
+
+fetch("https://nominatim.openstreetmap.org/search?format=json&q="+location)
+.then(response => response.json())
+.then(data => {
+
+if(data.length > 0){
+
+var lat = data[0].lat;
+var lon = data[0].lon;
+
+map.setView([lat, lon], 13);
+
+marker.setLatLng([lat,lon]);
+
+document.querySelector("input[name='lattitude']").value = lat;
+document.querySelector("input[name='longitude']").value = lon;
+
+}
+else{
+alert("Location not found");
+}
+
+});
+
+}
+
+setTimeout(function(){
+map.invalidateSize();
+},500);
+
+});
+
+</script>
+</body>
+</html>
+{% endblock %}

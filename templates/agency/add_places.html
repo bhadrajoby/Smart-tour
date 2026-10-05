@@ -1,0 +1,1055 @@
+{#{% extends 'agency/agency_home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#  <meta charset="UTF-8">#}
+{#  <title>ADD PLACES</title>#}
+{#  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+{##}
+{#</head>#}
+{#<body>#}
+{#  <div class="container">#}
+{#    <h2 class="mb-4">ADD PLACES</h2>#}
+{#    <form action="/myapp/add_places_post/" method="post" enctype="multipart/form-data">#}
+{#      <div class="row mb-3">#}
+{#        <label for="name" class="col-sm-4 ">Name:</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" name="names" id="name"required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{##}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="dob" class="col-sm-4 ">Lattitude:</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" name="lattitude" id="dob" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="email" class="col-sm-4 ">Longitude:</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" name="longitude" id="email" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="phone" class="col-sm-4 ">Type</label>#}
+{#        <div class="col-sm-8">#}
+{#        <select name="type">#}
+{#            <option>Choose 1</option>#}
+{#            <option value="popular">Popular</option>#}
+{#            <option value="nonpopular">Non Popular</option>#}
+{#        </select>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="place" class="col-sm-4 ">Category</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" name="category" id="place" required>#}
+{#        </div>#}
+{#      </div>#}
+{#         <div class="row mb-3">#}
+{#        <label for="place" class="col-sm-4 ">Status</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" name="status" id="place" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="photo" class="col-sm-4 ">Upload Photo</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="file" class="form-control" id="photo" accept="image/*" name="photo" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <div class="offset-sm-4 col-sm-8">#}
+{#          <button type="submit" class="btn btn-primary">ADD</button>#}
+{#        </div>#}
+{#      </div>#}
+{#    </form>#}
+{#  </div>#}
+{#  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#{% extends 'agency/agency_home.html' %}#}
+{#{% block body %}#}
+{##}
+{#<style>#}
+{#/* Wrapper */#}
+{#.add-place-wrapper {#}
+{#    padding: 60px 30px;#}
+{#    background: #f8f9fa;#}
+{#    min-height: 100vh;#}
+{#}#}
+{##}
+{#/* Card */#}
+{#.add-place-card {#}
+{#    background: #ffffff;#}
+{#    border-radius: 12px;#}
+{#    box-shadow: 0 10px 25px rgba(0,0,0,0.08);#}
+{#    max-width: 750px;#}
+{#    margin: auto;#}
+{#    overflow: hidden;#}
+{#}#}
+{##}
+{#/* Header */#}
+{#.add-place-header {#}
+{#    background-color: #3D405B;  /* Theme Blue */#}
+{#    color: #ffffff;#}
+{#    padding: 18px;#}
+{#    text-align: center;#}
+{#    font-weight: 600;#}
+{#    font-size: 22px;#}
+{#}#}
+{##}
+{#/* Body */#}
+{#.add-place-body {#}
+{#    padding: 40px;#}
+{#}#}
+{##}
+{#/* Labels */#}
+{#.add-place-wrapper label {#}
+{#    font-weight: 500;#}
+{#    color: #3D405B;#}
+{#}#}
+{##}
+{#/* Inputs */#}
+{#.add-place-wrapper .form-control,#}
+{#.add-place-wrapper select {#}
+{#    border-radius: 30px;#}
+{#    padding: 10px 15px;#}
+{#    border: 1px solid #ced4da;#}
+{#    width: 100%;#}
+{#}#}
+{##}
+{#.add-place-wrapper .form-control:focus,#}
+{#.add-place-wrapper select:focus {#}
+{#    border-color: #3D405B;#}
+{#    box-shadow: 0 0 0 0.2rem rgba(61,64,91,0.25);#}
+{#}#}
+{##}
+{#/* Button */#}
+{#.btn-theme {#}
+{#    background-color: #3D405B;#}
+{#    color: white;#}
+{#    border: none;#}
+{#    border-radius: 30px;#}
+{#    padding: 8px 30px;#}
+{#    font-weight: 500;#}
+{#}#}
+{##}
+{#.btn-theme:hover {#}
+{#    background-color: #81B29A;#}
+{#    transition: 0.3s;#}
+{#}#}
+{#</style>#}
+{##}
+{#<div class="add-place-wrapper">#}
+{#    <div class="container">#}
+{##}
+{#        <div class="add-place-card">#}
+{##}
+{#            <div class="add-place-header">#}
+{#                ADD PLACES#}
+{#            </div>#}
+{##}
+{#            <div class="add-place-body">#}
+{#                <form action="/myapp/add_places_post/" method="post" enctype="multipart/form-data">#}
+{#                    {% csrf_token %}#}
+{##}
+{#                    <div class="mb-4">#}
+{#                        <label>Name</label>#}
+{#                        <input type="text" class="form-control mt-2" name="names" required>#}
+{#                    </div>#}
+{##}
+{#                    <div class="mb-4">#}
+{#                        <label>Latitude</label>#}
+{#                        <input type="text" class="form-control mt-2" name="lattitude" required>#}
+{#                    </div>#}
+{##}
+{#                    <div class="mb-4">#}
+{#                        <label>Longitude</label>#}
+{#                        <input type="text" class="form-control mt-2" name="longitude" required>#}
+{#                    </div>#}
+{##}
+{#                    <div class="mb-4">#}
+{#                        <label>Type</label>#}
+{#                        <select class="form-control mt-2" name="type" required>#}
+{#                            <option value="">Choose One</option>#}
+{#                            <option value="popular">Popular</option>#}
+{#                            <option value="nonpopular">Non Popular</option>#}
+{#                        </select>#}
+{#                    </div>#}
+{##}
+{#                    <div class="mb-4">#}
+{#                        <label>Category</label>#}
+{#                        <input type="text" class="form-control mt-2" name="category" required>#}
+{#                    </div>#}
+{##}
+{#                    <div class="mb-4">#}
+{#                        <label>Status</label>#}
+{#                        <input type="text" class="form-control mt-2" name="status" required>#}
+{#                    </div>#}
+{##}
+{#                    <div class="mb-4">#}
+{#                        <label>Upload Photo</label>#}
+{#                        <input type="file" class="form-control mt-2" name="photo" accept="image/*" required>#}
+{#                    </div>#}
+{##}
+{#                    <div class="text-center">#}
+{#                        <button type="submit" class="btn btn-theme">#}
+{#                            ADD#}
+{#                        </button>#}
+{#                    </div>#}
+{##}
+{#                </form>#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#    </div>#}
+{#</div>#}
+{##}
+{#{% endblock %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#  <meta charset="UTF-8">#}
+{#  <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#  <title>Smart Tour · add new place</title>#}
+{#  <!-- Fonts & base styles (same elegant stack as index) -->#}
+{#  <link rel="preconnect" href="https://fonts.googleapis.com">#}
+{#  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>#}
+{#  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">#}
+{#  <!-- Bootstrap 5 & icon set (reused from index) -->#}
+{#  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+{#  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">#}
+{#  <style>#}
+{#    /* -------------------------------------------------------#}
+{#       custom elegance – extends the Tiya / Smart Tour palette#}
+{#    ------------------------------------------------------- */#}
+{#    body {#}
+{#      font-family: 'DM Sans', sans-serif;#}
+{#      background-color: #f8f7f4;   /* soft warm background */#}
+{#      color: #2d3e3f;#}
+{#    }#}
+{##}
+{#    /* subtle diagonal pattern (like hero overlay) */#}
+{#    .elegant-wrapper {#}
+{#      background: linear-gradient(135deg, rgba(61,64,91,0.02) 0%, rgba(129,178,154,0.05) 100%);#}
+{#      min-height: 100vh;#}
+{#      padding: 3rem 1.5rem;#}
+{#    }#}
+{##}
+{#    .glass-card {#}
+{#      background: rgba(255, 255, 255, 0.85);#}
+{#      backdrop-filter: blur(10px);#}
+{#      -webkit-backdrop-filter: blur(10px);#}
+{#      border: 1px solid rgba(255, 255, 255, 0.5);#}
+{#      border-radius: 32px;#}
+{#      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 4px 18px 0 rgba(129, 178, 154, 0.1);#}
+{#      transition: all 0.2s ease;#}
+{#    }#}
+{##}
+{#    .glass-card:hover {#}
+{#      box-shadow: 0 30px 55px -10px rgba(61, 64, 91, 0.2);#}
+{#    }#}
+{##}
+{#    .page-header {#}
+{#      position: relative;#}
+{#      margin-bottom: 2.5rem;#}
+{#    }#}
+{##}
+{#    .page-header h2 {#}
+{#      font-size: 2.2rem;#}
+{#      font-weight: 600;#}
+{#      letter-spacing: -0.02em;#}
+{#      color: #3d405b;  /* deep purple‑grey from Tiya */#}
+{#      display: inline-block;#}
+{#      background: linear-gradient(145deg, #3d405b 0%, #5b7c7e 100%);#}
+{#      -webkit-background-clip: text;#}
+{#      -webkit-text-fill-color: transparent;#}
+{#      background-clip: text;#}
+{#      border-bottom: 3px solid #81b29a;#}
+{#      padding-bottom: 0.4rem;#}
+{#    }#}
+{##}
+{#    .page-header::after {#}
+{#      content: '';#}
+{#      position: absolute;#}
+{#      bottom: -6px;#}
+{#      left: 0;#}
+{#      width: 70px;#}
+{#      height: 3px;#}
+{#      background: #e07a5f;  /* terracotta accent */#}
+{#      border-radius: 6px;#}
+{#      opacity: 0.5;#}
+{#    }#}
+{##}
+{#    .form-label-custom {#}
+{#      font-weight: 600;#}
+{#      font-size: 0.9rem;#}
+{#      text-transform: uppercase;#}
+{#      letter-spacing: 0.02em;#}
+{#      color: #3d405b;#}
+{#      margin-bottom: 0.3rem;#}
+{#      display: flex;#}
+{#      align-items: center;#}
+{#      gap: 6px;#}
+{#    }#}
+{##}
+{#    .form-label-custom i {#}
+{#      color: #81b29a;#}
+{#      font-size: 1.1rem;#}
+{#    }#}
+{##}
+{#    .input-elegant {#}
+{#      border: 1px solid rgba(129, 178, 154, 0.3);#}
+{#      border-radius: 18px;#}
+{#      padding: 0.75rem 1.2rem;#}
+{#      background-color: rgba(255,255,255,0.7);#}
+{#      transition: all 0.2s;#}
+{#      font-size: 1rem;#}
+{#      box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);#}
+{#    }#}
+{##}
+{#    .input-elegant:focus {#}
+{#      border-color: #81b29a;#}
+{#      box-shadow: 0 0 0 0.2rem rgba(129, 178, 154, 0.25), inset 0 2px 4px rgba(0,0,0,0.02);#}
+{#      background-color: #ffffff;#}
+{#    }#}
+{##}
+{#    .form-select-elegant {#}
+{#      border: 1px solid rgba(129, 178, 154, 0.3);#}
+{#      border-radius: 18px;#}
+{#      padding: 0.75rem 1.2rem;#}
+{#      background-color: rgba(255,255,255,0.7);#}
+{#      font-size: 1rem;#}
+{#      color: #2d3e3f;#}
+{#      cursor: pointer;#}
+{#    }#}
+{##}
+{#    .btn-primary-smart {#}
+{#      background: #3d405b;#}
+{#      border: none;#}
+{#      border-radius: 40px;#}
+{#      padding: 0.8rem 2.2rem;#}
+{#      font-weight: 600;#}
+{#      letter-spacing: 0.3px;#}
+{#      color: white;#}
+{#      box-shadow: 0 12px 22px -10px #3d405b;#}
+{#      transition: all 0.2s;#}
+{#      border: 1px solid rgba(255,255,255,0.2);#}
+{#      display: inline-flex;#}
+{#      align-items: center;#}
+{#      gap: 0.5rem;#}
+{#    }#}
+{##}
+{#    .btn-primary-smart:hover {#}
+{#      background: #2d2f45;#}
+{#      transform: translateY(-3px);#}
+{#      box-shadow: 0 22px 28px -12px #2d2f45;#}
+{#    }#}
+{##}
+{#    .btn-primary-smart:active {#}
+{#      transform: translateY(0);#}
+{#    }#}
+{##}
+{#    .file-upload-area {#}
+{#      border: 2px dashed rgba(129, 178, 154, 0.5);#}
+{#      border-radius: 28px;#}
+{#      padding: 1.2rem 1.5rem;#}
+{#      background: rgba(129, 178, 154, 0.04);#}
+{#      text-align: center;#}
+{#      transition: background 0.2s;#}
+{#      cursor: pointer;#}
+{#    }#}
+{##}
+{#    .file-upload-area:hover {#}
+{#      background: rgba(129, 178, 154, 0.1);#}
+{#      border-color: #81b29a;#}
+{#    }#}
+{##}
+{#    .file-upload-area i {#}
+{#      font-size: 2rem;#}
+{#      color: #81b29a;#}
+{#      margin-bottom: 0.5rem;#}
+{#    }#}
+{##}
+{#    .file-upload-text {#}
+{#      font-size: 0.95rem;#}
+{#      color: #4a5b5c;#}
+{#      margin-bottom: 0;#}
+{#    }#}
+{##}
+{#    .file-upload-text small {#}
+{#      color: #7c8f90;#}
+{#    }#}
+{##}
+{#    /* remove number spinners (latitude/longitude) */#}
+{#    input[type=number]::-webkit-inner-spin-button,#}
+{#    input[type=number]::-webkit-outer-spin-button {#}
+{#      -webkit-appearance: none;#}
+{#      margin: 0;#}
+{#    }#}
+{#    input[type=number] {#}
+{#      -moz-appearance: textfield;#}
+{#    }#}
+{##}
+{#    /* extra refinement for select arrow */#}
+{#    select.form-select-elegant {#}
+{#      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%233d405b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");#}
+{#    }#}
+{##}
+{#    /* signature wave (tiny nod to Tiya) */#}
+{#    .wave-decoration {#}
+{#      position: absolute;#}
+{#      bottom: 0;#}
+{#      left: 0;#}
+{#      width: 100%;#}
+{#      overflow: hidden;#}
+{#      line-height: 0;#}
+{#      transform: rotate(180deg);#}
+{#      opacity: 0.08;#}
+{#      pointer-events: none;#}
+{#    }#}
+{##}
+{#    .wave-decoration svg {#}
+{#      display: block;#}
+{#      width: 100%;#}
+{#      height: 40px;#}
+{#    }#}
+{##}
+{#    /* coordinate row subtle hint */#}
+{#    .coordinate-hint {#}
+{#      font-size: 0.75rem;#}
+{#      color: #7c8f90;#}
+{#      margin-top: 4px;#}
+{#      margin-left: 12px;#}
+{#    }#}
+{#  </style>#}
+{#</head>#}
+{#<body>#}
+{#  <!-- the wrapper sits perfectly inside agency_home block, no conflict -->#}
+{#  <div class="elegant-wrapper">#}
+{#    <div class="container py-2">#}
+{#      <!-- header with wave and refined typography (like index) -->#}
+{#      <div class="page-header d-flex align-items-center">#}
+{#        <i class="bi bi-pin-map-fill me-3" style="font-size: 2.2rem; color: #81b29a;"></i>#}
+{#        <h2 class="mb-0">Add New Place · Smart Tour</h2>#}
+{#      </div>#}
+{##}
+{#      <!-- main card – clean glassmorphism -->#}
+{#      <div class="glass-card p-4 p-xl-5 position-relative">#}
+{#        <!-- tiny wave decoration (invisible, but texture) -->#}
+{#        <div class="wave-decoration">#}
+{#          <svg viewBox="0 0 1440 120" preserveAspectRatio="none">#}
+{#            <path fill="#3d405b" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>#}
+{#          </svg>#}
+{#        </div>#}
+{##}
+{#        <form action="/myapp/add_places_post/" method="post" enctype="multipart/form-data">#}
+{#          <!-- 2 columns layout on larger screens for better rhythm -->#}
+{#          <div class="row g-4">#}
+{#            <!-- left column -->#}
+{#            <div class="col-md-6">#}
+{#              <!-- place name -->#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-signpost"></i> Place name</label>#}
+{#                <input type="text" class="form-control input-elegant" name="names" placeholder="e.g. Sapphire Valley" required>#}
+{#              </div>#}
+{##}
+{#              <!-- latitude + subtle hint (design keeps original name "lattitude") -->#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-geo-alt"></i> Latitude</label>#}
+{#                <input type="number" step="any" class="form-control input-elegant" name="lattitude" placeholder="40.785091" required>#}
+{#                <div class="coordinate-hint"><i class="bi bi-info-circle me-1"></i>Decimal degrees (e.g. 40.785)</div>#}
+{#              </div>#}
+{##}
+{#              <!-- longitude -->#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-geo-alt"></i> Longitude</label>#}
+{#                <input type="number" step="any" class="form-control input-elegant" name="longitude" placeholder="-73.968285" required>#}
+{#                <div class="coordinate-hint"><i class="bi bi-info-circle me-1"></i>Decimal degrees (e.g. -73.968)</div>#}
+{#              </div>#}
+{##}
+{#              <!-- Type dropdown (popular / non popular) redesigned -->#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-tags"></i> Type</label>#}
+{#                <select name="type" class="form-select form-select-elegant">#}
+{#                  <option value="" selected disabled>— select type —</option>#}
+{#                  <option value="popular">✨ Popular</option>#}
+{#                  <option value="nonpopular">🍃 Non‑popular (hidden gem)</option>#}
+{#                </select>#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#            <!-- right column -->#}
+{#            <div class="col-md-6">#}
+{#              <!-- category -->#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-diagram-3"></i> Category</label>#}
+{#                <input type="text" class="form-control input-elegant" name="category" placeholder="e.g. beach, mountain, heritage" required>#}
+{#              </div>#}
+{##}
+{#              <!-- status (with better semantic) -->#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-activity"></i> Status</label>#}
+{#                <input type="text" class="form-control input-elegant" name="status" placeholder="e.g. open, seasonal, restricted" required>#}
+{#                <div class="coordinate-hint">accessibility / condition</div>#}
+{#              </div>#}
+{##}
+{#              <!-- file upload – beautified -->#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-camera"></i> Cover photo</label>#}
+{#                <div class="file-upload-area" onclick="document.getElementById('photo').click();">#}
+{#                  <i class="bi bi-cloud-arrow-up"></i>#}
+{#                  <p class="file-upload-text">click to browse or drag image</p>#}
+{#                  <p class="file-upload-text small">PNG, JPG · up to 10 MB</p>#}
+{#                  <input type="file" id="photo" accept="image/*" name="photo" class="d-none" required onchange="updateFileName(this)">#}
+{#                </div>#}
+{#                <!-- optional tiny preview (no js needed, but we show filename) -->#}
+{#                <div id="file-name-display" class="mt-2 text-muted small" style="min-height: 22px;"></div>#}
+{#              </div>#}
+{#            </div>#}
+{#          </div> <!-- /row -->#}
+{##}
+{#          <!-- additional row for extra space and action button (centered) -->#}
+{#          <div class="row mt-4">#}
+{#            <div class="col-12 d-flex justify-content-center">#}
+{#              <button type="submit" class="btn btn-primary-smart">#}
+{#                <i class="bi bi-plus-circle"></i> add place to collection#}
+{#              </button>#}
+{#            </div>#}
+{#          </div>#}
+{##}
+{#          <!-- subtle footer note (like index “any questions?”) -->#}
+{#          <div class="text-center mt-5 small text-secondary opacity-50">#}
+{#            <i class="bi bi-shield-check me-1"></i> All fields are required · information will be visible to travellers#}
+{#          </div>#}
+{#        </form>#}
+{#      </div> <!-- /glass-card -->#}
+{##}
+{#      <!-- optional back link with elegance (mimics “member login” but internal) -->#}
+{#      <div class="mt-4 text-end">#}
+{#        <a href="#" class="link-secondary text-decoration-none fw-light" style="border-bottom: 1px dashed #81b29a;">#}
+{#          <i class="bi bi-arrow-left me-1"></i> back to dashboard#}
+{#        </a>#}
+{#      </div>#}
+{#    </div> <!-- /container -->#}
+{#  </div> <!-- /elegant-wrapper -->#}
+{##}
+{#  <!-- small script for showing selected filename (simple ux) -->#}
+{#  <script>#}
+{#    function updateFileName(input) {#}
+{#      const display = document.getElementById('file-name-display');#}
+{#      if (input.files && input.files[0]) {#}
+{#        display.innerHTML = '<i class="bi bi-check-circle-fill me-1" style="color: #81b29a;"></i> ' + input.files[0].name;#}
+{#      } else {#}
+{#        display.innerHTML = '';#}
+{#      }#}
+{#    }#}
+{##}
+{#    // optional drag & drop hint – just for style, full implementation avoided for brevity#}
+{#    document.querySelector('.file-upload-area').addEventListener('dragover', (e) => {#}
+{#      e.preventDefault();#}
+{#      e.currentTarget.style.background = 'rgba(129, 178, 154, 0.2)';#}
+{#    });#}
+{#    document.querySelector('.file-upload-area').addEventListener('dragleave', (e) => {#}
+{#      e.currentTarget.style.background = 'rgba(129, 178, 154, 0.04)';#}
+{#    });#}
+{#    document.querySelector('.file-upload-area').addEventListener('drop', (e) => {#}
+{#      e.preventDefault();#}
+{#      const input = document.getElementById('photo');#}
+{#      if (e.dataTransfer.files.length) {#}
+{#        input.files = e.dataTransfer.files;#}
+{#        updateFileName(input);#}
+{#      }#}
+{#      e.currentTarget.style.background = 'rgba(129, 178, 154, 0.04)';#}
+{#    });#}
+{#  </script>#}
+{##}
+{#  <!-- bootstrap bundle (for any interaction, also used in index) -->#}
+{#  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>#}
+{#  <!-- (no extra heavy js, just elegance) -->#}
+{#</body>#}
+{#</html>#}
+{##}
+{#{% extends 'agency/agency_home.html' %}#}
+{#{% block body %}#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#  <meta charset="UTF-8">#}
+{#  <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#  <title>Smart Tour · Add New Place</title>#}
+{#  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+{#  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">#}
+{#  <style>#}
+{#    body { font-family: 'DM Sans', sans-serif; background-color: #f8f7f4; color: #2d3e3f; }#}
+{#    .elegant-wrapper { background: linear-gradient(135deg, rgba(61,64,91,0.02) 0%, rgba(129,178,154,0.05) 100%); min-height: 100vh; padding: 3rem 1.5rem; }#}
+{#    .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }#}
+{#    .page-header h2 { font-size: 2.2rem; font-weight: 600; color: #3d405b; border-bottom: 3px solid #81b29a; padding-bottom: 0.4rem; }#}
+{#    .form-label-custom { font-weight: 600; font-size: 0.9rem; text-transform: uppercase; color: #3d405b; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 6px; }#}
+{#    .input-elegant { border: 1px solid rgba(129, 178, 154, 0.3); border-radius: 18px; padding: 0.75rem 1.2rem; background-color: rgba(255,255,255,0.7); width: 100%; transition: 0.3s; }#}
+{#    .input-elegant:focus { border-color: #81b29a; outline: none; box-shadow: 0 0 0 4px rgba(129,178,154,0.1); }#}
+{##}
+{#    /* File Upload Styling */#}
+{#    .file-upload-area { border: 2px dashed rgba(129, 178, 154, 0.5); border-radius: 28px; padding: 2rem; text-align: center; cursor: pointer; background: rgba(129, 178, 154, 0.04); transition: 0.3s; }#}
+{#    .file-upload-area:hover { background: rgba(129, 178, 154, 0.1); border-color: #81b29a; }#}
+{##}
+{#    .btn-primary-smart { background: #3d405b; border: none; border-radius: 40px; padding: 0.8rem 2.2rem; color: white; font-weight: 600; box-shadow: 0 12px 22px -10px #3d405b; transition: 0.3s; }#}
+{#    .btn-primary-smart:hover { background: #2d2f45; transform: translateY(-3px); }#}
+{##}
+{#    /* Preview Thumbnails */#}
+{#    #preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; }#}
+{#    .preview-item { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }#}
+{#  </style>#}
+{#</head>#}
+{#<body>#}
+{#  <div class="elegant-wrapper">#}
+{#    <div class="container py-2">#}
+{#      <div class="page-header d-flex align-items-center mb-4">#}
+{#        <i class="bi bi-pin-map-fill me-3" style="font-size: 2.2rem; color: #81b29a;"></i>#}
+{#        <h2 class="mb-0">Add New Place · Smart Tour</h2>#}
+{#      </div>#}
+{##}
+{#      <div class="glass-card p-4 p-xl-5">#}
+{#        <form action="/myapp/add_places_post/" method="post" enctype="multipart/form-data">#}
+{#          {% csrf_token %}#}
+{#          <div class="row g-4">#}
+{#            <div class="col-md-6">#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-signpost"></i> Place name</label>#}
+{#                <input type="text" class="input-elegant" name="names" placeholder="e.g. Sapphire Valley" required>#}
+{#              </div>#}
+{#              <div class="row">#}
+{#                <div class="col-6 mb-4">#}
+{#                  <label class="form-label-custom"><i class="bi bi-geo-alt"></i> Latitude</label>#}
+{#                  <input type="number" step="any" class="input-elegant" name="lattitude" required>#}
+{#                </div>#}
+{#                <div class="col-6 mb-4">#}
+{#                  <label class="form-label-custom"><i class="bi bi-geo-alt"></i> Longitude</label>#}
+{#                  <input type="number" step="any" class="input-elegant" name="longitude" required>#}
+{#                </div>#}
+{#              </div>#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-activity"></i> Status</label>#}
+{#                <input type="text" class="input-elegant" name="status" placeholder="e.g. Open" required>#}
+{#              </div>#}
+{#            </div>#}
+{##}
+{#            <div class="col-md-6">#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-tags"></i> Type</label>#}
+{#                <select name="type" class="input-elegant" style="appearance: auto;" required>#}
+{#                  <option value="" selected disabled>Select type</option>#}
+{#                  <option value="popular">Popular</option>#}
+{#                  <option value="nonpopular">Non-Popular</option>#}
+{#                </select>#}
+{#              </div>#}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-diagram-3"></i> Category</label>#}
+{#                <input type="text" class="input-elegant" name="category" required>#}
+{#              </div>#}
+{##}
+{#              <div class="mb-4">#}
+{#                <label class="form-label-custom"><i class="bi bi-camera"></i> Gallery Photos</label>#}
+{#                <div class="file-upload-area" onclick="document.getElementById('photo-input').click();">#}
+{#                  <i class="bi bi-images" style="font-size: 2rem; color: #81b29a;"></i>#}
+{#                  <p class="mb-0 fw-bold">Click to select multiple images</p>#}
+{#                  <small class="text-muted">The first image will be your main thumbnail</small>#}
+{#                  <input type="file" id="photo-input" name="photo" class="d-none" accept="image/*" multiple required onchange="updatePreview(this)">#}
+{#                </div>#}
+{#                <div id="file-count" class="mt-2 text-muted small fw-bold"></div>#}
+{#                <div id="preview-grid"></div>#}
+{#              </div>#}
+{#            </div>#}
+{#          </div>#}
+{##}
+{#          <div class="text-center mt-4">#}
+{#            <button type="submit" class="btn-primary-smart">#}
+{#              <i class="bi bi-plus-circle me-2"></i> Save Destination#}
+{#            </button>#}
+{#          </div>#}
+{#        </form>#}
+{#      </div>#}
+{#    </div>#}
+{#  </div>#}
+{##}
+{#  <script>#}
+{#    function updatePreview(input) {#}
+{#      const display = document.getElementById('file-count');#}
+{#      const grid = document.getElementById('preview-grid');#}
+{#      grid.innerHTML = ''; // Clear previous previews#}
+{##}
+{#      if (input.files.length > 0) {#}
+{#        display.innerHTML = `<i class="bi bi-check-circle-fill text-success"></i> ${input.files.length} images selected.`;#}
+{##}
+{#        // Loop through files to create previews#}
+{#        Array.from(input.files).forEach(file => {#}
+{#          const reader = new FileReader();#}
+{#          reader.onload = function(e) {#}
+{#            const img = document.createElement('img');#}
+{#            img.src = e.target.result;#}
+{#            img.className = 'preview-item';#}
+{#            grid.appendChild(img);#}
+{#          }#}
+{#          reader.readAsDataURL(file);#}
+{#        });#}
+{#      } else {#}
+{#        display.innerHTML = '';#}
+{#      }#}
+{#    }#}
+{#  </script>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+
+
+
+
+
+
+
+
+{% extends 'agency/agency_home.html' %}
+{% block body %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <style>
+{#  body{#}
+{#    font-family:'DM Sans',sans-serif;#}
+{#    background:#f8f7f4;#}
+{#  }#}
+ body {
+    background: url("/media/images/pexels-enrique72-36477801.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+  .elegant-wrapper{
+    min-height:100vh;
+    padding:3rem 1.5rem;
+    background:linear-gradient(135deg, rgba(61,64,91,0.03), rgba(129,178,154,0.06));
+  }
+
+  .glass-card{
+    background:white;
+    border-radius:28px;
+    padding:40px;
+    box-shadow:0 25px 50px rgba(0,0,0,0.08);
+  }
+
+  .page-header h2{
+    font-weight:600;
+    color:#3d405b;
+    border-bottom:3px solid #81b29a;
+    display:inline-block;
+    padding-bottom:6px;
+  }
+
+  .form-label-custom{
+    font-weight:600;
+    font-size:13px;
+    text-transform:uppercase;
+    color:#3d405b;
+    margin-bottom:6px;
+  }
+
+  .input-elegant{
+    width:100%;
+    border-radius:16px;
+    padding:10px 14px;
+    border:1px solid #d6e2dd;
+  }
+  .leaflet-top,
+.leaflet-bottom {
+    z-index: 400 !important;
+}
+
+/* Navbar stays above map */
+.navbar {
+    z-index: 1000;
+}
+
+  .input-elegant:focus{
+    outline:none;
+    border-color:#81b29a;
+    box-shadow:0 0 0 3px rgba(129,178,154,0.15);
+  }
+
+  .btn-primary-smart{
+    background:#3d405b;
+    color:white;
+    padding:10px 28px;
+    border:none;
+    border-radius:40px;
+    font-weight:600;
+  }
+
+  .btn-primary-smart:hover{
+    background:#2d2f45;
+  }
+
+  .file-box{
+    border:2px dashed #cfded8;
+    padding:18px;
+    border-radius:18px;
+    background:#f9fbfa;
+  }
+</style>
+
+<div class="elegant-wrapper">
+  <div class="container">
+
+
+<div class="page-header mb-4 d-flex align-items-center gap-3">
+  <i class="bi bi-pin-map-fill fs-2 text-success"></i>
+  <h2>Add New Place · Smart Tour</h2>
+</div>
+
+<div class="glass-card">
+
+  <form action="/myapp/add_places_post/#a" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="row g-4">
+
+      <!-- LEFT COLUMN -->
+      <div class="col-md-6">
+
+        <div>
+          <label class="form-label-custom">Place Name</label>
+          <input type="text" name="names" class="input-elegant"
+          pattern="[A-Za-z\s]+"
+          oninvalid="this.setCustomValidity('Enter letters only')"
+          oninput="this.setCustomValidity('')"
+          required>
+        </div>
+
+
+
+        <div class="mt-3">
+          <label class="form-label-custom">Type</label>
+          <select name="type" class="input-elegant" required>
+            <option value="">Select type</option>
+            <option value="popular">Popular</option>
+            <option value="nonpopular">Non Popular</option>
+          </select>
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label-custom">Status</label>
+          <input type="text" name="status" class="input-elegant"
+          pattern="[A-Za-z\s]+"
+          oninvalid="this.setCustomValidity('Enter letters only')"
+          oninput="this.setCustomValidity('')"
+          required>
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label-custom">description</label>
+          <textarea required name="description" class="form-control"
+          minlength="10"
+          oninvalid="this.setCustomValidity('Description must be at least 10 characters')"
+          oninput="this.setCustomValidity('')"></textarea>
+        </div>
+
+      </div>
+
+
+      <!-- RIGHT COLUMN -->
+      <div class="col-md-6">
+
+        <div>
+          <label class="form-label-custom">Category</label>
+
+             <select name="category" class="input-elegant" required>
+            <option value="">Select type</option>
+            <option value="City">City</option>
+            <option value="Hills">Hills</option>
+            <option value="Desert">Desert</option>
+            <option value="Beach">Beach</option>
+          </select>
+
+        </div>
+
+        <!-- Main + Gallery -->
+        <div class="mt-3 file-box">
+          <label class="form-label-custom">
+            <i class="bi bi-images"></i> Main & Gallery Images
+          </label>
+          <input type="file" name="photo" accept="image/*" class="input-elegant"
+          oninvalid="this.setCustomValidity('Please upload an image')"
+          oninput="this.setCustomValidity('')"
+          required>
+          <small class="text-muted">First image becomes thumbnail</small>
+        </div>
+
+        <!-- Extra Set 1 -->
+        <div class="mt-3 file-box">
+          <label class="form-label-custom">
+            <i class="bi bi-image"></i> Additional Photos (Set 1)
+          </label>
+          <input type="file" name="photo2" accept="image/*" class="input-elegant">
+        </div>
+
+        <!-- Extra Set 2 -->
+        <div class="mt-3 file-box">
+          <label class="form-label-custom">
+            <i class="bi bi-image-fill"></i> Additional Photos (Set 2)
+          </label>
+          <input type="file" name="photo3" accept="image/*" class="input-elegant">
+        </div>
+
+      </div>
+
+    </div>
+ <div class="row mt-3">
+          <div class="col-6">
+            <label class="form-label-custom">Latitude</label>
+            <input type="text" name="lattitude" class="input-elegant"
+            pattern="^-?\d+(\.\d+)?$"
+            oninvalid="this.setCustomValidity('Enter valid latitude number')"
+            oninput="this.setCustomValidity('')"
+            required readonly>
+          </div>
+          <div class="col-6">
+            <label class="form-label-custom">Longitude</label>
+            <input type="text" name="longitude" class="input-elegant"
+            pattern="^-?\d+(\.\d+)?$"
+            oninvalid="this.setCustomValidity('Enter valid longitude number')"
+            oninput="this.setCustomValidity('')"
+            required readonly>
+          </div>
+        </div>
+   <div class="mt-3">
+  <label class="form-label-custom">Search Location</label>
+
+  <div class="input-group mb-2">
+    <input type="text" id="placeSearch" class="input-elegant" placeholder="Search place (ex: Kochi, Munnar)">
+    <button type="button" class="btn btn-success" onclick="searchLocation()">Search</button>
+  </div>
+
+  <label class="form-label-custom">Select Location From Map</label>
+  <div id="map" style="height:300px;border-radius:15px;"></div>
+</div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn-primary-smart">
+        <i class="bi bi-plus-circle me-2"></i>
+        Save Destination
+      </button>
+    </div>
+
+  </form>
+
+</div>
+
+
+  </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+var map = L.map('map').setView([10.8505, 76.2711], 7);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap'
+}).addTo(map);
+
+var marker;
+
+map.on('click', function(e){
+
+    var lat = e.latlng.lat.toFixed(6);
+    var lng = e.latlng.lng.toFixed(6);
+
+    document.querySelector("input[name='lattitude']").value = lat;
+    document.querySelector("input[name='longitude']").value = lng;
+
+    if(marker){
+        map.removeLayer(marker);
+    }
+
+    marker = L.marker([lat,lng]).addTo(map);
+
+});
+
+setTimeout(function () {
+    map.invalidateSize();
+}, 500);
+
+
+/* SEARCH FUNCTION FIX */
+window.searchLocation = function(){
+
+    var location = document.getElementById("placeSearch").value;
+
+    fetch("https://nominatim.openstreetmap.org/search?format=json&q="+location)
+    .then(response => response.json())
+    .then(data => {
+
+        if(data.length > 0){
+
+            var lat = data[0].lat;
+            var lon = data[0].lon;
+
+            map.setView([lat, lon], 13);
+
+            if(marker){
+                map.removeLayer(marker);
+            }
+
+            marker = L.marker([lat, lon]).addTo(map);
+
+            document.querySelector("input[name='lattitude']").value = lat;
+            document.querySelector("input[name='longitude']").value = lon;
+
+        }else{
+            alert("Location not found");
+        }
+
+    });
+
+}
+
+});
+
+</script>
+{% endblock %}

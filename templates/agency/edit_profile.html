@@ -1,0 +1,308 @@
+{% extends 'agency/agency_home.html' %}
+{% block body %}
+
+<style>
+    .elegant-card {
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+        border: 1px solid rgba(0,0,82,0.05);
+        overflow: hidden;
+    }
+
+    .elegant-header {
+        background: linear-gradient(135deg, #000052 0%, #1a1a7a 100%);
+        padding: 25px 30px;
+    }
+
+    .elegant-header h3 {
+        color: white;
+        font-weight: 500;
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .elegant-header p {
+        color: rgba(255,255,255,0.7);
+        margin: 5px 0 0;
+        font-size: 14px;
+    }
+
+    .form-section {
+        padding: 30px;
+    }
+
+    .form-label {
+        color: #000052;
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .form-control, .form-control:focus {
+        border: 1.5px solid #eef2f6;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 14px;
+        transition: all 0.2s;
+        box-shadow: none;
+    }
+
+    .form-control:focus {
+        border-color: #000052;
+        background: #f8faff;
+    }
+
+    .preview-container {
+        background: #f8faff;
+        border-radius: 16px;
+        padding: 20px;
+        border: 1.5px dashed #eef2f6;
+        text-align: center;
+    }
+
+    .preview-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 3px solid white;
+        box-shadow: 0 5px 15px rgba(0,0,82,0.1);
+    }
+
+    .file-input-wrapper {
+        position: relative;
+        margin-top: 15px;
+    }
+
+    .file-input-wrapper input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1.5px dashed #eef2f6;
+        border-radius: 12px;
+        background: white;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .file-input-wrapper input[type="file"]::-webkit-file-upload-button {
+        background: #000052;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .btn-update {
+        background: #000052;
+        color: white;
+        border: none;
+        padding: 14px 35px;
+        border-radius: 12px;
+        font-weight: 500;
+        font-size: 15px;
+        transition: all 0.2s;
+    }
+
+    .btn-update:hover {
+        background: #1a1a7a;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,82,0.15);
+        color: white;
+    }
+
+    .btn-cancel {
+        background: white;
+        color: #64748b;
+        border: 1.5px solid #eef2f6;
+        padding: 14px 35px;
+        border-radius: 12px;
+        font-weight: 500;
+        font-size: 15px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.2s;
+    }
+
+    .btn-cancel:hover {
+        background: #f8faff;
+        border-color: #000052;
+        color: #000052;
+    }
+
+    .image-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #000052;
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .image-label i {
+        font-size: 18px;
+    }
+
+    .alert-custom {
+        background: #f8faff;
+        border-left: 4px solid #000052;
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin-bottom: 25px;
+        color: #000052;
+    }
+</style>
+
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-custom d-flex align-items-center animate__animated animate__fadeIn" role="alert">
+                        <i class="bi bi-check-circle-fill me-2" style="color: #000052;"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" style="font-size: 12px;"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Main Card -->
+            <div class="elegant-card">
+
+                <!-- Header -->
+                <div class="elegant-header">
+                    <h3><i class="bi bi-pencil-square me-2"></i>Edit Agency Profile</h3>
+                    <p>Update your agency information below</p>
+                </div>
+
+                <!-- Form -->
+                <div class="form-section">
+                    <form action="/myapp/agency_edit_profile_post/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Basic Info Row -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="image-label">
+                                    <i class="bi bi-building"></i>
+                                    <span>Basic Information</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Agency Name</label>
+                                <input type="text" class="form-control" name="name" value="{{ data.name }}" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" name="email" value="{{ data.email }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Location Row -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="image-label">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <span>Location Details</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Place</label>
+                                <input type="text" class="form-control" name="place" value="{{ data.place }}" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Post</label>
+                                <input type="text" class="form-control" name="post" value="{{ data.post }}" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">PIN Code</label>
+                                <input type="text" class="form-control" name="pin" pattern="[0-9]{6}" value="{{ data.pin }}" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" name="phone" pattern="[0-9]{10}" value="{{ data.phone }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Images Row -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="image-label">
+                                    <i class="bi bi-images"></i>
+                                    <span>Media Files</span>
+                                </div>
+                            </div>
+
+                            <!-- Logo -->
+                            <div class="col-md-6 mb-3">
+                                <div class="preview-container">
+                                    <div class="image-label justify-content-center mb-3">
+                                        <i class="bi bi-building"></i>
+                                        <span>Company Logo</span>
+                                    </div>
+
+                                    <img src="{{ data.logo.url }}" class="preview-img mb-3" alt="Logo">
+
+                                    <div class="file-input-wrapper">
+                                        <input type="file" name="logo" accept="image/*">
+                                        <small class="text-muted d-block mt-2">Leave empty to keep current</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- License -->
+                            <div class="col-md-6 mb-3">
+                                <div class="preview-container">
+                                    <div class="image-label justify-content-center mb-3">
+                                        <i class="bi bi-file-text"></i>
+                                        <span>License Document</span>
+                                    </div>
+
+                                    <img src="{{ data.licence.url }}" class="preview-img mb-3" alt="License">
+
+                                    <div class="file-input-wrapper">
+                                        <input type="file" name="licence" accept="image/*,.pdf">
+                                        <small class="text-muted d-block mt-2">Leave empty to keep current</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-3 justify-content-center mt-4">
+                            <button type="submit" class="btn-update">
+                                <i class="bi bi-check-lg me-2"></i>Update Profile
+                            </button>
+                            <a href="/myapp/agency_profile/#a" class="btn-cancel">
+                                <i class="bi bi-x-lg me-2"></i>Cancel
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

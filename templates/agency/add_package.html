@@ -1,0 +1,299 @@
+{% extends 'agency/agency_home.html' %}
+{% block body %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Tour · Add Package</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    body {
+    background: url("/media/images/pexels-jess-vide-4783760.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+{#.package-wrapper{#}
+{#font-family:'DM Sans',sans-serif;#}
+{#background:linear-gradient(135deg,#f5f9ff 0%,#e8f0fd 100%);#}
+{#min-height:100vh;#}
+{#padding:2rem 1.5rem;#}
+{#margin:-1rem;#}
+{#}#}
+
+.glass-panel{
+background:white;
+border-radius:30px;
+box-shadow:0 30px 45px -20px #0a1929;
+padding:2.5rem;
+max-width:800px;
+margin:auto;
+}
+
+.page-header{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:2rem;
+}
+
+.page-header h2{
+font-weight:600;
+border-bottom:3px solid #1e3a5f;
+padding-bottom:5px;
+}
+
+.page-header i{
+font-size:30px;
+color:#1e3a5f;
+}
+
+.form-control,
+.form-select{
+border-radius:16px;
+border:2px solid #e2e8f0;
+padding:10px;
+}
+
+.form-control:focus,
+.form-select:focus{
+border-color:#1e3a5f;
+box-shadow:0 0 0 3px rgba(30,58,95,.15);
+}
+
+textarea.form-control{
+min-height:120px;
+}
+
+.btn-submit{
+background:linear-gradient(135deg,#0a1929,#1e3a5f);
+color:white;
+border:none;
+padding:12px;
+border-radius:40px;
+width:100%;
+font-weight:600;
+margin-top:10px;
+}
+
+.btn-submit:hover{
+background:linear-gradient(135deg,#1e3a5f,#2c4c6e);
+}
+
+.info-banner{
+background:#eef4ff;
+padding:12px 18px;
+border-radius:15px;
+margin-bottom:20px;
+display:flex;
+align-items:center;
+gap:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="package-wrapper">
+
+<div class="container">
+
+<div class="glass-panel">
+<i class="bi bi-gift-fill"></i>
+<h2>Add Package · Smart Tour</h2>
+
+
+
+
+<div class="info-banner">
+<i class="bi bi-info-circle"></i>
+<p>Create a new tour package. Fields marked * are required.</p>
+</div>
+
+<form method="POST" enctype="multipart/form-data" id="packageForm">
+
+{% csrf_token %}
+
+<!-- Package Name -->
+
+<div class="mb-4">
+
+<label class="form-label">
+<i class="bi bi-tag-fill"></i> Package Name *
+</label>
+
+<input type="text"
+name="name"
+class="form-control"
+placeholder="e.g., Summer Tour"
+pattern="[A-Za-z\s]+"
+required>
+
+</div>
+
+<!-- Place -->
+
+<div class="mb-4">
+
+<label class="form-label">
+<i class="bi bi-geo-alt-fill"></i> Select Place *
+</label>
+
+<select name="place" class="form-select" required>
+
+<option value="">-- Choose Place --</option>
+
+{% for p in places %}
+
+<option value="{{ p.id }}">{{ p.name }}</option>
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="row">
+
+<!-- Days -->
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label">
+<i class="bi bi-calendar-week-fill"></i> Number of Days *
+</label>
+
+<input type="text"
+name="noofdays"
+class="form-control"
+placeholder="Example: 3"
+pattern="[0-9]+"
+required>
+
+</div>
+
+<!-- Amount -->
+
+<div class="col-md-6 mb-4">
+
+<label class="form-label">
+<i class="bi bi-currency-dollar"></i> Amount *
+</label>
+
+<input type="text"
+name="amount"
+class="form-control"
+placeholder="Example: 500"
+pattern="[0-9]+(\.[0-9]{1,2})?"
+required>
+
+</div>
+
+</div>
+
+<!-- Photo -->
+
+<div class="mb-4">
+
+<label class="form-label">
+<i class="bi bi-image-fill"></i> Package Photo *
+</label>
+
+<input type="file"
+name="photo"
+class="form-control"
+accept="image/*"
+required>
+
+</div>
+
+<!-- Description -->
+
+<div class="mb-4">
+
+<label class="form-label">
+<i class="bi bi-file-text-fill"></i> Description *
+</label>
+
+<textarea
+name="description"
+class="form-control"
+placeholder="Describe the tour package"
+minlength="10"
+required></textarea>
+
+</div>
+
+<button type="submit" class="btn-submit">
+<i class="bi bi-plus-circle"></i> Create Package
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Validation Script -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+const name = document.querySelector("input[name='name']");
+const days = document.querySelector("input[name='noofdays']");
+const amount = document.querySelector("input[name='amount']");
+const description = document.querySelector("textarea[name='description']");
+
+name.addEventListener("invalid", function () {
+this.setCustomValidity("Enter letters only");
+});
+
+name.addEventListener("input", function () {
+this.setCustomValidity("");
+});
+
+days.addEventListener("invalid", function () {
+this.setCustomValidity("Enter numbers only");
+});
+
+days.addEventListener("input", function () {
+this.setCustomValidity("");
+});
+
+amount.addEventListener("invalid", function () {
+this.setCustomValidity("Enter valid amount");
+});
+
+amount.addEventListener("input", function () {
+this.setCustomValidity("");
+});
+
+description.addEventListener("invalid", function () {
+this.setCustomValidity("Description must be at least 10 characters");
+});
+
+description.addEventListener("input", function () {
+this.setCustomValidity("");
+});
+
+});
+
+</script>
+
+</body>
+</html>
+
+{% endblock %}

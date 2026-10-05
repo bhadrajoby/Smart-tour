@@ -1,0 +1,776 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#  <meta charset="UTF-8">#}
+{#  <title>Register</title>#}
+{#  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+{##}
+{#</head>#}
+{#<body>#}
+{#  <div class="container">#}
+{#    <h2 class="mb-4">Register</h2>#}
+{#    <form action="/myapp/register_post/" method="POST" enctype="multipart/form-data">#}
+{##}
+{#        {% if messages %}#}
+{#            {% for i in messages %}#}
+{#             {{ i.message }}#}
+{#            {% endfor %}#}
+{##}
+{#        {% endif %}#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="name" class="col-sm-4 ">Name:</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" id="name" name="name"required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{##}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="dob" class="col-sm-4 ">Place</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" id="dob" name="place"required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="email" class="col-sm-4 ">Post</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" id="email" name="post" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="phone" class="col-sm-4 ">PIN</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="number" pattern="[0-9]{10}" class="form-control" id="phone" name="pin" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="place" class="col-sm-4 ">Email</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="email" class="form-control" id="place" name="email" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="city" class="col-sm-4 ">Phone</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="number" class="form-control" id="city" name="phone"required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="state" class="col-sm-4 ">Logo</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="file" class="form-control" id="state" name="logo" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="pincode" class="col-sm-4 ">Licence</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="file" pattern="[0-9]{6}" class="form-control" id="pincode" name="licence" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="confirmPassword" class="col-sm-4 ">Username:</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="text" class="form-control" name="username" id="confirmPassword" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <div class="row mb-3">#}
+{#        <label for="password" class="col-sm-4 ">Password</label>#}
+{#        <div class="col-sm-8">#}
+{#          <input type="password" class="form-control" name="password" id="password" minlength="6" required>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{##}
+{##}
+{#      <div class="row mb-3">#}
+{#        <div class="offset-sm-4 col-sm-8">#}
+{#          <button type="submit" class="btn btn-primary">Register</button>#}
+{#        </div>#}
+{#      </div>#}
+{#    </form>#}
+{#  </div>#}
+{#  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>#}
+{#</body>#}
+{#</html>#}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tour · Register</title>
+
+    <!-- Fonts & Core Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        /* Navy Blue Theme - Matching Verify Guide & Emergency Alert */
+        :root {
+            --navy-dark: #0a1929;
+            --navy-medium: #1e3a5f;
+            --navy-light: #2c4c6e;
+            --accent-color: #81B29A;
+            --border-light: #e9ecf0;
+            --bg-gradient: linear-gradient(135deg, #f5f9ff 0%, #e8f0fd 100%);
+            --input-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--navy-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Wave Decoration */
+        .bg-wave {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-wave svg {
+            display: block;
+            width: 100%;
+            height: 120px;
+        }
+
+        /* Main Container */
+        .register-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            padding: 2rem 1rem;
+        }
+
+        /* Glass Panel Effect - Same as other pages */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(10, 25, 41, 0.15);
+            border-radius: 32px;
+            box-shadow: 0 30px 45px -20px #0a1929;
+            transition: box-shadow 0.2s;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 35px 55px -20px #0f2a40;
+        }
+
+        /* Card Header with Gradient */
+        .card-header-custom {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4c6e 100%);
+            padding: 1.8rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header-custom::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .card-header-custom h3 {
+            color: white;
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: -0.02em;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .card-header-custom i {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.3);
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            transform: rotate(10deg);
+        }
+
+        /* Card Body */
+        .card-body-custom {
+            padding: 2.5rem 2rem;
+            background: transparent;
+        }
+
+        /* Form Labels */
+        .form-label-custom {
+            font-weight: 600;
+            color: var(--navy-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-label-custom i {
+            color: var(--navy-medium);
+            font-size: 1rem;
+        }
+
+        /* Form Inputs */
+        .form-control-custom {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            color: var(--navy-dark);
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px -4px rgba(10, 25, 41, 0.1);
+        }
+
+        .form-control-custom:focus {
+            outline: none;
+            border-color: var(--navy-medium);
+            box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.15);
+            background: white;
+        }
+
+        .form-control-custom::placeholder {
+            color: #a0aec0;
+            font-size: 0.95rem;
+        }
+
+        /* File Input Styling */
+        .file-input-wrapper {
+            position: relative;
+        }
+
+        .file-input-custom {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 0.6rem 1rem;
+            width: 100%;
+            color: var(--navy-dark);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .file-input-custom:hover {
+            border-color: var(--navy-medium);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .file-input-custom::file-selector-button {
+            background: linear-gradient(135deg, #1e3a5f, #2c4c6e);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.5rem 1.2rem;
+            margin-right: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .file-input-custom::file-selector-button:hover {
+            background: linear-gradient(135deg, #2c4c6e, #1e3a5f);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px -2px #1e3a5f;
+        }
+
+        /* Input Groups for Username/Password */
+        .input-group-custom {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group-custom i {
+            position: absolute;
+            left: 1rem;
+            color: var(--navy-medium);
+            font-size: 1.1rem;
+            z-index: 10;
+        }
+
+        .input-group-custom .form-control-custom {
+            padding-left: 2.8rem;
+        }
+
+        /* Submit Button */
+        .btn-register {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4c6e 100%);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            width: 100%;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px -6px #1e3a5f;
+        }
+
+        .btn-register::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-register:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px -8px #1e3a5f;
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .btn-register i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        /* Login Link */
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .login-link p {
+            color: var(--navy-dark);
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .login-link a {
+            color: var(--navy-medium);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .login-link a:hover {
+            color: var(--navy-light);
+            border-bottom-color: var(--navy-medium);
+        }
+
+        /* Alert Messages */
+        .alert-custom {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 16px;
+            color: #b83b2a;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .alert-custom i {
+            font-size: 1.2rem;
+        }
+
+        .alert-success-custom {
+            background: rgba(27, 94, 63, 0.1);
+            border-color: rgba(27, 94, 63, 0.3);
+            color: #1b5e3f;
+        }
+
+        /* Row Spacing */
+        .row-custom {
+            margin-bottom: 1.2rem;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .card-header-custom h3 {
+                font-size: 1.8rem;
+            }
+
+            .card-body-custom {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .full-width {
+                grid-column: span 1;
+            }
+
+            .form-control-custom {
+                padding: 0.7rem 1rem;
+            }
+
+            .btn-register {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Password Strength Indicator (optional) */
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        /* Tooltip */
+        .info-tooltip {
+            color: var(--navy-medium);
+            cursor: help;
+            margin-left: 4px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Wave Decoration -->
+    <div class="bg-wave">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path fill="#1e3a5f" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+        </svg>
+    </div>
+
+    <div class="register-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+
+                    <div class="glass-card">
+                        <!-- Card Header -->
+                        <div class="card-header-custom">
+                            <h3>
+                                <i class="bi bi-person-plus-fill me-2"></i>
+                                Create Account
+                            </h3>
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body-custom">
+
+                            <!-- Alert Messages -->
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert-custom {% if message.tags == 'success' %}alert-success-custom{% endif %}">
+                                        <i class="bi bi-{% if message.tags == 'success' %}check-circle-fill{% else %}exclamation-triangle-fill{% endif %}"></i>
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <form action="/myapp/register_post/" method="POST" enctype="multipart/form-data" onsubmit="return showAlert();">
+                                {% csrf_token %}
+
+                                <div class="form-grid">
+                                    <!-- Personal Information Section -->
+                                    <div class="full-width">
+                                        <h5 class="mb-3" style="color: var(--navy-medium);">
+                                            <i class="bi bi-person-badge me-2"></i>
+                                            Personal Information
+                                        </h5>
+                                    </div>
+
+                                    <!-- Name -->
+                                    <div>
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-person"></i>
+                                            Full Name
+                                        </label>
+                                        <input type="text" class="form-control-custom" name="name"
+                                               placeholder="Enter your full name" required>
+                                    </div>
+
+                                    <!-- Place -->
+                                    <div>
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-geo-alt"></i>
+                                            Place
+                                        </label>
+                                        <input type="text" class="form-control-custom" name="place"
+                                               placeholder="Enter your city/town" required>
+                                    </div>
+
+                                    <!-- Post -->
+                                    <div>
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-mailbox"></i>
+                                            Post
+                                        </label>
+                                        <input type="text" class="form-control-custom" name="post"
+                                               placeholder="Enter post office" required>
+                                    </div>
+
+                                    <!-- PIN -->
+                                    <div>
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-upc-scan"></i>
+                                            PIN Code
+                                        </label>
+                                        <input type="number" class="form-control-custom" name="pin"
+                                               placeholder="Enter 6-digit PIN" required>
+                                    </div>
+
+                                    <!-- Contact Information Section -->
+                                    <div class="full-width mt-3">
+                                        <h5 class="mb-3" style="color: var(--navy-medium);">
+                                            <i class="bi bi-envelope-paper me-2"></i>
+                                            Contact Information
+                                        </h5>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="full-width">
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-envelope"></i>
+                                            Email Address
+                                        </label>
+                                        <input type="email" class="form-control-custom" name="email"
+                                               placeholder="your@email.com" required>
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div class="full-width">
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-telephone"></i>
+                                            Phone Number
+                                        </label>
+                                        <input type="number" class="form-control-custom" name="phone"
+                                               placeholder="Enter 10-digit mobile number" required>
+                                    </div>
+
+                                    <!-- Documents Section -->
+                                    <div class="full-width mt-3">
+                                        <h5 class="mb-3" style="color: var(--navy-medium);">
+                                            <i class="bi bi-file-earmark-text me-2"></i>
+                                            Documents
+                                        </h5>
+                                    </div>
+
+                                    <!-- Logo -->
+                                    <div>
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-image"></i>
+                                            Agency Logo
+                                            <i class="bi bi-info-circle info-tooltip" title="Upload your agency logo (JPG, PNG)"></i>
+                                        </label>
+                                        <div class="file-input-wrapper">
+                                            <input type="file" class="file-input-custom" name="logo" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Licence -->
+                                    <div>
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-file-earmark-check"></i>
+                                            License Document
+                                            <i class="bi bi-info-circle info-tooltip" title="Upload your business license (PDF, JPG)"></i>
+                                        </label>
+                                        <div class="file-input-wrapper">
+                                            <input type="file" class="file-input-custom" name="licence" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Account Credentials Section -->
+                                    <div class="full-width mt-3">
+                                        <h5 class="mb-3" style="color: var(--navy-medium);">
+                                            <i class="bi bi-shield-lock me-2"></i>
+                                            Account Credentials
+                                        </h5>
+                                    </div>
+
+                                    <!-- Username -->
+                                    <div class="full-width">
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-person-circle"></i>
+                                            Username
+                                        </label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-person"></i>
+                                            <input type="text" class="form-control-custom" name="username"
+                                                   placeholder="Choose a username" style="padding-left: 2.8rem;" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Password -->
+                                    <div class="full-width">
+                                        <label class="form-label-custom">
+                                            <i class="bi bi-key"></i>
+                                            Password
+                                            <i class="bi bi-info-circle info-tooltip" title="Minimum 6 characters"></i>
+                                        </label>
+                                        <div class="input-group-custom">
+                                            <i class="bi bi-lock"></i>
+                                            <input type="password" class="form-control-custom" name="password"
+                                                   minlength="6" placeholder="Enter password (min. 6 characters)"
+                                                   style="padding-left: 2.8rem;" required>
+                                        </div>
+                                        <div class="password-strength">
+                                            <div class="password-strength-bar" id="passwordStrength"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="mt-4">
+                                    <button type="submit" class="btn-register">
+                                        <i class="bi bi-check2-circle"></i>
+                                        Register Agency
+                                    </button>
+                                </div>
+
+                                <!-- Login Link -->
+                                <div class="login-link">
+                                    <p>
+                                        Already have an account?
+                                        <a href="/myapp/login_page/" class="ms-2">
+                                            Sign In <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Footer Note -->
+                    <div class="text-center mt-4 text-muted small">
+                        <i class="bi bi-shield-check me-1" style="color: var(--navy-medium);"></i>
+                        Secure registration · All information is encrypted
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function showAlert() {
+            alert("Registration submitted successfully! Please wait for verification.");
+            return true;
+        }
+
+        // Password strength indicator (optional)
+        document.querySelector('input[name="password"]')?.addEventListener('input', function(e) {
+            const password = e.target.value;
+            const strengthBar = document.getElementById('passwordStrength');
+            let strength = 0;
+
+            if (password.length >= 6) strength += 25;
+            if (password.match(/[a-z]+/)) strength += 25;
+            if (password.match(/[A-Z]+/)) strength += 25;
+            if (password.match(/[0-9]+/)) strength += 25;
+
+            strengthBar.style.width = strength + '%';
+
+            if (strength <= 25) {
+                strengthBar.style.background = '#dc3545';
+            } else if (strength <= 50) {
+                strengthBar.style.background = '#ffc107';
+            } else if (strength <= 75) {
+                strengthBar.style.background = '#17a2b8';
+            } else {
+                strengthBar.style.background = '#28a745';
+            }
+        });
+
+        // File input enhancement
+        document.querySelectorAll('.file-input-custom').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const fileName = this.files[0]?.name;
+                if (fileName) {
+                    this.style.borderColor = '#28a745';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

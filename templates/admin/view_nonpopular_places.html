@@ -1,0 +1,610 @@
+{% extends 'admin/admin_home.html' %}
+{% block body %}
+
+<style>
+
+
+
+body {
+    background: url("/media/images/pexels-jess-vide-4783760.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+/* Page Background - Matching admin theme */
+.admin-page {
+    background: #f4f6f9;
+    padding: 40px;
+    min-height: 100vh;
+}
+
+/* Title Styling */
+.admin-page h2 {
+    font-weight: 700;
+    color: #2f3248;
+    font-size: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.admin-page h2:after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #81B29A;
+    border-radius: 2px;
+}
+
+/* Header Section with gradient */
+.page-header {
+    background: linear-gradient(135deg, #3D405B 0%, #2f3248 100%);
+    padding: 25px 30px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(61, 64, 91, 0.2);
+}
+
+.page-header h3 {
+    margin: 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-header h3 i {
+    color: #81B29A;
+    font-size: 1.8rem;
+}
+
+/* Stats Cards */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(61, 64, 91, 0.1);
+    border-color: #81B29A;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #81B29A 0%, #6a9b84 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-icon i {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.stat-info h4 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #3D405B;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.stat-info p {
+    color: #6c757d;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Card Container */
+.admin-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    border: 1px solid #e9ecef;
+    margin-bottom: 20px;
+}
+
+/* Card Header */
+.card-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f2f5;
+}
+
+.card-header-custom h5 {
+    color: #3D405B;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-header-custom h5 i {
+    color: #81B29A;
+}
+
+.badge-custom {
+    background: #81B29A;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Table Styling */
+#placesTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+#placesTable thead th {
+    background: #3D405B;
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding: 12px 15px;
+    border: none;
+}
+
+#placesTable thead th:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+#placesTable thead th:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+#placesTable thead th i {
+    margin-right: 5px;
+    color: #81B29A;
+}
+
+#placesTable tbody tr {
+    background: #ffffff;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+#placesTable tbody tr:hover {
+    background: #f8faff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(61, 64, 91, 0.08);
+}
+
+#placesTable tbody td {
+    padding: 15px;
+    border: none;
+    border-bottom: 1px solid #f0f2f5;
+    vertical-align: middle;
+    color: #2f3248;
+    font-size: 0.95rem;
+}
+
+/* Serial Number Badge */
+.serial-badge {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: #81B29A;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Place Name */
+.place-name {
+    font-weight: 600;
+    color: #3D405B;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.place-name i {
+    color: #81B29A;
+}
+
+/* Map Button */
+.map-btn {
+    background: #81B29A;
+    color: #fff;
+    padding: 6px 15px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.map-btn i {
+    font-size: 0.8rem;
+}
+
+.map-btn:hover {
+    background: #3D405B;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(61, 64, 91, 0.2);
+}
+
+/* Category Badge */
+.category-badge {
+    background: #e9ecef;
+    color: #3D405B;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* Image */
+.place-img {
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.place-img:hover {
+    transform: scale(1.05);
+}
+
+/* User Info */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-info i {
+    color: #81B29A;
+    font-size: 1.1rem;
+}
+
+/* Back Button */
+.btn-back {
+    background: #3D405B;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-back:hover {
+    background: #2f3248;
+    color: white;
+    transform: translateX(-5px);
+}
+
+/* DataTable Customization */
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 15px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 30px;
+    padding: 8px 15px;
+    border: 1px solid #dee2e6;
+    font-size: 0.9rem;
+    width: 250px;
+    background: white;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    outline: none;
+    border-color: #81B29A;
+    box-shadow: 0 0 0 3px rgba(129, 178, 154, 0.2);
+}
+
+.dataTables_wrapper .dataTables_filter label {
+    color: #3D405B;
+    font-weight: 500;
+}
+
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 15px;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 20px;
+    border: 1px solid #dee2e6;
+    padding: 5px 20px 5px 10px;
+    background: white;
+}
+
+.dataTables_info {
+    padding-top: 15px !important;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.dataTables_paginate {
+    padding-top: 15px !important;
+}
+
+.page-item.active .page-link {
+    background-color: #3D405B !important;
+    border-color: #3D405B !important;
+    color: white !important;
+}
+
+.page-link {
+    color: #3D405B;
+    border: 1px solid #dee2e6;
+    margin: 0 3px;
+    border-radius: 20px !important;
+}
+
+.page-link:hover {
+    background-color: #81B29A;
+    color: white;
+    border-color: #81B29A;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: #81B29A;
+    opacity: 0.3;
+    margin-bottom: 15px;
+}
+
+.empty-state h5 {
+    color: #3D405B;
+    margin-bottom: 5px;
+}
+
+/* Footer Note */
+.footer-note {
+    text-align: center;
+    margin-top: 20px;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.footer-note i {
+    color: #81B29A;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-page {
+        padding: 20px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        width: 100%;
+    }
+}
+</style>
+
+<div class="admin-page">
+
+    <!-- Page Header with Gradient -->
+{#    <div class="page-header">#}
+{#        <h3>#}
+{#            <i class="bi bi-geo-alt-fill"></i>#}
+{#            Non Popular Places Management#}
+{#        </h3>#}
+
+{#    </div>#}
+
+    <!-- Stats Cards -->
+{#    <div class="stats-row">#}
+{#        <div class="stat-card">#}
+{#            <div class="stat-icon">#}
+{#                <i class="bi bi-geo-alt"></i>#}
+{#            </div>#}
+{#            <div class="stat-info">#}
+{#                <h4>{{ data|length }}</h4>#}
+{#                <p>Total Places</p>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="stat-card">#}
+{#            <div class="stat-icon">#}
+{#                <i class="bi bi-tags"></i>#}
+{#            </div>#}
+{#            <div class="stat-info">#}
+{#                <h4>{% if data %}{{ data.0.category }}{% else %}--{% endif %}</h4>#}
+{#                <p>Latest Category</p>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="stat-card">#}
+{#            <div class="stat-icon">#}
+{#                <i class="bi bi-people"></i>#}
+{#            </div>#}
+{#            <div class="stat-info">#}
+{#                <h4>{% if data %}{{ data|length }}{% else %}0{% endif %}</h4>#}
+{#                <p>Contributors</p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+    <!-- Main Card -->
+{#    <div class="admin-card">#}
+
+        <!-- Card Header -->
+        <div class="card-header-custom">
+            <h5>
+                <i class="bi bi-list-ul"></i>
+                Non Popular Places
+            </h5>
+            <span class="badge-custom">
+                <i class="bi bi-eye"></i> Viewing All
+            </span>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table id="placesTable" class="table align-middle">
+                <thead>
+                    <tr>
+                        <th><i class="bi bi-hash"></i> Sl No</th>
+                        <th><i class="bi bi-tag"></i> Name</th>
+                        <th><i class="bi bi-geo"></i> Location</th>
+                        <th><i class="bi bi-grid"></i> Category</th>
+                        <th><i class="bi bi-image"></i> Photo</th>
+                        <th><i class="bi bi-person"></i> User</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for i in data %}
+                    <tr>
+                        <td>
+                            <span class="serial-badge">{{ forloop.counter }}</span>
+                        </td>
+
+                        <td>
+                            <span class="place-name">
+                                <i class="bi bi-building"></i>
+                                {{ i.name }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <a href="http://www.google.com/maps?q={{ i.longitude }},{{ i.lattitude }}"
+                               target="_blank" class="map-btn">
+                               <i class="bi bi-map"></i> View Map
+                            </a>
+                        </td>
+
+                        <td>
+                            <span class="category-badge">
+                                <i class="bi bi-tag"></i> {{ i.category }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <img src="/media/{{ i.photo }}"
+                                 height="60" width="60"
+                                 class="place-img"
+                                 onerror="this.src='/media/default-place.jpg'">
+                        </td>
+
+                        <td>
+                            <span class="user-info">
+                                <i class="bi bi-person-circle"></i>
+                                {{ i.USER.name }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <i class="bi bi-geo-alt"></i>
+                            <h5>No Places Found</h5>
+                            <p>Non popular places will appear here once added by users</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+{#    </div>#}
+
+    <!-- Footer Note -->
+    <div class="footer-note">
+        <i class="bi bi-info-circle-fill"></i>
+        Showing {{ data|length }} non popular place{% if data|length != 1 %}s{% endif %}
+    </div>
+<a href="/myapp/admin_index/" class="btn-back">
+            <i class="bi bi-arrow-left"></i>
+            Back to Dashboard
+        </a>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#placesTable').DataTable({
+        pageLength: 8,
+        lengthMenu: [[5, 8, 15, 25, -1], [5, 8, 15, 25, "All"]],
+        language: {
+            search: "🔍 Search:",
+            lengthMenu: "Show _MENU_ entries",
+            info: "Showing _START_ to _END_ of _TOTAL_ places",
+            infoEmpty: "No places to show",
+            infoFiltered: "(filtered from _MAX_ total)",
+            emptyTable: "No places available",
+            paginate: {
+                first: '<i class="bi bi-chevron-double-left"></i>',
+                previous: '<i class="bi bi-chevron-left"></i>',
+                next: '<i class="bi bi-chevron-right"></i>',
+                last: '<i class="bi bi-chevron-double-right"></i>'
+            }
+        },
+        order: [[0, 'asc']]
+    });
+});
+</script>
+
+{% endblock %}

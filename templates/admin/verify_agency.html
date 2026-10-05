@@ -1,0 +1,958 @@
+{% extends 'admin/admin_home.html' %}
+{% block body %}
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Smart Tour · verify agencies</title>
+
+        <!-- CSS FILES -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- DataTables CSS -->
+        <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+        <style>
+
+
+            /* Smart Tour Theme - Consistent with Verify Guides */
+            :root {
+                --white-color: #ffffff;
+                --primary-color: #3D405B;
+                --secondary-color: #81B29A;
+                --section-bg-color: #f5f5f5;
+                --custom-btn-bg-color: #81B29A;
+                --custom-btn-bg-hover-color: #3D405B;
+                --dark-color: #000000;
+                --p-color: #717275;
+                --border-color: #e9eaeb;
+                --link-hover-color: #81B29A;
+                --body-font-family: 'DM Sans', sans-serif;
+                --title-font-family: 'DM Sans', sans-serif;
+            }
+body {
+    background: url("/media/images/pexels-adrien-olichon-1257089-16059666.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+{#            body {#}
+{#                font-family: 'DM Sans', sans-serif;#}
+{#                background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fd 100%);#}
+{#                color: #0a1929;#}
+{#            }#}
+
+            /* Verify Agencies Container */
+            .verify-agencies-container {
+                padding: 3rem 1.2rem;
+                background: radial-gradient(circle at 90% 20%, rgba(10, 25, 41, 0.02) 0%, rgba(21, 45, 75, 0.04) 100%);
+                min-height: 100vh;
+            }
+
+            /* glass panel with navy tint */
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.92);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(10, 25, 41, 0.15);
+                border-radius: 32px;
+                box-shadow: 0 30px 45px -20px #0a1929;
+                padding: 2rem 1.5rem 2.5rem 1.5rem;
+                transition: box-shadow 0.2s;
+            }
+
+            .glass-panel:hover {
+                box-shadow: 0 35px 55px -20px #0f2a40;
+            }
+
+            .page-header {
+                position: relative;
+                margin-bottom: 2.2rem;
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .page-header h2 {
+                font-size: 2.2rem;
+                font-weight: 600;
+                letter-spacing: -0.02em;
+                background: linear-gradient(145deg, #0a1929 0%, #1e3a5f 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                border-bottom: 3px solid #2c4c6e;
+                padding-bottom: 0.4rem;
+                margin-bottom: 0;
+            }
+
+            .page-header i {
+                font-size: 2.6rem;
+                color: #1e3a5f;
+                filter: drop-shadow(0 6px 8px rgba(10, 25, 41, 0.2));
+            }
+
+            /* wave decoration */
+            .wave-decoration {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                overflow: hidden;
+                line-height: 0;
+                opacity: 0.06;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .wave-decoration svg {
+                display: block;
+                width: 100%;
+                height: 40px;
+            }
+
+            /* ----- CLEAR COLUMN BOX TABLE ----- */
+            .table-column-box {
+                width: 100%;
+                border-collapse: collapse;
+                background: transparent;
+                font-family: 'DM Sans', sans-serif;
+            }
+
+            .table-column-box thead th {
+                background: linear-gradient(135deg, #1e3a5f 0%, #2c4c6e 100%);
+                color: white;
+                font-weight: 600;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                padding: 1rem 0.8rem;
+                border: none;
+                white-space: nowrap;
+                text-align: left;
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .table-column-box thead th:first-child {
+                border-top-left-radius: 16px;
+            }
+
+            .table-column-box thead th:last-child {
+                border-top-right-radius: 16px;
+                border-right: none;
+            }
+
+            .table-column-box thead th i {
+                margin-right: 6px;
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+            .table-column-box tbody tr {
+                background: white;
+                transition: all 0.2s;
+                border-bottom: 3px solid #f0f4f9;
+            }
+
+            .table-column-box tbody tr:hover {
+                background: #f8faff;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px -10px #1e3a5f;
+            }
+
+            .table-column-box tbody td {
+                padding: 1.2rem 0.8rem;
+                border: none;
+                border-right: 1px solid #e9ecf0;
+                color: #0a1929;
+                font-size: 0.95rem;
+                background: inherit;
+                vertical-align: middle;
+            }
+
+            .table-column-box tbody td:last-child {
+                border-right: none;
+            }
+
+            /* Data cell styling */
+            .table-column-box .coord-chip {
+                display: inline-block;
+                background: linear-gradient(135deg, #f0f4fa 0%, #e8eef5 100%);
+                border-radius: 30px;
+                padding: 0.4rem 1rem;
+                font-size: 0.85rem;
+                font-weight: 500;
+                border: 1px solid #cbd5e1;
+                color: #1e3a5f;
+            }
+
+            .table-column-box .coord-chip i {
+                margin-right: 4px;
+                color: #2c4c6e;
+            }
+
+            /* Email and phone links */
+            .table-column-box .contact-link {
+                color: #1e3a5f;
+                text-decoration: none;
+                font-weight: 500;
+                padding: 0.3rem 0.6rem;
+                background: rgba(30, 58, 95, 0.05);
+                border-radius: 20px;
+                display: inline-block;
+                transition: all 0.2s;
+            }
+
+            .table-column-box .contact-link:hover {
+                background: #1e3a5f;
+                color: white;
+            }
+
+            /* Address styling */
+            .address-block {
+                line-height: 1.5;
+            }
+
+            .address-line {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin-bottom: 4px;
+                font-size: 0.9rem;
+            }
+
+            .address-line i {
+                color: #1e3a5f;
+                width: 18px;
+                font-size: 0.9rem;
+            }
+
+            /* Status badge */
+            .status-badge-modern {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.4rem 1.2rem;
+                border-radius: 40px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.02em;
+                background: white;
+                border: 1px solid;
+                box-shadow: 0 2px 8px -4px currentColor;
+            }
+
+            .status-badge-modern i {
+                font-size: 0.6rem;
+                margin-right: 6px;
+            }
+
+            .status-accepted {
+                color: #1b5e3f;
+                border-color: #1b5e3f;
+                background: rgba(27, 94, 63, 0.05);
+            }
+
+            .status-pending {
+                color: #b86e2c;
+                border-color: #b86e2c;
+                background: rgba(184, 110, 44, 0.05);
+            }
+
+            .status-rejected {
+                color: #b83b2a;
+                border-color: #b83b2a;
+                background: rgba(184, 59, 42, 0.05);
+            }
+
+            /* Action buttons - CLEAR BOX STYLE */
+            .action-group-modern {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .action-btn-modern {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                padding: 0.5rem 1rem;
+                border-radius: 30px;
+                text-decoration: none;
+                transition: all 0.2s;
+                border: 1px solid;
+                min-width: 85px;
+                box-shadow: 0 2px 8px -4px currentColor;
+            }
+
+            .action-btn-accept-modern {
+                color: #1b5e3f;
+                border-color: #1b5e3f;
+                background: white;
+            }
+
+            .action-btn-accept-modern:hover {
+                background: #1b5e3f;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 14px -6px #1b5e3f;
+            }
+
+            .action-btn-reject-modern {
+                color: #b83b2a;
+                border-color: #b83b2a;
+                background: white;
+            }
+
+            .action-btn-reject-modern:hover {
+                background: #b83b2a;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 14px -6px #b83b2a;
+            }
+
+            /* Serial number styling */
+            .serial-number {
+                display: inline-block;
+                width: 32px;
+                height: 32px;
+                background: linear-gradient(135deg, #1e3a5f, #2c4c6e);
+                color: white;
+                border-radius: 12px;
+                text-align: center;
+                line-height: 32px;
+                font-weight: 600;
+                font-size: 0.9rem;
+                box-shadow: 0 4px 10px -4px #1e3a5f;
+            }
+
+            /* Image styling */
+            .agency-image {
+                width: 50px;
+                height: 50px;
+                border-radius: 12px;
+                object-fit: cover;
+                border: 2px solid white;
+                box-shadow: 0 4px 10px -4px #1e3a5f;
+                transition: all 0.2s;
+                cursor: pointer;
+            }
+
+            .agency-image:hover {
+                transform: scale(1.1);
+                box-shadow: 0 8px 15px -6px #1e3a5f;
+            }
+
+            .image-stack {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+            }
+
+            .image-label {
+                font-size: 0.7rem;
+                color: #64748b;
+                font-weight: 500;
+            }
+
+            /* Image Modal */
+            .image-modal {
+                display: none;
+                position: fixed;
+                z-index: 9999;
+                padding-top: 50px;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                cursor: pointer;
+            }
+
+            .modal-content {
+                margin: auto;
+                display: block;
+                max-width: 500px;
+                max-height: 500px;
+                border-radius: 20px;
+                border: 4px solid white;
+            }
+
+            .modal-close {
+                position: absolute;
+                top: 15px;
+                right: 35px;
+                color: #f1f1f1;
+                font-size: 40px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            .modal-close:hover {
+                color: #81B29A;
+            }
+
+            /* DataTables customization */
+            .dataTables_wrapper .dataTables_length,
+            .dataTables_wrapper .dataTables_filter,
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_paginate {
+                color: #0a1929 !important;
+                font-family: 'DM Sans', sans-serif;
+                margin-bottom: 1.5rem;
+                padding: 0.5rem;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                border: 2px solid #e2e8f0;
+                border-radius: 40px;
+                padding: 0.6rem 1.2rem;
+                background: white;
+                font-size: 0.95rem;
+                width: 300px;
+                transition: all 0.2s;
+            }
+
+            .dataTables_wrapper .dataTables_filter input:focus {
+                outline: none;
+                border-color: #1e3a5f;
+                box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.15);
+            }
+
+            .dataTables_wrapper .dataTables_length select {
+                border: 2px solid #e2e8f0;
+                border-radius: 30px;
+                padding: 0.4rem 2rem 0.4rem 1rem;
+                background-color: white;
+                font-family: 'DM Sans', sans-serif;
+                font-weight: 500;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                border-radius: 30px !important;
+                margin: 0 3px;
+                border: 1px solid #e2e8f0 !important;
+                background: white !important;
+                color: #0a1929 !important;
+                padding: 0.4rem 0.9rem !important;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                background: #1e3a5f !important;
+                color: white !important;
+                border-color: #1e3a5f !important;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                background: #1e3a5f !important;
+                color: white !important;
+                border-color: #1e3a5f !important;
+            }
+
+            /* Table footer count */
+            .table-footer-note-modern {
+                background: linear-gradient(135deg, white, #f8fafd);
+                border-radius: 60px;
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+                color: #0a1929;
+                backdrop-filter: blur(4px);
+                width: fit-content;
+                margin: 2rem auto 0;
+                border: 2px solid #e2e8f0;
+                box-shadow: 0 6px 14px -8px #1e3a5f;
+                font-weight: 500;
+            }
+
+            .table-footer-note-modern i {
+                color: #1e3a5f;
+                margin-right: 8px;
+            }
+
+            /* Back link */
+            .back-link-modern {
+                color: #1e3a5f;
+                text-decoration: none;
+                font-weight: 500;
+                padding: 0.5rem 1.2rem;
+                background: white;
+                border-radius: 40px;
+                border: 2px solid #e2e8f0;
+                transition: all 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .back-link-modern:hover {
+                background: #1e3a5f;
+                color: white;
+                border-color: #1e3a5f;
+            }
+
+            /* Status filter tabs */
+            .status-tabs {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 25px;
+                flex-wrap: wrap;
+            }
+
+            .status-tab {
+                padding: 10px 24px;
+                border-radius: 40px;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border: 2px solid #e2e8f0;
+                background: white;
+                color: #475569;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .status-tab i {
+                font-size: 14px;
+            }
+
+            .status-tab.active {
+                background: #1e3a5f;
+                color: white;
+                border-color: #1e3a5f;
+                box-shadow: 0 8px 15px -5px rgba(30, 58, 95, 0.3);
+            }
+
+            .status-tab.pending-tab.active {
+                background: #b86e2c;
+                border-color: #b86e2c;
+            }
+
+            .status-tab.accepted-tab.active {
+                background: #1b5e3f;
+                border-color: #1b5e3f;
+            }
+
+            .status-tab.rejected-tab.active {
+                background: #b83b2a;
+                border-color: #b83b2a;
+            }
+
+            .status-tab:hover:not(.active) {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+            }
+
+            @media (max-width: 768px) {
+                .glass-panel {
+                    padding: 1rem;
+                    overflow-x: auto;
+                }
+
+                .table-column-box {
+                    font-size: 0.85rem;
+                }
+
+                .table-column-box thead th {
+                    font-size: 0.75rem;
+                    padding: 0.8rem 0.4rem;
+                }
+
+                .status-tabs {
+                    justify-content: center;
+                }
+            }
+
+            /* Compact table adjustments */
+            .table-column-box {
+                font-size: 0.85rem;
+            }
+
+            .table-column-box td,
+            .table-column-box th {
+                padding: 0.8rem 0.6rem !important;
+                white-space: nowrap;
+            }
+
+            .table-column-box thead th {
+                font-size: 0.75rem;
+                padding: 0.8rem 0.6rem !important;
+            }
+
+            .status-badge-modern {
+                padding: 0.3rem 1rem !important;
+                font-size: 0.7rem !important;
+            }
+
+            .action-btn-modern {
+                padding: 0.3rem 0.8rem !important;
+                font-size: 0.7rem !important;
+                min-width: 70px;
+            }
+
+            .coord-chip {
+                padding: 0.2rem 0.8rem !important;
+                font-size: 0.75rem !important;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                padding: 0.4rem 1rem !important;
+                font-size: 0.85rem !important;
+                width: 250px !important;
+            }
+
+            h2 {
+                font-size: 1.8rem !important;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <!-- Verify Agencies Section - CLEAR COLUMN BOX TABLE -->
+        <div class="verify-agencies-container" id="verify-agencies">
+            <div class="container-fluid px-lg-4">
+                <!-- header -->
+                <div class="page-header">
+                    <i class="bi bi-building"></i>
+                    <h2>Verify Agencies </h2>
+                </div>
+
+                <!-- Status Filter Tabs -->
+{#                <div class="status-tabs">#}
+{#                    <div class="status-tab active" data-status="all">#}
+{#                        <i class="bi bi-list-ul"></i> All Agencies#}
+{#                    </div>#}
+{#                    <div class="status-tab pending-tab" data-status="Pending">#}
+{#                        <i class="bi bi-clock"></i> Pending#}
+{#                    </div>#}
+{#                    <div class="status-tab accepted-tab" data-status="Accepted">#}
+{#                        <i class="bi bi-check-circle"></i> Accepted#}
+{#                    </div>#}
+{#                    <div class="status-tab rejected-tab" data-status="Rejected">#}
+{#                        <i class="bi bi-x-circle"></i> Rejected#}
+{#                    </div>#}
+{#                </div>#}
+
+                <!-- main panel -->
+                <div class="glass-panel position-relative">
+                    <!-- wave decoration -->
+                    <div class="wave-decoration">
+                        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                            <path fill="#1e3a5f" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- CLEAR COLUMN BOX TABLE -->
+                    <div class="table-responsive">
+                        <table id="verifyAgencyTable" class="table-column-box" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th><i class="bi bi-hash"></i>Sl No</th>
+                                    <th><i class="bi bi-building"></i>Agency</th>
+                                    <th><i class="bi bi-pin-map"></i>Address</th>
+                                    <th><i class="bi bi-envelope"></i>Email</th>
+                                    <th><i class="bi bi-telephone"></i>Phone</th>
+                                    <th><i class="bi bi-image"></i>Logo</th>
+                                    <th><i class="bi bi-file-text"></i>Licence</th>
+                                    <th><i class="bi bi-activity"></i>Status</th>
+                                    <th><i class="bi bi-tools"></i>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in data %}
+                                <tr data-status="{{ i.status }}">
+                                    <td><span class="serial-number">{{ forloop.counter }}</span></td>
+                                    <td><strong>{{ i.name }}</strong></td>
+                                    <td>
+                                        <div class="address-block">
+                                            <div class="address-line">
+                                                <i class="bi bi-geo-alt-fill"></i> {{ i.place }}
+                                            </div>
+                                            <div class="address-line">
+                                                <i class="bi bi-mailbox"></i> {{ i.post }}
+                                            </div>
+                                            <div class="address-line">
+                                                <i class="bi bi-upc-scan"></i> PIN: {{ i.pin }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="coord-chip"><i class="bi bi-envelope-fill"></i> {{ i.email }}</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-telephone-fill"></i> {{ i.phone }}</span></td>
+                                    <td>
+                                        <div class="image-stack">
+                                            <a href="{{ i.logo.url }}">
+
+
+                                                <img src="{{ i.logo.url }}" class="agency-image agency-logo" onclick="openModal(this.src)" style="cursor: pointer;">
+                                                </a>
+                                            <span class="image-label">Logo</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="image-stack">
+                                        <a href="{{ i.licence.url }}" download>
+    <img src="{{ i.licence.url }}"
+         class="agency-image agency-licence"
+         style="cursor: pointer;">
+</a>
+{#                                            <img src="{{ i.licence.url }}" class="agency-image agency-licence" onclick="openModal(this.src)" style="cursor: pointer;">#}
+                                            <span class="image-label">Licence</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if i.status == 'Accepted' %}
+                                            <span class="status-badge-modern status-accepted">
+                                                <i class="bi bi-circle-fill"></i> {{ i.status }}
+                                            </span>
+                                        {% elif i.status == 'Pending' %}
+                                            <span class="status-badge-modern status-pending">
+                                                <i class="bi bi-circle-fill"></i> {{ i.status }}
+                                            </span>
+                                        {% elif i.status == 'Rejected' %}
+                                            <span class="status-badge-modern status-rejected">
+                                                <i class="bi bi-circle-fill"></i> {{ i.status }}
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge-modern">{{ i.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="action-group-modern">
+                                            {% if i.status == "Pending" %}
+                                                <a href="/myapp/accept_agency/{{ i.id }}" class="action-btn-modern action-btn-accept-modern" onclick="return confirm('Accept this agency?')"><i class="bi bi-check-lg"></i> Accept</a>
+                                                <a href="/myapp/reject_agency/{{ i.id }}" class="action-btn-modern action-btn-reject-modern" onclick="return confirm('Reject this agency?')"><i class="bi bi-x-lg"></i> Reject</a>
+
+                                            {% elif i.status == "Accepted" %}
+                                                <span class="status-badge-modern status-accepted mb-2" style="display: inline-block; margin-bottom: 8px !important;">
+                                                    <i class="bi bi-check-circle-fill"></i> Active
+                                                </span>
+                                                <a href="/myapp/reject_agency/{{ i.id }}" class="action-btn-modern action-btn-reject-modern" onclick="return confirm('Reject this agency?')"><i class="bi bi-slash-circle"></i> Reject</a>
+
+                                            {% elif i.status == "Rejected" %}
+                                                <span class="status-badge-modern status-rejected mb-2" style="display: inline-block; margin-bottom: 8px !important;">
+                                                    <i class="bi bi-x-circle-fill"></i> Rejected
+                                                </span>
+                                                <a href="/myapp/accept_agency/{{ i.id }}" class="action-btn-modern action-btn-accept-modern" onclick="return confirm('Accept this agency?')"><i class="bi bi-check2-circle"></i> Accept</a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center py-5">
+                                        <i class="bi bi-building" style="font-size: 3rem; color: #1e3a5f; opacity: 0.4;"></i>
+                                        <p class="mt-2 fw-light">No agency applications yet</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                <!-- Sample preview row (shown only if no data) -->
+                                {% if not data %}
+                                <tr data-status="Pending">
+                                    <td><span class="serial-number">1</span></td>
+                                    <td><strong>Wanderlust Travels</strong></td>
+                                    <td>
+                                        <div class="address-block">
+                                            <div class="address-line"><i class="bi bi-geo-alt-fill"></i> San Francisco</div>
+                                            <div class="address-line"><i class="bi bi-mailbox"></i> Downtown</div>
+                                            <div class="address-line"><i class="bi bi-upc-scan"></i> PIN: 94105</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="coord-chip"><i class="bi bi-envelope-fill"></i> info@wanderlust.com</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-telephone-fill"></i> +1 415 555 1234</span></td>
+                                    <td>
+                                        <div class="image-stack">
+                                            <img src="/media/images/sample-logo.jpg" class="agency-image" onclick="openModal(this.src)" style="cursor: pointer;">
+                                            <span class="image-label">Logo</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="image-stack">
+                                            <img src="/media/images/sample-licence.jpg" class="agency-image" onclick="openModal(this.src)" style="cursor: pointer;">
+                                            <span class="image-label">Licence</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge-modern status-pending"><i class="bi bi-circle-fill"></i> Pending</span></td>
+                                    <td>
+                                        <div class="action-group-modern">
+                                            <a href="#" class="action-btn-modern action-btn-accept-modern"><i class="bi bi-check-lg"></i> Accept</a>
+                                            <a href="#" class="action-btn-modern action-btn-reject-modern"><i class="bi bi-x-lg"></i> Reject</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-status="Accepted">
+                                    <td><span class="serial-number">2</span></td>
+                                    <td><strong>Global Explorers</strong></td>
+                                    <td>
+                                        <div class="address-block">
+                                            <div class="address-line"><i class="bi bi-geo-alt-fill"></i> New York</div>
+                                            <div class="address-line"><i class="bi bi-mailbox"></i> Manhattan</div>
+                                            <div class="address-line"><i class="bi bi-upc-scan"></i> PIN: 10001</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="coord-chip"><i class="bi bi-envelope-fill"></i> contact@globalexplorers.com</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-telephone-fill"></i> +1 212 555 7890</span></td>
+                                    <td>
+                                        <div class="image-stack">
+                                            <img src="/media/images/sample-logo2.jpg" class="agency-image" onclick="openModal(this.src)" style="cursor: pointer;">
+                                            <span class="image-label">Logo</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="image-stack">
+                                            <img src="/media/images/sample-licence2.jpg" class="agency-image" onclick="openModal(this.src)" style="cursor: pointer;">
+                                            <span class="image-label">Licence</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge-modern status-accepted"><i class="bi bi-circle-fill"></i> Accepted</span></td>
+                                    <td>
+                                        <div class="action-group-modern">
+                                            <a href="#" class="action-btn-modern action-btn-reject-modern"><i class="bi bi-slash-circle"></i> Reject</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr data-status="Rejected">
+                                    <td><span class="serial-number">3</span></td>
+                                    <td><strong>Adventure Partners</strong></td>
+                                    <td>
+                                        <div class="address-block">
+                                            <div class="address-line"><i class="bi bi-geo-alt-fill"></i> Chicago</div>
+                                            <div class="address-line"><i class="bi bi-mailbox"></i> Loop</div>
+                                            <div class="address-line"><i class="bi bi-upc-scan"></i> PIN: 60601</div>
+                                        </div>
+                                    </td>
+                                    <td><span class="coord-chip"><i class="bi bi-envelope-fill"></i> info@adventurepartners.com</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-telephone-fill"></i> +1 312 555 4567</span></td>
+                                    <td>
+                                        <div class="image-stack">
+                                            <img src="/media/images/sample-logo3.jpg" class="agency-image" onclick="openModal(this.src)" style="cursor: pointer;">
+                                            <span class="image-label">Logo</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="image-stack">
+                                            <img src="/media/images/sample-licence3.jpg" class="agency-image" onclick="openModal(this.src)" style="cursor: pointer;">
+                                            <span class="image-label">Licence</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="status-badge-modern status-rejected"><i class="bi bi-circle-fill"></i> Rejected</span></td>
+                                    <td>
+                                        <div class="action-group-modern">
+                                            <a href="#" class="action-btn-modern action-btn-accept-modern"><i class="bi bi-check2-circle"></i> Accept</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- footer count -->
+                    <div class="table-footer-note-modern">
+                        <i class="bi bi-building"></i> Total Agencies: <strong>{{ data|length|default:"3" }}</strong>
+                    </div>
+                </div> <!-- /glass-panel -->
+
+                <!-- navigation links -->
+                <div class="mt-4 d-flex justify-content-between align-items-center">
+                    <a href="/myapp/admin_index/" class="back-link-modern">
+                        <i class="bi bi-arrow-left"></i> Back to Dashboard
+                    </a>
+                    <span class="text-muted">
+                        <i class="bi bi-shield-check" style="color:#1e3a5f;"></i> Agency Verification Panel
+                    </span>
+                </div>
+            </div> <!-- /container-fluid -->
+        </div>
+
+        <!-- Image Modal -->
+        <div id="imageModal" class="image-modal" onclick="closeModal()">
+            <span class="modal-close">&times;</span>
+            <img class="modal-content" id="modalImage">
+        </div>
+
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            // Image Modal Function
+            function openModal(src) {
+                document.getElementById('imageModal').style.display = 'block';
+                document.getElementById('modalImage').src = src;
+            }
+
+            function closeModal() {
+                document.getElementById('imageModal').style.display = 'none';
+            }
+
+            $(document).ready(function () {
+                var table = $('#verifyAgencyTable').DataTable({
+                    pageLength: 10,
+                    lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "🔍 Search agencies by name, email, status...",
+                        lengthMenu: "Show _MENU_ entries",
+                        info: "Showing _START_ to _END_ of _TOTAL_ agencies",
+                        paginate: {
+                            first: '<i class="bi bi-chevron-double-left"></i>',
+                            previous: '<i class="bi bi-chevron-left"></i>',
+                            next: '<i class="bi bi-chevron-right"></i>',
+                            last: '<i class="bi bi-chevron-double-right"></i>'
+                        }
+                    },
+                    order: [[0, 'asc']],
+                    columnDefs: [
+                        { orderable: false, targets: [5, 6] } // Disable ordering on image columns
+                    ]
+                });
+
+                // Status Filter Tabs
+                $('.status-tab').on('click', function() {
+                    $('.status-tab').removeClass('active');
+                    $(this).addClass('active');
+
+                    var status = $(this).data('status');
+
+                    if(status === 'all') {
+                        table.column(7).search('').draw(); // Status column index 7
+                    } else {
+                        table.column(7).search(status).draw();
+                    }
+                });
+
+                // Close modal when clicking outside
+                $(document).on('click', function(event) {
+                    if ($(event.target).hasClass('image-modal')) {
+                        closeModal();
+                    }
+                });
+
+                // Escape key to close modal
+                $(document).on('keydown', function(e) {
+                    if (e.key === "Escape") {
+                        closeModal();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
+
+{% endblock %}

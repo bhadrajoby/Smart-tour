@@ -1,0 +1,708 @@
+{% extends 'agency/agency_home.html' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View Packages - Smart Tour</title>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Modern minimalist variables */
+        :root {
+            --primary: #2d3436;
+            --accent: #e84342;
+            --light: #f5f6fa;
+            --dark: #2d3436;
+            --gray: #636e72;
+            --border: #dfe6e9;
+            --shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 30px 50px -15px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+{#        body {#}
+{#            background: #fafbfc;#}
+{#        }#}body {
+    background: url("/media/images/") no-repeat center center fixed;
+    background-size: cover;
+}
+
+        /* Elegant header */
+        .page-header {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--dark);
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header h1 strong {
+            font-weight: 600;
+            color: var(--accent);
+            position: relative;
+        }
+
+        .page-header h1 strong::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(232, 66, 66, 0.1);
+            z-index: -1;
+        }
+
+        .page-header .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .page-header .subtitle i {
+            color: var(--accent);
+            margin-right: 8px;
+        }
+
+        /* Minimal stats bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray);
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        .stat-item i {
+            color: var(--accent);
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .stat-item span {
+            color: var(--dark);
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        /* Elegant add button */
+        .btn-add {
+            background: transparent;
+            border: 2px solid var(--dark);
+            color: var(--dark);
+            padding: 12px 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background: var(--dark);
+            color: white;
+            border-color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-add i {
+            font-size: 1.1rem;
+        }
+
+        /* View toggle - minimal */
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+            background: white;
+            padding: 5px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .view-toggle button {
+            background: transparent;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            color: var(--gray);
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-toggle button.active {
+            background: var(--dark);
+            color: white;
+        }
+
+        /* Elegant card design */
+        .package-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .package-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Minimal image treatment */
+        .package-image {
+            height: 260px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .package-card:hover .package-image::before {
+            opacity: 1;
+        }
+
+        .package-days {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            color: var(--dark);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        .package-days i {
+            color: var(--accent);
+            margin-right: 6px;
+        }
+
+        /* Content styling */
+        .package-content {
+            padding: 1.8rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .package-title {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .package-title strong {
+            font-weight: 600;
+        }
+
+        .package-location {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .package-location i {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .package-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            flex: 1;
+            font-weight: 300;
+        }
+
+        .package-price {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .package-price small {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 300;
+            margin-left: 5px;
+        }
+
+        /* Action buttons - refined */
+        .package-actions {
+            display: flex;
+            gap: 15px;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .btn-action {
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-action.delete {
+            color: var(--gray);
+        }
+
+        .btn-action.delete:hover {
+            color: var(--accent);
+        }
+
+        .btn-action.view {
+            margin-left: auto;
+            color: var(--dark);
+        }
+
+        .btn-action.view:hover {
+            color: var(--accent);
+        }
+
+        .btn-action i {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-action:hover i {
+            transform: scale(1.1);
+        }
+
+        /* List view styling */
+        .list-view .package-card {
+            flex-direction: row;
+            margin-bottom: 1.5rem;
+        }
+
+        .list-view .package-image {
+            width: 300px;
+            height: auto;
+            min-height: 250px;
+            flex-shrink: 0;
+        }
+
+        .list-view .package-content {
+            padding: 2rem;
+        }
+
+        /* Empty state - minimalist */
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: white;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: var(--gray);
+            font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        /* Modal - refined */
+        .modal-content {
+            border: none;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .modal-header {
+            border: none;
+            padding: 2rem 2rem 0;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            border: none;
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        .modal-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-close {
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            line-height: 1;
+            color: var(--gray);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .list-view .package-card {
+                flex-direction: column;
+            }
+
+            .list-view .package-image {
+                width: 100%;
+                height: 250px;
+            }
+        }
+
+        /* Loading animation */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+
+    <!-- Elegant Header -->
+    <div class="page-header">
+    <h1>
+        <strong style="color: #003366;">Packages</strong> Collection
+    </h1>
+    <p class="subtitle" style="color: #1a4b7a;">
+        <i class="fas fa-compass" style="color: #003366;"></i>
+        Curated experiences for unforgettable journeys
+    </p>
+</div>
+
+    <!-- Minimal Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <i class="fas fa-suitcase"></i>
+            Total packages <span>{{ packages|length }}</span>
+        </div>
+
+        <div class="d-flex align-items-center gap-4">
+            <div class="view-toggle">
+                <button class="active" onclick="toggleView('grid')">
+                    <i class="fas fa-th"></i> Grid
+                </button>
+                <button onclick="toggleView('list')">
+                    <i class="fas fa-list"></i> List
+                </button>
+            </div>
+
+            <a href="/myapp/add_package/#a" class="btn-add">
+                <i class="fas fa-plus"></i>
+                New Package
+            </a>
+        </div>
+    </div>
+
+    <!-- Packages Container -->
+    <div id="packages-container" class="row g-4">
+        {% for p in packages %}
+        <div class="col-lg-4 col-md-6" style="animation-delay: {{ forloop.counter0|divisibleby:3 }}s">
+            <div class="package-card">
+                <div class="package-image" style="background-image: url('{% if p.photo %}{{ p.photo.url }}{% else %}https://via.placeholder.com/600x400/f5f6fa/636e72?text=No+Image{% endif %}')">
+                    <span class="package-days">
+                        <i class="far fa-clock"></i> {{ p.noofdays }} days
+                    </span>
+                </div>
+                <div class="package-content">
+                    <h3 class="package-title">
+                        <strong>{{ p.name }}</strong>
+                    </h3>
+                    <div class="package-location">
+                        <i class="fas fa-map-pin"></i> {{ p.PLACE.name }}
+                    </div>
+                    <p class="package-description">{{ p.description|truncatechars:100 }}</p>
+                    <div class="package-price">
+                        ₹{{ p.amount }} <small>/ person</small>
+                    </div>
+                    <div class="package-actions">
+                        <a href="/myapp/delete_package/{{ p.id }}"
+                           class="btn-action delete"
+                           onclick="return confirm('Remove this package from your collection?')">
+                            <i class="fas fa-trash-alt"></i>
+                            Remove
+                        </a>
+                        <a href="#" class="btn-action view" data-bs-toggle="modal" data-bs-target="#packageModal{{ p.id }}">
+                            <i class="fas fa-eye"></i>
+                            Quick view
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Elegant Modal -->
+        <div class="modal fade" id="packageModal{{ p.id }}" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ p.name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="modal-image">
+                                    <img src="{% if p.photo %}{{ p.photo.url }}{% else %}https://via.placeholder.com/600x400/f5f6fa/636e72?text=No+Image{% endif %}"
+                                         class="img-fluid" alt="{{ p.name }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="package-location mb-3">
+                                    <i class="fas fa-map-pin"></i> {{ p.PLACE.name }}
+                                </div>
+                                <div class="package-days mb-3" style="position: static; display: inline-block;">
+                                    <i class="far fa-clock"></i> {{ p.noofdays }} days
+                                </div>
+                                <h3 class="package-price mt-3">
+                                    ₹{{ p.amount }} <small>/ person</small>
+                                </h3>
+                                <p class="package-description" style="-webkit-line-clamp: none;">
+                                    {{ p.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/myapp/delete_package/{{ p.id }}"
+                           class="btn-action delete"
+                           onclick="return confirm('Remove this package?')">
+                            <i class="fas fa-trash-alt"></i> Remove
+                        </a>
+                        <button type="button" class="btn-action view" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="empty-state">
+                <i class="fas fa-suitcase-rolling"></i>
+                <h3>No packages yet</h3>
+                <p>Begin your journey by creating your first travel package. The world is waiting to be explored.</p>
+                <a href="/myapp/add_package/#a" class="btn-add">
+                    <i class="fas fa-plus"></i>
+                    Create Your First Package
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Minimal Pagination -->
+    {% if packages.has_other_pages %}
+    <div class="d-flex justify-content-center mt-5 pt-4">
+        <nav aria-label="Package navigation">
+            <ul class="pagination" style="gap: 5px;">
+                {% if packages.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ packages.previous_page_number }}" aria-label="Previous" style="border: none; background: white; color: var(--dark); padding: 8px 15px; border-radius: 30px;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for i in packages.paginator.page_range %}
+                    {% if packages.number == i %}
+                    <li class="page-item active">
+                        <span class="page-link" style="background: var(--dark); color: white; border: none; padding: 8px 15px; border-radius: 30px;">{{ i }}</span>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ i }}" style="border: none; background: white; color: var(--gray); padding: 8px 15px; border-radius: 30px;">{{ i }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if packages.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ packages.next_page_number }}" aria-label="Next" style="border: none; background: white; color: var(--dark); padding: 8px 15px; border-radius: 30px;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+// Smooth view toggle
+function toggleView(viewType) {
+    const container = document.getElementById('packages-container');
+    const buttons = document.querySelectorAll('.view-toggle button');
+
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if ((viewType === 'grid' && btn.innerHTML.includes('Grid')) ||
+            (viewType === 'list' && btn.innerHTML.includes('List'))) {
+            btn.classList.add('active');
+        }
+    });
+
+    if (viewType === 'grid') {
+        container.classList.remove('list-view');
+        document.querySelectorAll('.col-lg-4').forEach(col => {
+            col.classList.remove('col-lg-12');
+            col.classList.add('col-lg-4');
+        });
+    } else {
+        container.classList.add('list-view');
+        document.querySelectorAll('.col-lg-4').forEach(col => {
+            col.classList.remove('col-lg-4');
+            col.classList.add('col-lg-12');
+        });
+    }
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Add loading animation simulation
+window.addEventListener('load', function() {
+    document.querySelectorAll('.package-card').forEach((card, index) => {
+        card.style.animationDelay = (index * 0.1) + 's';
+    });
+});
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock %}

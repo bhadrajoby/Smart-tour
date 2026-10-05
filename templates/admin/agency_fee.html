@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tour · Agency Feedback</title>
+
+    <!-- Fonts & Core Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <style>
+        /* Navy Blue Theme - Matching other pages */
+        :root {
+            --navy-dark: #0a1929;
+            --navy-medium: #1e3a5f;
+            --navy-light: #2c4c6e;
+            --accent-color: #81B29A;
+            --border-light: #e9ecf0;
+            --bg-gradient: linear-gradient(135deg, #f5f9ff 0%, #e8f0fd 100%);
+            --star-color: #ffc107;
+            --star-hover: #ffb300;
+        }
+
+        body {
+    background: url("/media/images/pexels-jess-vide-4783760.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+        /* Main Container */
+        .feedback-container {
+            padding: 2.5rem 1.2rem;
+            background: radial-gradient(circle at 90% 20%, rgba(10, 25, 41, 0.02) 0%, rgba(21, 45, 75, 0.04) 100%);
+            min-height: 100vh;
+        }
+
+        /* Glass Panel Effect */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(10, 25, 41, 0.15);
+            border-radius: 32px;
+            box-shadow: 0 30px 45px -20px #0a1929;
+            padding: 2rem 1.5rem 2.5rem 1.5rem;
+            transition: box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel:hover {
+            box-shadow: 0 35px 55px -20px #0f2a40;
+        }
+
+        /* Page Header */
+        .page-header {
+            position: relative;
+            margin-bottom: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .page-header h2 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, #0a1929 0%, #1e3a5f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid #2c4c6e;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0;
+        }
+
+        .page-header i {
+            font-size: 2.6rem;
+            color: #1e3a5f;
+            filter: drop-shadow(0 6px 8px rgba(10, 25, 41, 0.2));
+        }
+
+        /* Wave Decoration */
+        .wave-decoration {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wave-decoration svg {
+            display: block;
+            width: 100%;
+            height: 40px;
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 8px 20px -8px rgba(10, 25, 41, 0.15);
+            border: 1px solid rgba(30, 58, 95, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -10px #1e3a5f;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1e3a5f, #2c4c6e);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon i {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .stat-content h4 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--navy-dark);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .stat-content p {
+            color: var(--navy-medium);
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        /* CLEAR COLUMN BOX TABLE - Same as other pages */
+        .table-column-box {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .table-column-box thead th {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c4c6e 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            padding: 1rem 0.8rem;
+            border: none;
+            white-space: nowrap;
+            text-align: left;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-column-box thead th:first-child {
+            border-top-left-radius: 16px;
+        }
+
+        .table-column-box thead th:last-child {
+            border-top-right-radius: 16px;
+            border-right: none;
+        }
+
+        .table-column-box thead th i {
+            margin-right: 6px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .table-column-box tbody tr {
+            background: white;
+            transition: all 0.2s;
+            border-bottom: 3px solid #f0f4f9;
+        }
+
+        .table-column-box tbody tr:hover {
+            background: #f8faff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -10px #1e3a5f;
+        }
+
+        .table-column-box tbody td {
+            padding: 1.2rem 0.8rem;
+            border: none;
+            border-right: 1px solid #e9ecf0;
+            color: #0a1929;
+            font-size: 0.95rem;
+            background: inherit;
+            vertical-align: middle;
+        }
+
+        .table-column-box tbody td:last-child {
+            border-right: none;
+        }
+
+        /* Serial Number Styling */
+        .serial-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #1e3a5f, #2c4c6e);
+            color: white;
+            border-radius: 12px;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px -4px #1e3a5f;
+        }
+
+        /* User/Agency Info Chips */
+        .info-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8eef5 100%);
+            border-radius: 30px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid #cbd5e1;
+            color: var(--navy-dark);
+        }
+
+        .info-chip i {
+            color: var(--navy-medium);
+            font-size: 1rem;
+        }
+
+        .user-chip {
+            background: linear-gradient(135deg, #e3f0ff 0%, #d4e5fc 100%);
+            border-color: #b8d1f0;
+        }
+
+        .agency-chip {
+            background: linear-gradient(135deg, #e0f0ea 0%, #d1e8df 100%);
+            border-color: #a8d1c2;
+        }
+
+        /* Date Chip */
+        .date-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8eef5 100%);
+            border-radius: 30px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid #cbd5e1;
+            color: var(--navy-dark);
+        }
+
+        .date-chip i {
+            color: var(--navy-medium);
+        }
+
+        /* Star Rating Styling */
+        .rating-stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            background: linear-gradient(135deg, #fff9e6 0%, #fff2d6 100%);
+            border-radius: 30px;
+            padding: 0.4rem 1rem;
+            border: 1px solid #ffe4b3;
+        }
+
+        .star {
+            color: #ffc107;
+            font-size: 1.1rem;
+            margin: 0 1px;
+        }
+
+        .star.filled {
+            color: #ffc107;
+            text-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+        }
+
+        .star.half {
+            color: #ffc107;
+            position: relative;
+        }
+
+        .rating-value {
+            margin-left: 6px;
+            font-weight: 600;
+            color: var(--navy-dark);
+            font-size: 0.9rem;
+            background: rgba(255, 193, 7, 0.2);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        /* DataTables Customization */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            color: #0a1929 !important;
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 2px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 0.6rem 1.2rem;
+            background: white;
+            font-size: 0.95rem;
+            width: 300px;
+            transition: all 0.2s;
+        }
+
+        .dataTables_wrapper .dataTables_filter input:focus {
+            outline: none;
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.15);
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            padding: 0.4rem 2rem 0.4rem 1rem;
+            background-color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            border-radius: 30px !important;
+            margin: 0 3px;
+            border: 1px solid #e2e8f0 !important;
+            background: white !important;
+            color: #0a1929 !important;
+            padding: 0.4rem 0.9rem !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #1e3a5f !important;
+            color: white !important;
+            border-color: #1e3a5f !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #1e3a5f !important;
+            color: white !important;
+            border-color: #1e3a5f !important;
+        }
+
+        /* Table Footer Note */
+        .table-footer-note-modern {
+            background: linear-gradient(135deg, white, #f8fafd);
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            color: #0a1929;
+            backdrop-filter: blur(4px);
+            width: fit-content;
+            margin: 2rem auto 0;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 6px 14px -8px #1e3a5f;
+            font-weight: 500;
+        }
+
+        .table-footer-note-modern i {
+            color: #1e3a5f;
+            margin-right: 8px;
+        }
+
+        .table-footer-note-modern .rating-highlight {
+            color: #ffc107;
+            font-weight: 700;
+        }
+
+        /* Back Link */
+        .back-link-modern {
+            color: #1e3a5f;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1.2rem;
+            background: white;
+            border-radius: 40px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link-modern:hover {
+            background: #1e3a5f;
+            color: white;
+            border-color: #1e3a5f;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #1e3a5f;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: var(--navy-dark);
+            font-size: 1.1rem;
+            opacity: 0.7;
+        }
+
+        /* Compact Table */
+        .table-column-box {
+            font-size: 0.9rem;
+        }
+
+        .table-column-box td,
+        .table-column-box th {
+            padding: 0.9rem 0.7rem !important;
+        }
+
+        .serial-number {
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            font-size: 0.8rem;
+        }
+
+        .info-chip, .date-chip, .rating-stars {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        /* Average Rating Display */
+        .avg-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            border: 1px solid #ffc107;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .glass-panel {
+                padding: 1rem;
+                overflow-x: auto;
+            }
+
+            .page-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .dataTables_filter input {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="feedback-container">
+        <div class="container-fluid px-lg-4">
+            <!-- Header -->
+            <div class="page-header">
+                <i class="bi bi-chat-square-text-fill"></i>
+                <h2>Agency feedback · Reviews</h2>
+            </div>
+
+            <!-- Main Panel -->
+            <div class="glass-panel position-relative">
+                <!-- Wave Decoration -->
+                <div class="wave-decoration">
+                    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                        <path fill="#1e3a5f" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+                    </svg>
+                </div>
+
+                <!-- Stats Cards -->
+{#                <div class="stats-row">#}
+{#                    <div class="stat-card">#}
+{#                        <div class="stat-icon">#}
+{#                            <i class="bi bi-chat-dots"></i>#}
+{#                        </div>#}
+{#                        <div class="stat-content">#}
+{#                            <h4>{{ data|length|default:"0" }}</h4>#}
+{#                            <p>Total Reviews</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                    <div class="stat-card">#}
+{#                        <div class="stat-icon">#}
+{#                            <i class="bi bi-star-fill" style="color: #ffc107;"></i>#}
+{#                        </div>#}
+{#                        <div class="stat-content">#}
+{#                            <h4>#}
+{#                                {% with total=0 count=0 %}#}
+{#                                    {% for i in data %}#}
+{#                                        {% with total=total|add:i.rating %}#}
+{#                                        {% endwith %}#}
+{#                                    {% endfor %}#}
+{#                                    {% if data %}#}
+{#                                        {{ total|default:0|floatformat:1 }}#}
+{#                                    {% else %}#}
+{#                                        0.0#}
+{#                                    {% endif %}#}
+{#                                {% endwith %}#}
+{#                            </h4>#}
+{#                            <p>Average Rating</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                    <div class="stat-card">#}
+{#                        <div class="stat-icon">#}
+{#                            <i class="bi bi-building"></i>#}
+{#                        </div>#}
+{#                        <div class="stat-content">#}
+{#                            <h4>#}
+{#                                {% with agencies=0 %}#}
+{#                                    {% for i in data %}#}
+{#                                        {% with agencies=agencies|add:1 %}#}
+{#                                        {% endwith %}#}
+{#                                    {% endfor %}#}
+{#                                    {{ agencies|default:"0" }}#}
+{#                                {% endwith %}#}
+{#                            </h4>#}
+{#                            <p>Agencies Reviewed</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                    <div class="stat-card">#}
+{#                        <div class="stat-icon">#}
+{#                            <i class="bi bi-people"></i>#}
+{#                        </div>#}
+{#                        <div class="stat-content">#}
+{#                            <h4>#}
+{#                                {% with users=0 %}#}
+{#                                    {% for i in data %}#}
+{#                                        {% with users=users|add:1 %}#}
+{#                                        {% endwith %}#}
+{#                                    {% endfor %}#}
+{#                                    {{ users|default:"0" }}#}
+{#                                {% endwith %}#}
+{#                            </h4>#}
+{#                            <p>Reviewers</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+
+                <!-- Feedback Table -->
+                <div class="table-responsive">
+                    <table id="feedbackTable" class="table-column-box" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th><i class="bi bi-hash"></i>Sl No</th>
+                                <th><i class="bi bi-person-circle"></i>Username</th>
+                                <th><i class="bi bi-building"></i>Agency Name</th>
+                                <th><i class="bi bi-calendar-event"></i>Date</th>
+                                <th><i class="bi bi-star-fill"></i>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in data %}
+                            <tr>
+                                <td><span class="serial-number">{{ forloop.counter }}</span></td>
+                                <td>
+                                    <span class="info-chip user-chip">
+                                        <i class="bi bi-person-circle"></i>
+                                        {{ i.USER.name }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="info-chip agency-chip">
+                                        <i class="bi bi-building"></i>
+                                        {{ i.AGENCY.name }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="date-chip">
+                                        <i class="bi bi-calendar3"></i>
+                                        {{ i.date }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="rating-stars">
+{#                                        {% with rating=i.rating|floatformat:0 %}#}
+{#                                            {% for star in "12345"|make_list %}#}
+{#                                                {% if forloop.counter <= i.rating %}#}
+{#                                                    <i class="bi bi-star-fill star filled"></i>#}
+{#                                                {% else %}#}
+{#                                                    <i class="bi bi-star star"></i>#}
+{#                                                {% endif %}#}
+{#                                            {% endfor %}#}
+{#                                        {% endwith %}#}
+                                        <span class="rating-value">{{ i.rating }}/5</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="bi bi-chat-square-text"></i>
+                                        <p>No feedback available yet</p>
+                                        <small class="text-muted">Reviews will appear here once users submit feedback</small>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                            <!-- Sample Preview Rows (shown only if no data) -->
+                            {% if not data %}
+                            <tr>
+                                <td><span class="serial-number">1</span></td>
+                                <td>
+                                    <span class="info-chip user-chip">
+                                        <i class="bi bi-person-circle"></i>
+                                        John Smith
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="info-chip agency-chip">
+                                        <i class="bi bi-building"></i>
+                                        Mountain Explorers
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="date-chip">
+                                        <i class="bi bi-calendar3"></i>
+                                        2024-03-15
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="rating-stars">
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star star"></i>
+                                        <span class="rating-value">4/5</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="serial-number">2</span></td>
+                                <td>
+                                    <span class="info-chip user-chip">
+                                        <i class="bi bi-person-circle"></i>
+                                        Sarah Johnson
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="info-chip agency-chip">
+                                        <i class="bi bi-building"></i>
+                                        Coastal Adventures
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="date-chip">
+                                        <i class="bi bi-calendar3"></i>
+                                        2024-03-14
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="rating-stars">
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <span class="rating-value">5/5</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="serial-number">3</span></td>
+                                <td>
+                                    <span class="info-chip user-chip">
+                                        <i class="bi bi-person-circle"></i>
+                                        Michael Chen
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="info-chip agency-chip">
+                                        <i class="bi bi-building"></i>
+                                        City Tours
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="date-chip">
+                                        <i class="bi bi-calendar3"></i>
+                                        2024-03-13
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="rating-stars">
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star-fill star filled"></i>
+                                        <i class="bi bi-star star"></i>
+                                        <i class="bi bi-star star"></i>
+                                        <span class="rating-value">3/5</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer Note -->
+                <div class="table-footer-note-modern">
+                    <i class="bi bi-star-fill rating-highlight"></i>
+                    Total Reviews: <strong>{{ data|length|default:"3" }}</strong> ·
+{#                    Average Rating: <strong class="rating-highlight">#}
+{#                        {% if data %}#}
+{#                            {% with total=0 %}#}
+{#                                {% for i in data %}#}
+{#                                    {% with total=total|add:i.rating %}#}
+{#                                    {% endwith %}#}
+{#                                {% endfor %}#}
+{#                                {{ total|default:0|floatformat:1 }}/5.0#}
+{#                            {% endwith %}#}
+{#                        {% else %}#}
+{#                            4.0/5.0#}
+{#                        {% endif %}#}
+{#                    </strong>#}
+                </div>
+            </div> <!-- /glass-panel -->
+
+            <!-- Navigation Links -->
+            <div class="mt-4 d-flex justify-content-between align-items-center">
+                <a href="/myapp/admin_index/" class="back-link-modern">
+                    <i class="bi bi-arrow-left"></i> Back to Dashboard
+                </a>
+                <span class="text-muted">
+                    <i class="bi bi-shield-check" style="color:#1e3a5f;"></i>
+                    Feedback Analytics · Real-time Updates
+                </span>
+            </div>
+        </div> <!-- /container-fluid -->
+    </div> <!-- /feedback-container -->
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#feedbackTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "🔍 Search by username, agency, or rating...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ reviews",
+                    paginate: {
+                        first: '<i class="bi bi-chevron-double-left"></i>',
+                        previous: '<i class="bi bi-chevron-left"></i>',
+                        next: '<i class="bi bi-chevron-right"></i>',
+                        last: '<i class="bi bi-chevron-double-right"></i>'
+                    }
+                },
+                order: [[3, 'desc']] // Sort by date descending (newest first)
+            });
+        });
+
+        // Calculate average rating
+        function calculateAverageRating() {
+            const ratings = document.querySelectorAll('.rating-value');
+            let total = 0;
+            ratings.forEach(rating => {
+                const value = parseFloat(rating.textContent);
+                if (!isNaN(value)) total += value;
+            });
+            const avg = ratings.length ? (total / ratings.length).toFixed(1) : 0;
+            return avg;
+        }
+    </script>
+</body>
+</html>

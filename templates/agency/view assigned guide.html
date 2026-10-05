@@ -1,0 +1,198 @@
+{% extends 'agency/agency_home.html' %}
+{% block body %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Assigned Guides</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+
+body{
+font-family:'DM Sans',sans-serif;
+background:linear-gradient(135deg,#f5f9ff 0%,#e8f0fd 100%);
+}
+
+.page-wrapper{
+padding:2rem;
+}
+
+.glass-card{
+background:white;
+border-radius:25px;
+padding:35px;
+box-shadow:0 25px 45px -15px rgba(0,0,0,0.15);
+}
+
+.page-header{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:25px;
+}
+
+.page-header i{
+font-size:30px;
+color:#1e3a5f;
+}
+
+.page-header h2{
+font-weight:600;
+border-bottom:3px solid #1e3a5f;
+padding-bottom:6px;
+margin:0;
+}
+
+.table{
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.table thead{
+background:#1e3a5f;
+color:white;
+}
+
+.table td{
+vertical-align:middle;
+font-size:14px;
+}
+
+.table tbody tr{
+transition:0.3s;
+}
+
+.table tbody tr:hover{
+background:#f1f7ff;
+transform:scale(1.01);
+}
+
+.user-box{
+background:#f8fbff;
+padding:10px;
+border-radius:10px;
+}
+
+.guide-box{
+background:#f1f7ff;
+padding:10px;
+border-radius:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+<div class="glass-card">
+
+<div class="page-header">
+<i class="bi bi-person-check-fill"></i>
+<h2>Assigned Guides</h2>
+</div>
+
+<table id="registrationTable" class="table table-striped table-bordered">
+
+<thead>
+<tr>
+<th>Sl No</th>
+<th>User</th>
+<th>Guide</th>
+<th>Booking</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for i in data %}
+
+<tr>
+
+<td>{{ forloop.counter }}</td>
+
+<td>
+<div class="user-box">
+<strong><i class="bi bi-person-fill"></i> {{ i.BOOKING.USER.name }}</strong><br>
+<i class="bi bi-envelope"></i> {{ i.BOOKING.USER.email }}<br>
+<i class="bi bi-telephone"></i> {{ i.BOOKING.USER.phone }}
+</div>
+</td>
+
+<td>
+<div class="guide-box">
+<strong><i class="bi bi-person-badge-fill"></i> {{ i.GUIDE.name }}</strong><br>
+<i class="bi bi-envelope"></i> {{ i.GUIDE.email }}<br>
+<i class="bi bi-telephone"></i> {{ i.GUIDE.phone }}
+</div>
+</td>
+
+<td>
+<i class="bi bi-suitcase-lg"></i>
+{{ i.BOOKING.PAKAGE.name }}
+</td>
+
+<td>
+<i class="bi bi-calendar-event"></i>
+{{ i.date }}
+</td>
+
+<td>
+
+{% if i.status == "pending" %} <span class="badge bg-warning text-dark">Pending</span>
+
+{% elif i.status == "approved" %} <span class="badge bg-success">Approved</span>
+
+{% elif i.status == "completed" %} <span class="badge bg-primary">Completed</span>
+
+{% else %} <span class="badge bg-secondary">{{ i.status }}</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function () {
+$('#registrationTable').DataTable({
+responsive:true
+});
+});
+</script>
+
+</body>
+</html>
+
+{% endblock %}

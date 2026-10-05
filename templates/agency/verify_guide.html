@@ -1,0 +1,1468 @@
+{#{% extends 'agency/agency_home.html' %}#}
+{#{% block body %}#}
+{##}
+{##}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#  <meta charset="UTF-8">#}
+{#  <title>Verify Guide</title>#}
+{#  <!-- Bootstrap CSS -->#}
+{#  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+{#  <!-- DataTables CSS -->#}
+{#  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">#}
+{#</head>#}
+{#<body>#}
+{#  <div class="container mt-5">#}
+{#    <h2 class="mb-4">Verify Guide</h2>#}
+{#    <table id="registrationTable" class="table table-striped table-bordered">#}
+{#      <thead>#}
+{#        <tr>#}
+{#        <th>Sl No</th>#}
+{#        <th>Name</th>#}
+{#        <th>Place</th>#}
+{#        <th>Post</th>#}
+{#        <th>Pin</th>#}
+{#        <th>Email</th>#}
+{#        <th>Phone</th>#}
+{#        <th>Longitude</th>#}
+{#        <th>Latitude</th>#}
+{#        <th>Status</th>#}
+{#            <th>Action</th>#}
+{#    </tr>#}
+{#      </thead>#}
+{#      <tbody>#}
+{#        <!-- Sample Data Row -->#}
+{#        {% for i in data %}#}
+{#    <tr>#}
+{#        <td>{{ forloop.counter }}</td>#}
+{#        <td>{{ i.name }}</td>#}
+{#        <td>{{ i.place }}</td>#}
+{#        <td>{{ i.post }}</td>#}
+{#        <td>{{ i.pin }}</td>#}
+{#        <td>{{ i.email }}</td>#}
+{#        <td>{{ i.phone }}</td>#}
+{#        <td>{{ i.longitude }}</td>#}
+{#        <td>{{ i.latitude }}</td>#}
+{#        <td>{{ i.status }}</td>#}
+{#    <td>{% if i.status == 'Pending' %}#}
+{#        <a href="/myapp/agency_accept_guide/{{ i.id }}">Accept</a>#}
+{#        <a href="/myapp/agency_reject_guide/{{ i.id }}">Reject</a>#}
+{#    {% elif i.status == 'Active' %}#}
+{#        <a href="/myapp/agency_reject_guide/{{ i.id }}">Reject</a>#}
+{#            {% elif i.status == 'Blocked' %}#}
+{#        <a href="/myapp/agency_accept_guide/{{ i.id }}">Accept</a>#}
+{#        {% endif %}#}
+{#    </td>#}
+{#    </tr>#}
+{#    {% endfor %}#}
+{#        <!-- Add more rows dynamically from backend -->#}
+{#      </tbody>#}
+{#    </table>#}
+{#  </div>#}
+{##}
+{#  <!-- Scripts -->#}
+{#  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>#}
+{#  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>#}
+{#  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>#}
+{#  <script>#}
+{#    $(document).ready(function () {#}
+{#      $('#registrationTable').DataTable();#}
+{#    });#}
+{#  </script>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+{##}
+
+
+
+
+
+
+
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#  <meta charset="UTF-8">#}
+{#  <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#  <title>Smart Tour · verify guides</title>#}
+{#  <!-- Fonts & core styles -->#}
+{#  <link rel="preconnect" href="https://fonts.googleapis.com">#}
+{#  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>#}
+{#  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">#}
+{#  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+{#  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">#}
+{#  <!-- DataTables CSS -->#}
+{#  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">#}
+{#  <style>#}
+{#    /* -------------------------------------------------------#}
+{#       NAVY BLUE THEME - Sophisticated & Professional#}
+{#    ------------------------------------------------------- */#}
+{#    body {#}
+{#      font-family: 'DM Sans', sans-serif;#}
+{#      background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fd 100%);#}
+{#      color: #0a1929;#}
+{#    }#}
+{##}
+{#    .elegant-wrapper {#}
+{#      background: radial-gradient(circle at 90% 20%, rgba(10, 25, 41, 0.02) 0%, rgba(21, 45, 75, 0.04) 100%);#}
+{#      min-height: 100vh;#}
+{#      padding: 2.5rem 1.2rem;#}
+{#    }#}
+{##}
+{#    /* glass panel with navy tint */#}
+{#    .glass-panel {#}
+{#      background: rgba(255, 255, 255, 0.82);#}
+{#      backdrop-filter: blur(10px);#}
+{#      -webkit-backdrop-filter: blur(10px);#}
+{#      border: 1px solid rgba(10, 25, 41, 0.15);#}
+{#      border-radius: 32px;#}
+{#      box-shadow: 0 30px 45px -20px #0a1929;#}
+{#      padding: 2rem 1.5rem 2.5rem 1.5rem;#}
+{#      transition: box-shadow 0.2s;#}
+{#    }#}
+{##}
+{#    .glass-panel:hover {#}
+{#      box-shadow: 0 35px 55px -20px #0f2a40;#}
+{#    }#}
+{##}
+{#    .page-header {#}
+{#      position: relative;#}
+{#      margin-bottom: 2.2rem;#}
+{#      display: flex;#}
+{#      align-items: center;#}
+{#      gap: 0.8rem;#}
+{#    }#}
+{##}
+{#    .page-header h2 {#}
+{#      font-size: 2.2rem;#}
+{#      font-weight: 600;#}
+{#      letter-spacing: -0.02em;#}
+{#      background: linear-gradient(145deg, #0a1929 0%, #1e3a5f 100%);#}
+{#      -webkit-background-clip: text;#}
+{#      -webkit-text-fill-color: transparent;#}
+{#      background-clip: text;#}
+{#      border-bottom: 3px solid #2c4c6e;#}
+{#      padding-bottom: 0.4rem;#}
+{#      margin-bottom: 0;#}
+{#    }#}
+{##}
+{#    .page-header i {#}
+{#      font-size: 2.6rem;#}
+{#      color: #1e3a5f;#}
+{#      filter: drop-shadow(0 6px 8px rgba(10, 25, 41, 0.2));#}
+{#    }#}
+{##}
+{#    /* navy wave decoration */#}
+{#    .wave-decoration {#}
+{#      position: absolute;#}
+{#      bottom: 0;#}
+{#      left: 0;#}
+{#      width: 100%;#}
+{#      overflow: hidden;#}
+{#      line-height: 0;#}
+{#      opacity: 0.06;#}
+{#      pointer-events: none;#}
+{#      z-index: 0;#}
+{#    }#}
+{##}
+{#    .wave-decoration svg {#}
+{#      display: block;#}
+{#      width: 100%;#}
+{#      height: 40px;#}
+{#    }#}
+{##}
+{#    /* ----- NAVY TABLE ----- */#}
+{#    .table-elegant {#}
+{#      --bs-table-bg: transparent;#}
+{#      --bs-table-striped-bg: rgba(10, 25, 41, 0.03);#}
+{#      --bs-table-hover-bg: rgba(21, 45, 75, 0.06);#}
+{#      border-collapse: separate;#}
+{#      border-spacing: 0 6px;#}
+{#      margin-top: 0.5rem;#}
+{#    }#}
+{##}
+{#    .table-elegant thead th {#}
+{#      background: linear-gradient(135deg, rgba(10, 25, 41, 0.1) 0%, rgba(21, 45, 75, 0.08) 100%);#}
+{#      color: #0a1929;#}
+{#      font-weight: 600;#}
+{#      font-size: 0.8rem;#}
+{#      text-transform: uppercase;#}
+{#      letter-spacing: 0.04em;#}
+{#      border: none;#}
+{#      padding: 0.9rem 0.6rem;#}
+{#      backdrop-filter: blur(2px);#}
+{#      border-bottom: 2px solid rgba(21, 45, 75, 0.2);#}
+{#      white-space: nowrap;#}
+{#    }#}
+{##}
+{#    .table-elegant thead th:first-child {#}
+{#      border-top-left-radius: 20px;#}
+{#    }#}
+{#    .table-elegant thead th:last-child {#}
+{#      border-top-right-radius: 20px;#}
+{#    }#}
+{##}
+{#    .table-elegant thead th i {#}
+{#      margin-right: 4px;#}
+{#      color: #1e3a5f;#}
+{#      font-size: 0.9rem;#}
+{#    }#}
+{##}
+{#    .table-elegant tbody tr {#}
+{#      background: rgba(255, 255, 255, 0.65);#}
+{#      backdrop-filter: blur(2px);#}
+{#      border-radius: 20px;#}
+{#      transition: all 0.2s;#}
+{#      box-shadow: 0 4px 12px -8px rgba(10, 25, 41, 0.2);#}
+{#      border-left: 3px solid transparent;#}
+{#    }#}
+{##}
+{#    .table-elegant tbody tr:hover {#}
+{#      background: rgba(255, 255, 255, 0.92);#}
+{#      box-shadow: 0 12px 24px -12px #1e3a5f;#}
+{#      border-left-color: #1e3a5f;#}
+{#    }#}
+{##}
+{#    .table-elegant td {#}
+{#      padding: 1rem 0.6rem;#}
+{#      vertical-align: middle;#}
+{#      border: none;#}
+{#      color: #0a1929;#}
+{#      font-weight: 400;#}
+{#      font-size: 0.9rem;#}
+{#      white-space: nowrap;#}
+{#    }#}
+{##}
+{#    .table-elegant td:first-child {#}
+{#      border-top-left-radius: 20px;#}
+{#      border-bottom-left-radius: 20px;#}
+{#      padding-left: 1.2rem;#}
+{#    }#}
+{#    .table-elegant td:last-child {#}
+{#      border-top-right-radius: 20px;#}
+{#      border-bottom-right-radius: 20px;#}
+{#      padding-right: 1.2rem;#}
+{#    }#}
+{##}
+{#    /* status badge with navy accents */#}
+{#    .status-badge {#}
+{#      display: inline-block;#}
+{#      padding: 0.35rem 0.9rem;#}
+{#      border-radius: 40px;#}
+{#      font-size: 0.75rem;#}
+{#      font-weight: 600;#}
+{#      text-transform: uppercase;#}
+{#      letter-spacing: 0.02em;#}
+{#      background: rgba(10, 25, 41, 0.08);#}
+{#      color: #0a1929;#}
+{#      border: 1px solid rgba(10, 25, 41, 0.15);#}
+{#    }#}
+{##}
+{#    .status-badge i {#}
+{#      font-size: 0.5rem;#}
+{#      margin-right: 4px;#}
+{#      vertical-align: middle;#}
+{#    }#}
+{##}
+{#    /* action buttons - navy influenced */#}
+{#    .action-group {#}
+{#      display: flex;#}
+{#      gap: 6px;#}
+{#      flex-wrap: wrap;#}
+{#    }#}
+{#    .action-btn {#}
+{#      display: inline-flex;#}
+{#      align-items: center;#}
+{#      gap: 4px;#}
+{#      font-size: 0.8rem;#}
+{#      font-weight: 500;#}
+{#      padding: 0.3rem 0.9rem;#}
+{#      border-radius: 40px;#}
+{#      text-decoration: none;#}
+{#      transition: all 0.15s;#}
+{#      border: 1px solid transparent;#}
+{#      background: rgba(255,255,255,0.7);#}
+{#      backdrop-filter: blur(4px);#}
+{#    }#}
+{#    .action-btn-accept {#}
+{#      color: #1b5e3f;#}
+{#      border-color: rgba(27, 94, 63, 0.25);#}
+{#      background: rgba(27, 94, 63, 0.05);#}
+{#    }#}
+{#    .action-btn-accept:hover {#}
+{#      background: #1b5e3f;#}
+{#      color: white;#}
+{#      border-color: #12452e;#}
+{#      box-shadow: 0 5px 10px -5px #1b5e3f;#}
+{#    }#}
+{#    .action-btn-reject {#}
+{#      color: #8b2c1d;#}
+{#      border-color: rgba(139, 44, 29, 0.2);#}
+{#      background: rgba(139, 44, 29, 0.03);#}
+{#    }#}
+{#    .action-btn-reject:hover {#}
+{#      background: #b83b2a;#}
+{#      color: white;#}
+{#      border-color: #8b2c1d;#}
+{#      box-shadow: 0 5px 10px -5px #8b2c1d;#}
+{#    }#}
+{##}
+{#    /* DataTables navy styling */#}
+{#    .dataTables_wrapper .dataTables_length,#}
+{#    .dataTables_wrapper .dataTables_filter,#}
+{#    .dataTables_wrapper .dataTables_info,#}
+{#    .dataTables_wrapper .dataTables_paginate {#}
+{#      color: #0a1929 !important;#}
+{#      font-family: 'DM Sans', sans-serif;#}
+{#      margin-bottom: 1rem;#}
+{#    }#}
+{#    .dataTables_wrapper .dataTables_filter input {#}
+{#      border: 1px solid rgba(10, 25, 41, 0.25);#}
+{#      border-radius: 40px;#}
+{#      padding: 0.4rem 1rem;#}
+{#      background: rgba(255,255,255,0.8);#}
+{#      font-size: 0.9rem;#}
+{#    }#}
+{#    .dataTables_wrapper .dataTables_filter input:focus {#}
+{#      outline: none;#}
+{#      border-color: #1e3a5f;#}
+{#      box-shadow: 0 0 0 3px rgba(21, 45, 75, 0.15);#}
+{#    }#}
+{#    .dataTables_wrapper .dataTables_length select {#}
+{#      border: 1px solid rgba(10, 25, 41, 0.25);#}
+{#      border-radius: 30px;#}
+{#      padding: 0.25rem 1.5rem 0.25rem 0.75rem;#}
+{#      background-color: rgba(255,255,255,0.8);#}
+{#      font-family: 'DM Sans', sans-serif;#}
+{#    }#}
+{#    .dataTables_wrapper .dataTables_paginate .paginate_button {#}
+{#      border-radius: 40px !important;#}
+{#      margin: 0 2px;#}
+{#      border: 1px solid transparent !important;#}
+{#      background: rgba(255,255,255,0.6) !important;#}
+{#      color: #0a1929 !important;#}
+{#    }#}
+{#    .dataTables_wrapper .dataTables_paginate .paginate_button.current {#}
+{#      background: #1e3a5f !important;#}
+{#      color: white !important;#}
+{#      border-color: #0a1929 !important;#}
+{#    }#}
+{#    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {#}
+{#      background: rgba(21, 45, 75, 0.15) !important;#}
+{#      border-color: #1e3a5f !important;#}
+{#    }#}
+{##}
+{#    /* table footer count */#}
+{#    .table-footer-note {#}
+{#      background: rgba(255,255,255,0.6);#}
+{#      border-radius: 60px;#}
+{#      padding: 0.5rem 1.5rem;#}
+{#      font-size: 0.9rem;#}
+{#      color: #0a1929;#}
+{#      backdrop-filter: blur(4px);#}
+{#      width: fit-content;#}
+{#      margin: 1.8rem auto 0;#}
+{#      border: 1px solid rgba(10, 25, 41, 0.2);#}
+{#    }#}
+{##}
+{#    /* back link in navy */#}
+{#    .back-link {#}
+{#      color: #0a1929;#}
+{#      text-decoration: none;#}
+{#      border-bottom: 1px dashed #1e3a5f;#}
+{#      font-weight: 400;#}
+{#      transition: color 0.2s;#}
+{#    }#}
+{#    .back-link:hover {#}
+{#      color: #1e3a5f;#}
+{#      border-bottom-color: #1e3a5f;#}
+{#    }#}
+{##}
+{#    /* coordinate chips - navy */#}
+{#    .coord-chip {#}
+{#      display: inline-block;#}
+{#      background: rgba(10, 25, 41, 0.05);#}
+{#      border-radius: 20px;#}
+{#      padding: 0.15rem 0.6rem;#}
+{#      font-size: 0.8rem;#}
+{#      border: 1px solid rgba(10, 25, 41, 0.15);#}
+{#      margin: 1px 0;#}
+{#    }#}
+{##}
+{#    @media (max-width: 768px) {#}
+{#      .glass-panel {#}
+{#        padding: 1rem;#}
+{#        overflow-x: auto;#}
+{#      }#}
+{#    }#}
+{#  </style>#}
+{#</head>#}
+{#<body>#}
+{#  <div class="elegant-wrapper">#}
+{#    <div class="container-fluid px-lg-4">#}
+{#      <!-- header with navy icon -->#}
+{#      <div class="page-header">#}
+{#        <i class="bi bi-shield-shaded"></i>#}
+{#        <h2>verify guides · credentials</h2>#}
+{#      </div>#}
+{##}
+{#      <!-- main panel -->#}
+{#      <div class="glass-panel position-relative">#}
+{#        <!-- navy wave decoration -->#}
+{#        <div class="wave-decoration">#}
+{#          <svg viewBox="0 0 1440 120" preserveAspectRatio="none">#}
+{#            <path fill="#1e3a5f" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>#}
+{#          </svg>#}
+{#        </div>#}
+{##}
+{#        <!-- table with DataTables -->#}
+{#        <div class="table-responsive">#}
+{#          <table id="verifyGuideTable" class="table table-elegant align-middle mb-0" style="width:100%">#}
+{#            <thead>#}
+{#              <tr>#}
+{#                <th><i class="bi bi-hash"></i>Sl No</th>#}
+{#                <th><i class="bi bi-person"></i>Name</th>#}
+{#                <th><i class="bi bi-pin-map"></i>Place</th>#}
+{#                <th><i class="bi bi-mailbox"></i>Post</th>#}
+{#                <th><i class="bi bi-upc-scan"></i>Pin</th>#}
+{#                <th><i class="bi bi-envelope"></i>Email</th>#}
+{#                <th><i class="bi bi-telephone"></i>Phone</th>#}
+{#                <th><i class="bi bi-geo-alt"></i>Longitude</th>#}
+{#                <th><i class="bi bi-geo-alt"></i>Latitude</th>#}
+{#                <th><i class="bi bi-activity"></i>Status</th>#}
+{#                <th><i class="bi bi-tools"></i>Action</th>#}
+{#              </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#              {% for i in data %}#}
+{#              <tr>#}
+{#                <td><span class="fw-semibold" style="color:#0a1929;">{{ forloop.counter }}</span></td>#}
+{#                <td class="fw-medium">{{ i.name }}</td>#}
+{#                <td>{{ i.place }}</td>#}
+{#                <td>{{ i.post }}</td>#}
+{#                <td><span class="coord-chip">{{ i.pin }}</span></td>#}
+{#                <td><a href="mailto:{{ i.email }}" class="text-decoration-none" style="color:#1e3a5f;">{{ i.email }}</a></td>#}
+{#                <td><a href="tel:{{ i.phone }}" class="text-decoration-none" style="color:#1e3a5f;">{{ i.phone }}</a></td>#}
+{#                <td><span class="coord-chip"><i class="bi bi-arrow-right-circle me-1"></i>{{ i.longitude }}</span></td>#}
+{#                <td><span class="coord-chip"><i class="bi bi-arrow-up-circle me-1"></i>{{ i.latitude }}</span></td>#}
+{#                <td>#}
+{#                  <span class="status-badge">#}
+{#                    <i class="bi bi-circle-fill" style="color:{% if i.status == 'Active' %}#2e7d5e{% elif i.status == 'Pending' %}#b86e2c{% elif i.status == 'Blocked' %}#b83b2a{% else %}#6c7a89{% endif %};"></i>#}
+{#                    {{ i.status }}#}
+{#                  </span>#}
+{#                </td>#}
+{#                <td>#}
+{#                  <div class="action-group">#}
+{#                    {% if i.status == 'Pending' %}#}
+{#                      <a href="/myapp/agency_accept_guide/{{ i.id }}" class="action-btn action-btn-accept" onclick="return confirm('Accept this guide?')"><i class="bi bi-check-lg"></i> Accept</a>#}
+{#                      <a href="/myapp/agency_reject_guide/{{ i.id }}" class="action-btn action-btn-reject" onclick="return confirm('Reject this guide?')"><i class="bi bi-x-lg"></i> Reject</a>#}
+{#                    {% elif i.status == 'Active' %}#}
+{#                      <a href="/myapp/agency_reject_guide/{{ i.id }}" class="action-btn action-btn-reject" onclick="return confirm('Block this guide?')"><i class="bi bi-slash-circle"></i> Reject</a>#}
+{#                    {% elif i.status == 'Blocked' %}#}
+{#                      <a href="/myapp/agency_accept_guide/{{ i.id }}" class="action-btn action-btn-accept" onclick="return confirm('Activate this guide?')"><i class="bi bi-check2-circle"></i> Accept</a>#}
+{#                    {% endif %}#}
+{#                  </div>#}
+{#                </td>#}
+{#              </tr>#}
+{#              {% empty %}#}
+{#              <tr>#}
+{#                <td colspan="11" class="text-center py-5" style="background: transparent;">#}
+{#                  <i class="bi bi-people" style="font-size: 3rem; color: #1e3a5f; opacity: 0.4;"></i>#}
+{#                  <p class="mt-2 fw-light" style="color: #0a1929;">no guide applications yet</p>#}
+{#                </td>#}
+{#              </tr>#}
+{#              {% endfor %}#}
+{##}
+{#              <!-- preview row (will not show if data exists) -->#}
+{#              {% if not data %}#}
+{#              <tr>#}
+{#                <td>1</td>#}
+{#                <td>Michael Chen</td>#}
+{#                <td>San Francisco</td>#}
+{#                <td>Downtown</td>#}
+{#                <td><span class="coord-chip">94105</span></td>#}
+{#                <td><a href="#" class="text-decoration-none" style="color:#1e3a5f;">m.chen@example.com</a></td>#}
+{#                <td><a href="#" class="text-decoration-none" style="color:#1e3a5f;">+1 415 555 1234</a></td>#}
+{#                <td><span class="coord-chip">-122.419</span></td>#}
+{#                <td><span class="coord-chip">37.774</span></td>#}
+{#                <td><span class="status-badge"><i class="bi bi-circle-fill" style="color:#b86e2c;"></i> Pending</span></td>#}
+{#                <td>#}
+{#                  <div class="action-group">#}
+{#                    <a href="#" class="action-btn action-btn-accept"><i class="bi bi-check-lg"></i> Accept</a>#}
+{#                    <a href="#" class="action-btn action-btn-reject"><i class="bi bi-x-lg"></i> Reject</a>#}
+{#                  </div>#}
+{#                </td>#}
+{#              </tr>#}
+{#              {% endif %}#}
+{#            </tbody>#}
+{#          </table>#}
+{#        </div>#}
+{##}
+{#        <!-- footer count -->#}
+{#        <div class="table-footer-note">#}
+{#          <i class="bi bi-person-check me-2" style="color: #1e3a5f;"></i> total guides: <span class="fw-semibold">{{ data|length|default:"0" }}</span>#}
+{#        </div>#}
+{#      </div> <!-- /glass-panel -->#}
+{##}
+{#      <!-- navigation links -->#}
+{#      <div class="mt-4 d-flex justify-content-between align-items-center">#}
+{#        <a href="#" class="back-link">#}
+{#          <i class="bi bi-arrow-left me-1"></i> dashboard#}
+{#        </a>#}
+{#        <span class="text-muted small" style="color:#0a1929 !important;">#}
+{#          <i class="bi bi-shield-check me-1" style="color:#1e3a5f;"></i> verification panel#}
+{#        </span>#}
+{#      </div>#}
+{#    </div> <!-- /container-fluid -->#}
+{#  </div> <!-- /elegant-wrapper -->#}
+{##}
+{#  <!-- Scripts -->#}
+{#  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>#}
+{#  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>#}
+{#  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>#}
+{#  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>#}
+{#  <script>#}
+{#    $(document).ready(function () {#}
+{#      $('#verifyGuideTable').DataTable({#}
+{#        pageLength: 10,#}
+{#        lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],#}
+{#        language: {#}
+{#          search: "_INPUT_",#}
+{#          searchPlaceholder: "🔍 search guides..."#}
+{#        },#}
+{#        order: [[0, 'asc']]#}
+{#      });#}
+{#    });#}
+{#  </script>#}
+{#</body>#}
+{#</html>#}
+
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Smart Tour · verify guides</title>
+
+        <!-- CSS FILES -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- DataTables CSS -->
+        <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+        <style>
+            /* Original Tiya Golf Club styles */
+            :root {
+                --white-color: #ffffff;
+                --primary-color: #3D405B;
+                --secondary-color: #81B29A;
+                --section-bg-color: #f5f5f5;
+                --custom-btn-bg-color: #81B29A;
+                --custom-btn-bg-hover-color: #3D405B;
+                --dark-color: #000000;
+                --p-color: #717275;
+                --border-color: #e9eaeb;
+                --link-hover-color: #81B29A;
+                --body-font-family: 'DM Sans', sans-serif;
+                --title-font-family: 'DM Sans', sans-serif;
+            }
+
+            body {
+                font-family: 'DM Sans', sans-serif;
+                background: linear-gradient(135deg, #f5f9ff 0%, #e8f0fd 100%);
+                color: #0a1929;
+            }
+
+            /* Navbar customization */
+{#            .navbar {#}
+{#                background: rgba(61, 64, 91, 0.95);#}
+{#                backdrop-filter: blur(10px);#}
+{#            }#}
+{##}
+{#            .navbar-brand-text {#}
+{#                color: white;#}
+{#            }#}
+{##}
+{#            .navbar-brand-text small {#}
+{#                color: #81B29A;#}
+{#            }#}
+
+            /* Verify Guides Container */
+            .verify-guides-container {
+                padding: 3rem 1.2rem;
+                background: radial-gradient(circle at 90% 20%, rgba(10, 25, 41, 0.02) 0%, rgba(21, 45, 75, 0.04) 100%);
+                min-height: 100vh;
+            }
+
+            /* glass panel with navy tint */
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.92);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(10, 25, 41, 0.15);
+                border-radius: 32px;
+                box-shadow: 0 30px 45px -20px #0a1929;
+                padding: 2rem 1.5rem 2.5rem 1.5rem;
+                transition: box-shadow 0.2s;
+            }
+
+            .glass-panel:hover {
+                box-shadow: 0 35px 55px -20px #0f2a40;
+            }
+
+            .page-header {
+                position: relative;
+                margin-bottom: 2.2rem;
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .page-header h2 {
+                font-size: 2.2rem;
+                font-weight: 600;
+                letter-spacing: -0.02em;
+                background: linear-gradient(145deg, #0a1929 0%, #1e3a5f 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                border-bottom: 3px solid #2c4c6e;
+                padding-bottom: 0.4rem;
+                margin-bottom: 0;
+            }
+
+            .page-header i {
+                font-size: 2.6rem;
+                color: #1e3a5f;
+                filter: drop-shadow(0 6px 8px rgba(10, 25, 41, 0.2));
+            }
+
+            /* wave decoration */
+            .wave-decoration {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                overflow: hidden;
+                line-height: 0;
+                opacity: 0.06;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .wave-decoration svg {
+                display: block;
+                width: 100%;
+                height: 40px;
+            }
+
+            /* ----- CLEAR COLUMN BOX TABLE ----- */
+            .table-column-box {
+                width: 100%;
+                border-collapse: collapse;
+                background: transparent;
+                font-family: 'DM Sans', sans-serif;
+            }
+
+            .table-column-box thead th {
+                background: linear-gradient(135deg, #1e3a5f 0%, #2c4c6e 100%);
+                color: white;
+                font-weight: 600;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                padding: 1rem 0.8rem;
+                border: none;
+                white-space: nowrap;
+                text-align: left;
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .table-column-box thead th:first-child {
+                border-top-left-radius: 16px;
+            }
+
+            .table-column-box thead th:last-child {
+                border-top-right-radius: 16px;
+                border-right: none;
+            }
+
+            .table-column-box thead th i {
+                margin-right: 6px;
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+            .table-column-box tbody tr {
+                background: white;
+                transition: all 0.2s;
+                border-bottom: 3px solid #f0f4f9;
+            }
+
+            .table-column-box tbody tr:hover {
+                background: #f8faff;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px -10px #1e3a5f;
+            }
+
+            .table-column-box tbody td {
+                padding: 1.2rem 0.8rem;
+                border: none;
+                border-right: 1px solid #e9ecf0;
+                color: #0a1929;
+                font-size: 0.95rem;
+                background: inherit;
+                vertical-align: middle;
+            }
+
+            .table-column-box tbody td:last-child {
+                border-right: none;
+            }
+
+            /* Data cell styling */
+            .table-column-box .coord-chip {
+                display: inline-block;
+                background: linear-gradient(135deg, #f0f4fa 0%, #e8eef5 100%);
+                border-radius: 30px;
+                padding: 0.4rem 1rem;
+                font-size: 0.85rem;
+                font-weight: 500;
+                border: 1px solid #cbd5e1;
+                color: #1e3a5f;
+            }
+
+            .table-column-box .coord-chip i {
+                margin-right: 4px;
+                color: #2c4c6e;
+            }
+
+            /* Email and phone links */
+            .table-column-box .contact-link {
+                color: #1e3a5f;
+                text-decoration: none;
+                font-weight: 500;
+                padding: 0.3rem 0.6rem;
+                background: rgba(30, 58, 95, 0.05);
+                border-radius: 20px;
+                display: inline-block;
+                transition: all 0.2s;
+            }
+
+            .table-column-box .contact-link:hover {
+                background: #1e3a5f;
+                color: white;
+            }
+
+            /* Status badge */
+            .status-badge-modern {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.4rem 1.2rem;
+                border-radius: 40px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.02em;
+                background: white;
+                border: 1px solid;
+                box-shadow: 0 2px 8px -4px currentColor;
+            }
+
+            .status-badge-modern i {
+                font-size: 0.6rem;
+                margin-right: 6px;
+            }
+
+            .status-active {
+                color: #1b5e3f;
+                border-color: #1b5e3f;
+                background: rgba(27, 94, 63, 0.05);
+            }
+
+            .status-pending {
+                color: #b86e2c;
+                border-color: #b86e2c;
+                background: rgba(184, 110, 44, 0.05);
+            }
+
+            .status-blocked {
+                color: #b83b2a;
+                border-color: #b83b2a;
+                background: rgba(184, 59, 42, 0.05);
+            }
+
+            /* Action buttons - CLEAR BOX STYLE */
+            .action-group-modern {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .action-btn-modern {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                padding: 0.5rem 1rem;
+                border-radius: 30px;
+                text-decoration: none;
+                transition: all 0.2s;
+                border: 1px solid;
+                min-width: 85px;
+                box-shadow: 0 2px 8px -4px currentColor;
+            }
+
+            .action-btn-accept-modern {
+                color: #1b5e3f;
+                border-color: #1b5e3f;
+                background: white;
+            }
+
+            .action-btn-accept-modern:hover {
+                background: #1b5e3f;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 14px -6px #1b5e3f;
+            }
+
+            .action-btn-reject-modern {
+                color: #b83b2a;
+                border-color: #b83b2a;
+                background: white;
+            }
+
+            .action-btn-reject-modern:hover {
+                background: #b83b2a;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 14px -6px #b83b2a;
+            }
+
+            /* Serial number styling */
+            .serial-number {
+                display: inline-block;
+                width: 32px;
+                height: 32px;
+                background: linear-gradient(135deg, #1e3a5f, #2c4c6e);
+                color: white;
+                border-radius: 12px;
+                text-align: center;
+                line-height: 32px;
+                font-weight: 600;
+                font-size: 0.9rem;
+                box-shadow: 0 4px 10px -4px #1e3a5f;
+            }
+
+            /* DataTables customization */
+            .dataTables_wrapper .dataTables_length,
+            .dataTables_wrapper .dataTables_filter,
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_paginate {
+                color: #0a1929 !important;
+                font-family: 'DM Sans', sans-serif;
+                margin-bottom: 1.5rem;
+                padding: 0.5rem;
+            }
+
+            .dataTables_wrapper .dataTables_filter input {
+                border: 2px solid #e2e8f0;
+                border-radius: 40px;
+                padding: 0.6rem 1.2rem;
+                background: white;
+                font-size: 0.95rem;
+                width: 300px;
+                transition: all 0.2s;
+            }
+
+            .dataTables_wrapper .dataTables_filter input:focus {
+                outline: none;
+                border-color: #1e3a5f;
+                box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.15);
+            }
+
+            .dataTables_wrapper .dataTables_length select {
+                border: 2px solid #e2e8f0;
+                border-radius: 30px;
+                padding: 0.4rem 2rem 0.4rem 1rem;
+                background-color: white;
+                font-family: 'DM Sans', sans-serif;
+                font-weight: 500;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                border-radius: 30px !important;
+                margin: 0 3px;
+                border: 1px solid #e2e8f0 !important;
+                background: white !important;
+                color: #0a1929 !important;
+                padding: 0.4rem 0.9rem !important;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+                background: #1e3a5f !important;
+                color: white !important;
+                border-color: #1e3a5f !important;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                background: #1e3a5f !important;
+                color: white !important;
+                border-color: #1e3a5f !important;
+            }
+
+            /* Table footer count */
+            .table-footer-note-modern {
+                background: linear-gradient(135deg, white, #f8fafd);
+                border-radius: 60px;
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+                color: #0a1929;
+                backdrop-filter: blur(4px);
+                width: fit-content;
+                margin: 2rem auto 0;
+                border: 2px solid #e2e8f0;
+                box-shadow: 0 6px 14px -8px #1e3a5f;
+                font-weight: 500;
+            }
+
+            .table-footer-note-modern i {
+                color: #1e3a5f;
+                margin-right: 8px;
+            }
+
+            /* Back link */
+            .back-link-modern {
+                color: #1e3a5f;
+                text-decoration: none;
+                font-weight: 500;
+                padding: 0.5rem 1.2rem;
+                background: white;
+                border-radius: 40px;
+                border: 2px solid #e2e8f0;
+                transition: all 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .back-link-modern:hover {
+                background: #1e3a5f;
+                color: white;
+                border-color: #1e3a5f;
+            }
+
+            /* Hero section */
+{#            .hero-section {#}
+{#                background: linear-gradient(135deg, #3D405B 0%, #4a4d6e 100%);#}
+{#                min-height: auto;#}
+{#                padding: 100px 0;#}
+{#                position: relative;#}
+{#            }#}
+{##}
+{#            .hero-section h1 {#}
+{#                font-size: 3.5rem;#}
+{#                font-weight: 700;#}
+{#                margin-bottom: 1.5rem;#}
+{#            }#}
+
+            @media (max-width: 768px) {
+                .glass-panel {
+                    padding: 1rem;
+                    overflow-x: auto;
+                }
+
+                .table-column-box {
+                    font-size: 0.85rem;
+                }
+
+                .table-column-box thead th {
+                    font-size: 0.75rem;
+                    padding: 0.8rem 0.4rem;
+                }
+            }
+            /* REDUCE TABLE SIZE - JUST ADD THIS */
+.table {
+    font-size: 0.85rem;
+}
+
+.table td, .table th {
+    padding: 0.5rem 0.4rem !important;
+    white-space: nowrap;
+}
+
+.table thead th {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.4rem !important;
+}
+
+.status-badge, .badge {
+    padding: 0.2rem 0.5rem !important;
+    font-size: 0.7rem !important;
+}
+
+.action-btn, .btn-sm {
+    padding: 0.2rem 0.5rem !important;
+    font-size: 0.7rem !important;
+}
+
+.coord-chip {
+    padding: 0.15rem 0.4rem !important;
+    font-size: 0.85rem !important;
+}
+
+/* Make DataTables controls smaller */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_paginate {
+    font-size: 0.8rem !important;
+}
+
+.dataTables_filter input {
+    padding: 0.2rem 0.5rem !important;
+    font-size: 0.8rem !important;
+    width: 200px !important;
+}
+
+.dataTables_length select {
+    padding: 0.2rem 1.5rem 0.2rem 0.5rem !important;
+    font-size: 0.8rem !important;
+}
+
+/* Optional: Make table container more compact */
+.table-responsive {
+    margin-bottom: 0.5rem;
+}
+
+/* Optional: Reduce spacing between elements */
+.container, .container-fluid {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
+h2 {
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+}
+        </style>
+    </head>
+
+    <body>
+        <!-- Navigation -->
+{#        <nav class="navbar navbar-expand-lg">#}
+{#            <div class="container">#}
+{#                <a class="navbar-brand d-flex align-items-center" href="index.html">#}
+{#                    <img src="/media/images/logo.png" class="navbar-brand-image img-fluid" alt="Smart Tour">#}
+{#                    <span class="navbar-brand-text">#}
+{#                        Smart Tour#}
+{#                        <small>Travel Guide</small>#}
+{#                    </span>#}
+{#                </a>#}
+{##}
+{#                <div class="d-lg-none ms-auto me-3">#}
+{#                    <a class="btn custom-btn custom-border-btn" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Member Login</a>#}
+{#                </div>#}
+{##}
+{#                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
+{#                    <span class="navbar-toggler-icon"></span>#}
+{#                </button>#}
+{##}
+{#                <div class="collapse navbar-collapse" id="navbarNav">#}
+{#                    <ul class="navbar-nav ms-lg-auto">#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link click-scroll" href="#section_1">Home</a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link click-scroll" href="#verify-guides">Verify Guides</a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link click-scroll" href="#section_2">About</a>#}
+{#                        </li>#}
+{#                    </ul>#}
+{##}
+{#                    <div class="d-none d-lg-block ms-lg-3">#}
+{#                        <a class="btn custom-btn custom-border-btn" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Member Login</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </nav>#}
+
+        <!-- Login Offcanvas -->
+        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Member Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+
+            <div class="offcanvas-body d-flex flex-column">
+                <form class="custom-form member-login-form" action="/myapp/login_post/" method="POST" role="form">
+                    {% csrf_token %}
+                    <div class="member-login-form-body">
+                        <div class="mb-4">
+                            <label class="form-label mb-2" for="member-login-number">Membership No.</label>
+                            <input type="text" id="member-login-number" class="form-control" name="username" placeholder="11002560" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label mb-2" for="member-login-password">Password</label>
+                            <input type="password" name="password" pattern="[0-9a-zA-Z]{4,10}" class="form-control" placeholder="Password" required>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Remember me
+                            </label>
+                        </div>
+
+                        <div class="col-lg-5 col-md-7 col-8 mx-auto">
+                            <button type="submit" class="form-control">Login</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="mt-auto mb-5">
+                    <p>
+                        <strong class="text-white me-3">Any Questions?</strong>
+                        <a href="tel: 010-020-0340" class="contact-link">010-020-0340</a>
+                    </p>
+                </div>
+            </div>
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3D405B" fill-opacity="1" d="M0,224L34.3,192C68.6,160,137,96,206,90.7C274.3,85,343,139,411,144C480,149,549,107,617,122.7C685.7,139,754,213,823,240C891.4,267,960,245,1029,224C1097.1,203,1166,181,1234,160C1302.9,139,1371,117,1406,106.7L1440,96L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>
+        </div>
+
+        <!-- Hero Section -->
+{#        <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">#}
+{#            <div class="section-overlay"></div>#}
+{#            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3D405B" fill-opacity="1" d="M0,224L34.3,192C68.6,160,137,96,206,90.7C274.3,85,343,139,411,144C480,149,549,107,617,122.7C685.7,139,754,213,823,240C891.4,267,960,245,1029,224C1097.1,203,1166,181,1234,160C1302.9,139,1371,117,1406,106.7L1440,96L1440,0L1405.7,0C1371.4,0,1303,0,1234,0C1165.7,0,1097,0,1029,0C960,0,891,0,823,0C754.3,0,686,0,617,0C548.6,0,480,0,411,0C342.9,0,274,0,206,0C137.1,0,69,0,34,0L0,0Z"></path></svg>#}
+{##}
+{#            <div class="container">#}
+{#                <div class="row">#}
+{#                    <div class="col-lg-12 col-12 text-center">#}
+{#                        <h1 class="text-white">Welcome to Smart Tour</h1>#}
+{#                        <p class="text-white-50 fs-5 mb-4">Your trusted platform for verified travel guides</p>#}
+{#                        <div class="custom-btn-group mt-4">#}
+{#                            <a href="#verify-guides" class="btn custom-btn smoothscroll me-3">Verify Guides</a>#}
+{#                            <a href="#section_2" class="link smoothscroll text-white">Learn More</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffffff" fill-opacity="1" d="M0,224L34.3,192C68.6,160,137,96,206,90.7C274.3,85,343,139,411,144C480,149,549,107,617,122.7C685.7,139,754,213,823,240C891.4,267,960,245,1029,224C1097.1,203,1166,181,1234,160C1302.9,139,1371,117,1406,106.7L1440,96L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>#}
+{#        </section>#}
+
+        <!-- Verify Guides Section - CLEAR COLUMN BOX TABLE -->
+        <section class="verify-guides-container" id="verify-guides">
+            <div class="container-fluid px-lg-4">
+                <!-- header -->
+                <div class="page-header">
+                    <i class="bi bi-shield-shaded"></i>
+                    <h2>verify guides · credentials</h2>
+                </div>
+
+                <!-- main panel -->
+                <div class="glass-panel position-relative">
+                    <!-- wave decoration -->
+                    <div class="wave-decoration">
+                        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                            <path fill="#1e3a5f" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,48C960,53,1056,75,1152,80C1248,85,1344,75,1392,69.3L1440,64L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+                        </svg>
+                    </div>
+
+                    <!-- CLEAR COLUMN BOX TABLE -->
+                    <div class="table-responsive">
+                        <table id="verifyGuideTable" class="table-column-box" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th><i class="bi bi-hash"></i>Sl No</th>
+                                    <th><i class="bi bi-person"></i>Name</th>
+                                    <th><i class="bi bi-pin-map"></i>Place</th>
+                                    <th><i class="bi bi-mailbox"></i>Post</th>
+                                    <th><i class="bi bi-upc-scan"></i>Pin</th>
+                                    <th><i class="bi bi-envelope"></i>Email</th>
+                                    <th><i class="bi bi-telephone"></i>Phone</th>
+                                    <th><i class="bi bi-geo-alt"></i>Longitude</th>
+                                    <th><i class="bi bi-geo-alt"></i>Latitude</th>
+                                    <th><i class="bi bi-activity"></i>Status</th>
+                                    <th><i class="bi bi-tools"></i>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in data %}
+                                <tr>
+                                    <td><span class="serial-number">{{ forloop.counter }}</span></td>
+                                    <td><strong>{{ i.name }}</strong></td>
+
+
+                                    <td><span class="coord-chip"><i class="bi bi-place"></i> {{ i.place }}</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-post"></i> {{ i.post }}</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-pin"></i> {{ i.pin }}</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-email"></i>{{ i.email }}</span> </td>
+                                    <td><span class="coord-chip"><i class="bi bi-contact-link"></i>{{ i.phone }}</span> </td>
+
+                                    <td><span class="coord-chip"><i class="bi bi-arrow-right"></i> {{ i.longitude }}</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-arrow-up"></i> {{ i.latitude }}</span></td>
+                                    <td>
+                                        {% if i.status == 'Active' %}
+                                            <span class="status-badge-modern status-active">
+                                                <i class="bi bi-circle-fill"></i> {{ i.status }}
+                                            </span>
+                                        {% elif i.status == 'Pending' %}
+                                            <span class="status-badge-modern status-pending">
+                                                <i class="bi bi-circle-fill"></i> {{ i.status }}
+                                            </span>
+                                        {% elif i.status == 'Blocked' %}
+                                            <span class="status-badge-modern status-blocked">
+                                                <i class="bi bi-circle-fill"></i> {{ i.status }}
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge-modern">{{ i.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="action-group-modern">
+                                            {% if i.status == 'Pending' %}
+                                                <a href="/myapp/agency_accept_guide/{{ i.id }}" class="action-btn-modern action-btn-accept-modern" onclick="return confirm('Accept this guide?')"><i class="bi bi-check-lg"></i> Accept</a>
+                                                <a href="/myapp/agency_reject_guide/{{ i.id }}" class="action-btn-modern action-btn-reject-modern" onclick="return confirm('Reject this guide?')"><i class="bi bi-x-lg"></i> Reject</a>
+                                            {% elif i.status == 'Active' %}
+                                                <a href="/myapp/agency_reject_guide/{{ i.id }}" class="action-btn-modern action-btn-reject-modern" onclick="return confirm('Block this guide?')"><i class="bi bi-slash-circle"></i> Reject</a>
+                                            {% elif i.status == 'Blocked' %}
+                                                <a href="/myapp/agency_accept_guide/{{ i.id }}" class="action-btn-modern action-btn-accept-modern" onclick="return confirm('Activate this guide?')"><i class="bi bi-check2-circle"></i> Accept</a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="11" class="text-center py-5">
+                                        <i class="bi bi-people" style="font-size: 3rem; color: #1e3a5f; opacity: 0.4;"></i>
+                                        <p class="mt-2 fw-light">No guide applications yet</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                                <!-- Sample preview row -->
+                                {% if not data %}
+                                <tr>
+                                    <td><span class="serial-number">1</span></td>
+                                    <td><strong>Michael Chen</strong></td>
+                                    <td>San Francisco</td>
+                                    <td>Downtown</td>
+                                    <td><span class="coord-chip"><i class="bi bi-geo-fill"></i> 94105</span></td>
+                                    <td><a href="#" class="contact-link"><i class="bi bi-envelope-fill"></i> m.chen@...</a></td>
+                                    <td><a href="#" class="contact-link"><i class="bi bi-telephone-fill"></i> +1 415 555 1234</a></td>
+                                    <td><span class="coord-chip"><i class="bi bi-arrow-right"></i> -122.419</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-arrow-up"></i> 37.774</span></td>
+                                    <td><span class="status-badge-modern status-pending"><i class="bi bi-circle-fill"></i> Pending</span></td>
+                                    <td>
+                                        <div class="action-group-modern">
+                                            <a href="#" class="action-btn-modern action-btn-accept-modern"><i class="bi bi-check-lg"></i> Accept</a>
+                                            <a href="#" class="action-btn-modern action-btn-reject-modern"><i class="bi bi-x-lg"></i> Reject</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="serial-number">2</span></td>
+                                    <td><strong>Sarah Johnson</strong></td>
+                                    <td>New York</td>
+                                    <td>Manhattan</td>
+                                    <td><span class="coord-chip"><i class="bi bi-geo-fill"></i> 10001</span></td>
+                                    <td><a href="#" class="contact-link"><i class="bi bi-envelope-fill"></i> s.johnson@...</a></td>
+                                    <td><a href="#" class="contact-link"><i class="bi bi-telephone-fill"></i> +1 212 555 7890</a></td>
+                                    <td><span class="coord-chip"><i class="bi bi-arrow-right"></i> -74.006</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-arrow-up"></i> 40.712</span></td>
+                                    <td><span class="status-badge-modern status-active"><i class="bi bi-circle-fill"></i> Active</span></td>
+                                    <td>
+                                        <div class="action-group-modern">
+                                            <a href="#" class="action-btn-modern action-btn-reject-modern"><i class="bi bi-slash-circle"></i> Reject</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="serial-number">3</span></td>
+                                    <td><strong>Robert Williams</strong></td>
+                                    <td>Chicago</td>
+                                    <td>Loop</td>
+                                    <td><span class="coord-chip"><i class="bi bi-geo-fill"></i> 60601</span></td>
+                                    <td><a href="#" class="contact-link"><i class="bi bi-envelope-fill"></i> r.williams@...</a></td>
+                                    <td><a href="#" class="contact-link"><i class="bi bi-telephone-fill"></i> +1 312 555 4567</a></td>
+                                    <td><span class="coord-chip"><i class="bi bi-arrow-right"></i> -87.629</span></td>
+                                    <td><span class="coord-chip"><i class="bi bi-arrow-up"></i> 41.878</span></td>
+                                    <td><span class="status-badge-modern status-blocked"><i class="bi bi-circle-fill"></i> Blocked</span></td>
+                                    <td>
+                                        <div class="action-group-modern">
+                                            <a href="#" class="action-btn-modern action-btn-accept-modern"><i class="bi bi-check2-circle"></i> Accept</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- footer count -->
+                    <div class="table-footer-note-modern">
+                        <i class="bi bi-person-check"></i> Total Guides: <strong>{{ data|length|default:"3" }}</strong>
+                    </div>
+                </div> <!-- /glass-panel -->
+
+                <!-- navigation links -->
+                <div class="mt-4 d-flex justify-content-between align-items-center">
+                   <a href="/myapp/agency_home/" class="back-link-modern">
+                        <i class="bi bi-arrow-left"></i> Back to Dashboard
+                    </a>
+                    <span class="text-muted">
+                        <i class="bi bi-shield-check" style="color:#1e3a5f;"></i> Verification Panel
+                    </span>
+                </div>
+            </div> <!-- /container-fluid -->
+        </section>
+
+{#        <!-- About Section -->#}
+{#        <section class="about-section section-padding" id="section_2">#}
+{#            <div class="container">#}
+{#                <div class="row">#}
+{#                    <div class="col-lg-12 col-12 text-center">#}
+{#                        <h2 class="mb-lg-5 mb-4">About Smart Tour</h2>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-lg-5 col-12 me-auto mb-4 mb-lg-0">#}
+{#                        <h3 class="mb-3">Our Story</h3>#}
+{#                        <p><strong>Since 2024</strong>, Smart Tour is your trusted companion for authentic travel experiences. We connect travelers with verified local guides who provide unique insights and memorable journeys.</p>#}
+{#                        <p>Our platform ensures all guides are thoroughly vetted and credentialed, giving you peace of mind as you explore new destinations.</p>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0 mb-md-0">#}
+{#                        <div class="member-block">#}
+{#                            <div class="member-block-image-wrap">#}
+{#                                <img src="/media/images/members/portrait-young-handsome-businessman-wearing-suit-standing-with-crossed-arms-with-isolated-studio-white-background.jpg" class="member-block-image img-fluid" alt="">#}
+{#                                <ul class="social-icon">#}
+{#                                    <li class="social-icon-item">#}
+{#                                        <a href="#" class="social-icon-link bi-twitter"></a>#}
+{#                                    </li>#}
+{#                                    <li class="social-icon-item">#}
+{#                                        <a href="#" class="social-icon-link bi-whatsapp"></a>#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                            <div class="member-block-info d-flex align-items-center">#}
+{#                                <h4>Michael</h4>#}
+{#                                <p class="ms-auto">Founder</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-lg-3 col-md-6 col-12">#}
+{#                        <div class="member-block">#}
+{#                            <div class="member-block-image-wrap">#}
+{#                                <img src="/media/images/members/successful-asian-lady-boss-red-blazer-holding-clipboard-with-documens-pen-working-looking-happy-white-background.jpg" class="member-block-image img-fluid" alt="">#}
+{#                                <ul class="social-icon">#}
+{#                                    <li class="social-icon-item">#}
+{#                                        <a href="#" class="social-icon-link bi-linkedin"></a>#}
+{#                                    </li>#}
+{#                                    <li class="social-icon-item">#}
+{#                                        <a href="#" class="social-icon-link bi-twitter"></a>#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                            <div class="member-block-info d-flex align-items-center">#}
+{#                                <h4>Sandy</h4>#}
+{#                                <p class="ms-auto">Co-Founder</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </section>#}
+{##}
+{#        <!-- Footer -->#}
+{#        <footer class="site-footer">#}
+{#            <div class="container">#}
+{#                <div class="row">#}
+{#                    <div class="col-lg-6 col-12 me-auto mb-5 mb-lg-0">#}
+{#                        <a class="navbar-brand d-flex align-items-center" href="index.html">#}
+{#                            <img src="/media/images/logo.png" class="navbar-brand-image img-fluid" alt="">#}
+{#                            <span class="navbar-brand-text">#}
+{#                                Smart Tour#}
+{#                                <small>Travel Guide</small>#}
+{#                            </span>#}
+{#                        </a>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-lg-3 col-12">#}
+{#                        <h5 class="site-footer-title mb-4">Join Us</h5>#}
+{#                        <p class="d-flex border-bottom pb-3 mb-3 me-lg-3">#}
+{#                            <span>Mon-Fri</span>#}
+{#                            9:00 AM - 6:00 PM#}
+{#                        </p>#}
+{#                        <p class="d-flex me-lg-3">#}
+{#                            <span>Sat-Sun</span>#}
+{#                            10:00 AM - 4:00 PM#}
+{#                        </p>#}
+{#                        <br>#}
+{#                        <p class="copyright-text">Copyright © 2024 Smart Tour</p>#}
+{#                    </div>#}
+{##}
+{#                    <div class="col-lg-2 col-12 ms-auto">#}
+{#                        <ul class="social-icon mt-lg-5 mt-3 mb-4">#}
+{#                            <li class="social-icon-item">#}
+{#                                <a href="#" class="social-icon-link bi-instagram"></a>#}
+{#                            </li>#}
+{#                            <li class="social-icon-item">#}
+{#                                <a href="#" class="social-icon-link bi-twitter"></a>#}
+{#                            </li>#}
+{#                            <li class="social-icon-item">#}
+{#                                <a href="#" class="social-icon-link bi-whatsapp"></a>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#81B29A" fill-opacity="1" d="M0,224L34.3,192C68.6,160,137,96,206,90.7C274.3,85,343,139,411,144C480,149,549,107,617,122.7C685.7,139,754,213,823,240C891.4,267,960,245,1029,224C1097.1,203,1166,181,1234,160C1302.9,139,1371,117,1406,106.7L1440,96L1440,320L1405.7,320C1371.4,320,1303,320,1234,320C1165.7,320,1097,320,1029,320C960,320,891,320,823,320C754.3,320,686,320,617,320C548.6,320,480,320,411,320C342.9,320,274,320,206,320C137.1,320,69,320,34,320L0,320Z"></path></svg>#}
+{#        </footer>#}
+
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/media/js/jquery.sticky.js"></script>
+        <script src="/media/js/click-scroll.js"></script>
+        <script src="/media/js/custom.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#verifyGuideTable').DataTable({
+                    pageLength: 10,
+                    lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "🔍 Search guides by name, place, email...",
+                        lengthMenu: "Show _MENU_ entries",
+                        info: "Showing _START_ to _END_ of _TOTAL_ guides",
+                        paginate: {
+                            first: '<i class="bi bi-chevron-double-left"></i>',
+                            previous: '<i class="bi bi-chevron-left"></i>',
+                            next: '<i class="bi bi-chevron-right"></i>',
+                            last: '<i class="bi bi-chevron-double-right"></i>'
+                        }
+                    },
+                    order: [[0, 'asc']]
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,189 @@
+{#{% extends 'admin/admin_home.html' %}#}
+{#{% block body %}#}
+{##}
+{##}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#  <meta charset="UTF-8">#}
+{#  <title>View Emergency Alert</title>#}
+{#  <!-- Bootstrap CSS -->#}
+{#  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">#}
+{#  <!-- DataTables CSS -->#}
+{#  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">#}
+{#</head>#}
+{#<body>#}
+{#  <div class="container mt-5">#}
+{#    <h2 class="mb-4">View Emergency Alert</h2>#}
+{#    <table id="registrationTable" class="table table-striped table-bordered">#}
+{#      <thead>#}
+{#        <tr>#}
+{#        <th>S1 No</th>#}
+{#        <th>Location</th>#}
+{#        <th>Date</th>#}
+{#        <th>Alert</th>#}
+{#    </tr>#}
+{#      </thead>#}
+{#      <tbody>#}
+{#        <!-- Sample Data Row -->#}
+{#        {% for i in data %}#}
+{#    <tr>#}
+{#        <td>{{ forloop.counter }}</td>#}
+{#        <td>#}
+{#            <a href="http://www.google.com/maps?q={{ i.longitude }},{{ i.latitude }}" target="_blank"> Maps</a>#}
+{#            </td>#}
+{#        <td>{{ i.date }}</td>#}
+{#        <td>{{ i.alert }}</td>#}
+{#    </tr>#}
+{##}
+{#    {% endfor %}#}
+{#        <!-- Add more rows dynamically from backend -->#}
+{#      </tbody>#}
+{#    </table>#}
+{#  </div>#}
+{##}
+{#  <!-- Scripts -->#}
+{#  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>#}
+{#  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>#}
+{#  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>#}
+{#  <script>#}
+{#    $(document).ready(function () {#}
+{#      $('#registrationTable').DataTable();#}
+{#    });#}
+{#  </script>#}
+{#</body>#}
+{#</html>#}
+{#{% endblock %}#}
+
+
+
+
+
+
+
+
+{% extends 'admin/admin_home.html' %}
+{% block body %}
+
+<style>
+body {
+    background: url("/media/images/pexels-hayg-balis-229133866-15097870.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+/* Wrapper */
+.view-emergency-wrapper {
+    padding: 60px 30px;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Title */
+.view-emergency-wrapper h2 {
+    color: #3D405B;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+/* Table Card */
+.view-emergency-wrapper .table {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* Table Header */
+.view-emergency-wrapper .table thead {
+    background-color: #3D405B;
+    color: white;
+}
+
+.view-emergency-wrapper .table thead th {
+    border: none;
+    padding: 15px;
+    font-weight: 500;
+}
+
+/* Table Body */
+.view-emergency-wrapper .table tbody td {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+/* Hover Effect */
+.view-emergency-wrapper .table tbody tr:hover {
+    background-color: #f1f3f6;
+    transition: 0.3s;
+}
+
+/* Map Link */
+.view-emergency-wrapper a {
+    text-decoration: none;
+    color: #81B29A;
+    font-weight: 500;
+}
+
+.view-emergency-wrapper a:hover {
+    color: #3D405B;
+}
+
+/* DataTable Search */
+.view-emergency-wrapper .dataTables_filter input {
+    border-radius: 30px;
+    border: 1px solid #3D405B;
+    padding: 5px 12px;
+}
+
+/* Pagination */
+.view-emergency-wrapper .pagination .page-item.active .page-link {
+    background-color: #3D405B;
+    border-color: #3D405B;
+}
+
+.view-emergency-wrapper .pagination .page-link {
+    color: #3D405B;
+}
+</style>
+
+<div class="view-emergency-wrapper">
+<a href="/myapp/admin_index/" class="back-btn">
+    <i class="bi bi-arrow-left-circle"></i>
+    Back to Dashboard
+</a>
+    <div class="container-fluid">
+        <h2>View Emergency Alert</h2>
+
+        <table id="registrationTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Location</th>
+                    <th>Date</th>
+                    <th>Alert</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <a href="http://www.google.com/maps?q={{ i.longitude }},{{ i.latitude }}" target="_blank">
+                            View Map
+                        </a>
+                    </td>
+                    <td>{{ i.date }}</td>
+                    <td>{{ i.alert }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#registrationTable').DataTable();
+    });
+</script>
+
+{% endblock %}

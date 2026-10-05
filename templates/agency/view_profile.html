@@ -1,0 +1,260 @@
+{% extends 'agency/agency_home.html' %}
+{% block body %}
+
+
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+
+
+<section class="section-padding" style="background-color: #f8fafc;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-12">
+
+                <!-- Clean Professional Profile Card -->
+                <div class="card border-0" style="border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.03);">
+
+                    <!-- Simple Header -->
+                    <div class="card-header bg-white border-0 px-4 py-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="fw-semibold mb-1" style="color: #1e293b;">Agency Profile</h5>
+                                <span style="font-size: 14px; color: #64748b;">Manage your agency information</span>
+                            </div>
+                            <span style="background-color: #87CEEB; color: #000052; font-size: 13px; padding: 6px 12px; border-radius: 20px;">
+                                <i class="bi bi-check-circle me-1" style="font-size: 12px;"></i>Active
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body px-14 py-14">
+
+                        <!-- Images Section - Centered with proper sizing -->
+<div class="row g-4 mb-4 justify-content-center">
+    <!-- Company Logo -->
+    <div class="col-md-5 col-12">
+        <div style="background-color: #f8fafc; border-radius: 12px; padding: 25px 20px; border: 1px solid #edf2f7; text-align: center;">
+            <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                <i class="bi bi-image" style="color: #2563eb; font-size: 18px;"></i>
+                <span style="color: #1e293b; font-weight: 500; font-size: 15px;">Company Logo</span>
+            </div>
+            <div class="d-flex justify-content-center">
+                <img src="/media/{{ data.logo }}"
+                     class="img-fluid"
+                     style="max-height: 120px; width: auto; border-radius: 8px; object-fit: contain;"
+                     alt="Logo">
+            </div>
+        </div>
+    </div>
+
+    <!-- License Document -->
+    <div class="col-md-5 col-12">
+        <div style="background-color: #f8fafc; border-radius: 12px; padding: 25px 20px; border: 1px solid #edf2f7; text-align: center;">
+            <div class="d-flex align-items-center justify-content-center gap-2 mb-3">
+                <i class="bi bi-file-text" style="color: #2563eb; font-size: 18px;"></i>
+                <span style="color: #1e293b; font-weight: 500; font-size: 15px;">License Document</span>
+            </div>
+            <div class="d-flex justify-content-center">
+                <img src="/media/{{ data.licence }}"
+                     class="img-fluid"
+                     style="max-height: 120px; width: auto; border-radius: 8px; object-fit: contain;"
+                     alt="License">
+            </div>
+        </div>
+    </div>
+</div>
+
+                        <!-- Information Grid - Clean 2 Column Layout -->
+                        <div style="margin-top: 24px;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+                                <div style="width: 3px; height: 20px; background-color: #2563eb; border-radius: 2px;"></div>
+                                <span style="color: #1e293b; font-weight: 600; font-size: 16px;">Agency Details</span>
+                            </div>
+
+                            <div class="row g-3">
+                                <!-- Name -->
+                                <div class="col-md-6">
+                                    <div style="background-color: #f8fafc; border: 1px solid #edf2f7; border-radius: 10px; padding: 14px;">
+                                        <div style="display: flex; gap: 12px;">
+                                            <i class="bi bi-building" style="color: #64748b; font-size: 16px;"></i>
+                                            <div>
+                                                <div style="color: #64748b; font-size: 13px; margin-bottom: 4px;">Agency Name</div>
+                                                <div style="color: #1e293b; font-weight: 500;">{{ data.name }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Images Section - Simple Grid -->
+
+                                <!-- Email -->
+                                <div class="col-md-6">
+                                    <div style="background-color: #f8fafc; border: 1px solid #edf2f7; border-radius: 10px; padding: 14px;">
+                                        <div style="display: flex; gap: 12px;">
+                                            <i class="bi bi-envelope" style="color: #64748b; font-size: 16px;"></i>
+                                            <div>
+                                                <div style="color: #64748b; font-size: 13px; margin-bottom: 4px;">Email Address</div>
+                                                <div style="color: #1e293b; font-weight: 500;">{{ data.email }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="col-md-6">
+                                    <div style="background-color: #f8fafc; border: 1px solid #edf2f7; border-radius: 10px; padding: 14px;">
+                                        <div style="display: flex; gap: 12px;">
+                                            <i class="bi bi-telephone" style="color: #64748b; font-size: 16px;"></i>
+                                            <div>
+                                                <div style="color: #64748b; font-size: 13px; margin-bottom: 4px;">Phone Number</div>
+                                                <div style="color: #1e293b; font-weight: 500;">{{ data.phone }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Place -->
+                                <div class="col-md-6">
+                                    <div style="background-color: #f8fafc; border: 1px solid #edf2f7; border-radius: 10px; padding: 14px;">
+                                        <div style="display: flex; gap: 12px;">
+                                            <i class="bi bi-geo-alt" style="color: #64748b; font-size: 16px;"></i>
+                                            <div>
+                                                <div style="color: #64748b; font-size: 13px; margin-bottom: 4px;">Place</div>
+                                                <div style="color: #1e293b; font-weight: 500;">{{ data.place }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Post -->
+                                <div class="col-md-6">
+                                    <div style="background-color: #f8fafc; border: 1px solid #edf2f7; border-radius: 10px; padding: 14px;">
+                                        <div style="display: flex; gap: 12px;">
+                                            <i class="bi bi-mailbox" style="color: #64748b; font-size: 16px;"></i>
+                                            <div>
+                                                <div style="color: #64748b; font-size: 13px; margin-bottom: 4px;">Post</div>
+                                                <div style="color: #1e293b; font-weight: 500;">{{ data.post }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pin -->
+                                <div class="col-md-6">
+                                    <div style="background-color: #f8fafc; border: 1px solid #edf2f7; border-radius: 10px; padding: 14px;">
+                                        <div style="display: flex; gap: 12px;">
+                                            <i class="bi bi-pin-map" style="color: #64748b; font-size: 16px;"></i>
+                                            <div>
+                                                <div style="color: #64748b; font-size: 13px; margin-bottom: 4px;">Pin Code</div>
+                                                <div style="color: #1e293b; font-weight: 500;">{{ data.pin }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Simple Action Buttons -->
+                        <div class="d-flex gap-3 justify-content-center mt-5">
+                            <a href="/myapp/agency_edit_profile/#a" style="background-color: #000052; color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 15px; border: none; display: inline-flex; align-items: center; gap: 8px;">
+                                <i class="bi bi-pencil"></i>Edit Profile
+                            </a>
+{#                            <a href="#" style="background-color: white; color: #2563eb; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 15px; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; gap: 8px;">#}
+{#                                <i class="bi bi-arrow-repeat"></i>Refresh#}
+{#                            </a>#}
+                        </div>
+
+                        <!-- Simple Meta Info -->
+                        <div class="text-center mt-4">
+                            <span style="color: #94a3b8; font-size: 13px;">
+                                <i class="bi bi-shield-check me-1"></i>
+                                Verified agency • Last updated today
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Simple Quick Links -->
+{#                <div class="d-flex justify-content-center gap-4 mt-4">#}
+{#                    <a href="#" style="color: #64748b; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px;">#}
+{#                        <i class="bi bi-download"></i> Export Data#}
+{#                    </a>#}
+{#                    <span style="color: #e2e8f0;">|</span>#}
+{#                    <a href="#" style="color: #64748b; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px;">#}
+{#                        <i class="bi bi-share"></i> Share Profile#}
+{#                    </a>#}
+{#                    <span style="color: #e2e8f0;">|</span>#}
+{#                    <a href="#" style="color: #64748b; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px;">#}
+{#                        <i class="bi bi-printer"></i> Print#}
+{#                    </a>#}
+{#                </div>#}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Clean, minimal styling */
+body {
+    background-color: #f8fafc;
+}
+
+/* Card hover effect */
+.card {
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+}
+
+/* Information card hover */
+[style*="background-color: #ffffff; border: 1px solid #edf2f7;"] {
+    transition: all 0.2s ease;
+}
+
+[style*="background-color: #ffffff; border: 1px solid #edf2f7;"]:hover {
+    border-color: #2563eb !important;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.05);
+}
+
+/* Button hover */
+[style*="background-color: #2563eb;"]:hover {
+    background-color: #1d4ed8 !important;
+}
+
+[style*="background-color: white; color: #2563eb;"]:hover {
+    background-color: #f8fafc !important;
+}
+
+/* Image container hover */
+[style*="background-color: #f8fafc; border-radius: 18px;"]:hover {
+    border-color: #2563eb !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .d-flex.gap-3.justify-content-center {
+        flex-direction: column;
+    }
+
+    [style*="padding: 12px 32px;"] {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .d-flex.justify-content-center.gap-4 {
+        flex-wrap: wrap;
+        gap: 22px !important;
+    }
+}
+</style>
+
+{% endblock %}

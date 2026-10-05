@@ -1,0 +1,617 @@
+{% extends 'admin/admin_home.html' %}
+{% block body %}
+!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Admin | Complaint Management</title>
+
+<!-- Google Fonts & Preconnects -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+<!-- Bootstrap 5 CSS (core) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- DataTables Bootstrap5 Integration -->
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<!-- Animate.css (light animations) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: url("/media/images/pexels-quang-nguyen-vinh-222549-6128944.jpg") no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Inter', sans-serif;
+        position: relative;
+    }
+
+    /* Elegant overlay for better readability */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 25, 45, 0.65);
+        backdrop-filter: blur(2px);
+        z-index: 0;
+    }
+
+    .page-wrapper {
+        position: relative;
+        z-index: 2;
+        padding: 2rem 2rem 3rem;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    /* Back button — refined elegance */
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+        padding: 10px 24px;
+        border-radius: 60px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        letter-spacing: -0.2px;
+        transition: all 0.25s ease;
+        margin-bottom: 28px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .back-btn i {
+        font-size: 1.2rem;
+        transition: transform 0.2s;
+    }
+
+    .back-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+        color: white;
+        transform: translateX(-4px);
+        box-shadow: 0 12px 22px -8px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-btn:hover i {
+        transform: translateX(-3px);
+    }
+
+    /* Alert messages – subtle glass style */
+    .alert-custom {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(8px);
+        border-left: 5px solid #2c7da0;
+        border-radius: 20px;
+        padding: 14px 24px;
+        margin-bottom: 28px;
+        color: #1f2e4a;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        font-size: 0.9rem;
+    }
+
+    .alert-custom i {
+        font-size: 1.6rem;
+        color: #2c7da0;
+    }
+
+    /* Glass Card – main container */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 32px;
+        backdrop-filter: blur(2px);
+        padding: 32px 28px 40px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        transition: all 0.2s;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    /* Page header with gradient accent */
+    .page-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 32px;
+        border-bottom: 2px solid #eef2f9;
+        padding-bottom: 16px;
+    }
+
+    .page-header i {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #1f4e6e, #2c7da0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .page-header h2 {
+        font-weight: 700;
+        font-size: 1.8rem;
+        letter-spacing: -0.4px;
+        margin: 0;
+        background: linear-gradient(135deg, #1e3a5f, #2c7da0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* DataTable custom styling – elegant & minimal */
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 28px;
+    }
+
+    .dataTables_filter label {
+        font-weight: 500;
+        color: #1f3b4c;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: flex-end;
+        font-size: 0.85rem;
+        letter-spacing: -0.2px;
+    }
+
+    .dataTables_filter input {
+        border: 1.5px solid #e2edf2;
+        border-radius: 44px;
+        padding: 10px 18px;
+        width: 280px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.85rem;
+        background: #ffffff;
+        transition: 0.2s;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .dataTables_filter input:focus {
+        border-color: #2c7da0;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
+    }
+
+    /* Table style — clean & modern */
+    .table {
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+        width: 100%;
+    }
+
+    .table thead tr {
+        background: transparent;
+    }
+
+    .table thead th {
+        background: #f0f6fa;
+        color: #1a4b6e;
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 16px 16px;
+        border: none;
+        border-bottom: 1px solid #dce5ec;
+        white-space: nowrap;
+    }
+
+    .table tbody tr {
+        background: #ffffff;
+        border-radius: 20px;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .table tbody tr:hover {
+        background: #fefefe;
+        transform: scale(1.002);
+        box-shadow: 0 10px 25px -12px rgba(0, 0, 0, 0.1);
+    }
+
+    .table td {
+        background: #fff;
+        padding: 18px 16px;
+        vertical-align: middle;
+        border: none;
+        font-size: 0.85rem;
+        color: #2c3e4e;
+        font-weight: 500;
+    }
+
+    /* serial number style */
+    .serial-cell {
+        font-weight: 700;
+        color: #2c7da0;
+        font-size: 0.9rem;
+        background: #f9fdfe;
+        border-radius: 16px 0 0 16px;
+    }
+
+    /* User Box */
+    .user-box {
+        background: #f8fafc;
+        border-radius: 20px;
+        padding: 10px 14px;
+        transition: 0.1s;
+        border: 1px solid #eef2f6;
+    }
+
+    .user-box strong {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        color: #1f4b6e;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+
+    .user-box i {
+        color: #2c7da0;
+        font-size: 0.85rem;
+    }
+
+    .user-box small {
+        font-size: 0.7rem;
+        color: #6c8a9e;
+        display: block;
+        margin-top: 4px;
+    }
+
+    /* Complaint Box */
+    .complaint-box {
+        background: #fefaf5;
+        border-radius: 18px;
+        padding: 12px 14px;
+        border-left: 3px solid #e6a157;
+    }
+
+    .complaint-text {
+        font-size: 0.85rem;
+        color: #2d3e50;
+        line-height: 1.45;
+        margin-bottom: 8px;
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+    .complaint-meta {
+        font-size: 0.7rem;
+        color: #7e95aa;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .complaint-meta i {
+        font-size: 0.7rem;
+        color: #e6a157;
+    }
+
+    /* Reply box (if any) */
+    .reply-preview {
+        background: #eef5f0;
+        border-radius: 18px;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #2a6e4b;
+        border-right: 2px solid #2e9c6b;
+        max-width: 220px;
+        word-break: break-word;
+    }
+
+    .no-reply {
+        color: #ad8b73;
+        font-style: italic;
+        font-size: 0.75rem;
+        background: #fff2ea;
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 40px;
+    }
+
+    /* Action button – refined & smooth */
+    .reply-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(105deg, #1f4b6e 0%, #2c7da0 100%);
+        color: white;
+        padding: 8px 18px;
+        border-radius: 40px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.75rem;
+        transition: all 0.2s;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        letter-spacing: -0.2px;
+    }
+
+    .reply-action i {
+        font-size: 0.9rem;
+    }
+
+    .reply-action:hover {
+        background: linear-gradient(105deg, #143b57, #216683);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.25);
+        color: white;
+    }
+
+    /* DataTables pagination & info custom */
+    .dataTables_paginate {
+        margin-top: 28px;
+        display: flex;
+        gap: 6px;
+        justify-content: flex-end;
+    }
+
+    .paginate_button {
+        padding: 7px 14px;
+        border-radius: 30px;
+        border: 1px solid #dce5ec;
+        background: white;
+        color: #1f4b6e;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: 0.2s;
+        margin: 0 2px;
+        cursor: pointer;
+    }
+
+    .paginate_button:hover {
+        background: #eaf4f9;
+        border-color: #2c7da0;
+        color: #1f4b6e;
+    }
+
+    .paginate_button.current {
+        background: #2c7da0;
+        border-color: #2c7da0;
+        color: white;
+        box-shadow: 0 2px 8px rgba(44,125,160,0.3);
+    }
+
+    .dataTables_info {
+        font-size: 0.75rem;
+        color: #5d7e99;
+        margin-top: 20px;
+        font-weight: 500;
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 48px 20px !important;
+        background: #ffffffdd;
+    }
+
+    .empty-state i {
+        font-size: 3.2rem;
+        color: #bcd0df;
+        margin-bottom: 16px;
+        opacity: 0.7;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .page-wrapper {
+            padding: 1.2rem;
+        }
+        .glass-card {
+            padding: 24px 18px;
+        }
+        .dataTables_filter label {
+            justify-content: flex-start;
+        }
+        .dataTables_filter input {
+            width: 100%;
+        }
+        .table td {
+            min-width: 180px;
+        }
+    }
+
+    /* date style */
+    .date-badge {
+        background: #ecf3f8;
+        padding: 6px 12px;
+        border-radius: 40px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #2c6079;
+    }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Back to Dashboard Button (elegant) -->
+    <a href="/myapp/admin_index/" class="back-btn animate__animated animate__fadeInLeft">
+        <i class="bi bi-arrow-left-circle"></i>
+        <span>Back to Dashboard</span>
+    </a>
+
+    <!-- Django Messages Display (dynamic) -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-custom animate__animated animate__fadeInUp">
+                <i class="bi {% if message.tags == 'success' %}bi-check-circle-fill{% else %}bi-info-circle-fill{% endif %}"></i>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Main Glass Card: Complaints Panel -->
+    <div class="glass-card animate__animated animate__fadeInUp">
+        <div class="page-header">
+            <i class="bi bi-chat-square-text-fill"></i>
+            <h2>Complaint insights</h2>
+        </div>
+
+        <!-- DataTable with complaint records -->
+        <table id="complaintsTable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Citizen</th>
+                    <th>Complaint details</th>
+                    <th>Filed on</th>
+                    <th>Official reply</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for complaint in data %}
+                <tr>
+                    <td class="serial-cell">{{ forloop.counter }}</td>
+                    <td>
+                        <div class="user-box">
+                            <strong>
+                                <i class="bi bi-person-circle"></i>
+                                {{ complaint.user.name|default:"Anonymous" }}
+                            </strong>
+                            <small><i class="bi bi-envelope-paper"></i> {{ complaint.user.email|default:"No email"|truncatechars:22 }}</small>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="complaint-box">
+                            <div class="complaint-text">
+                                <i class="bi bi-chat-left-quote-fill me-1" style="font-size: 0.75rem;"></i>
+                                {{ complaint.compliant|truncatechars:120 }}
+                            </div>
+                            <div class="complaint-meta">
+                                <span><i class="bi bi-building"></i> {{ complaint.agency.name|default:"General" }}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="date-badge">
+                            <i class="bi bi-calendar3"></i> {{ complaint.date|date:"d M Y" }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if complaint.reply and complaint.reply != "Pending" and complaint.reply.strip %}
+                            <div class="reply-preview">
+                                <i class="bi bi-reply-all-fill me-1"></i> {{ complaint.reply|truncatechars:55 }}
+                            </div>
+                        {% else %}
+                            <span class="no-reply">
+                                <i class="bi bi-clock-history"></i> Awaiting response
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/myapp/admin_reply/{{ complaint.id }}#a" class="reply-action">
+                            <i class="bi bi-pencil-square"></i>
+                            {% if complaint.reply and complaint.reply != "Pending" and complaint.reply.strip %}  Reply {% endif %}
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="bi bi-inbox"></i>
+                        <br>
+                        <strong style="font-size: 1rem;">✨ All clear ✨</strong>
+                        <br>
+                        <small>No complaints have been submitted yet.</small>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Scripts (jQuery, DataTables, Bootstrap JS) -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    // Initialize DataTable with elegant options, preserving all functionality
+    var table = $('#complaintsTable').DataTable({
+        responsive: true,
+        pageLength: 8,
+        lengthChange: false,
+        ordering: true,
+        order: [[3, 'desc']],   // sort by date descending (index 3 = Filed on column)
+        language: {
+            search: "<i class='bi bi-search me-1'></i>",
+            searchPlaceholder: "Search by user, complaint, or reply...",
+            paginate: {
+                previous: "<i class='bi bi-chevron-left'></i>",
+                next: "<i class='bi bi-chevron-right'></i>"
+            },
+            info: "Showing _START_ to _END_ of _TOTAL_ entries",
+            infoEmpty: "No complaints to show",
+            infoFiltered: "(filtered from _MAX_ total entries)",
+            emptyTable: "No complaints found in system"
+        },
+        // Customize the filter input placeholder style
+        initComplete: function() {
+            $('.dataTables_filter input').attr('placeholder', 'Type to filter complaints...').css({
+                'padding-left': '18px',
+                'letter-spacing': '-0.2px'
+            });
+            $('.dataTables_filter label').contents().filter(function() {
+                return this.nodeType === 3;
+            }).remove();
+            $('.dataTables_filter').prepend('<span class="search-icon-wrapper"></span>');
+        }
+    });
+
+    // Auto-hide messages with fade-out effect (non-intrusive)
+    setTimeout(function() {
+        const alerts = document.querySelectorAll('.alert-custom');
+        alerts.forEach(function(alert) {
+            alert.style.transition = 'opacity 0.45s ease';
+            alert.style.opacity = '0';
+            setTimeout(() => {
+                if(alert && alert.remove) alert.remove();
+            }, 450);
+        });
+    }, 4800);
+
+    // Add a subtle shadow to table rows on hover animation (already in css but fine)
+    // ensure the back button & glass card remain interactive
+});
+</script>
+
+<!-- Note: The design fully respects Django template inheritance, extends admin_home, block body,
+     keeps all existing loops, variables (data, complaint.user.name, complaint.reply, etc.) intact.
+     No bootstrap functionality or extended page behavior is disturbed.
+     Improved visual elegance with glassmorphism, gradient accents, refined spacings, and intuitive reply status.
+-->
+</body>
+</html>
+{% endblock %}

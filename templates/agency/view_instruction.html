@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Instruction</title>
+</head>
+<body>
+<h1>View Instruction</h1>
+<table border="2">
+    <tr>
+        <th>Sl No</th>
+        <th>Guide</th>
+        <th>Instruction</th>
+        <th>Date</th>
+    </tr>
+    {% for i in data %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ i.GUIDE }}</td>
+        <td>{{ i.instruction }}</td>
+        <td>{{ i.date }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

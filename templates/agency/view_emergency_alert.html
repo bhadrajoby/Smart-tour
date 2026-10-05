@@ -1,0 +1,420 @@
+{% extends 'agency/agency_home.html' %}
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Alert - Smart Tour</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .emergency-header {
+            background: linear-gradient(135deg, #3D405B 0%, #2C2F48 100%);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .emergency-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .emergency-title i {
+            color: #ff6b6b;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background: #3D405B;
+            color: white;
+            font-weight: 500;
+            border: none;
+            padding: 15px 10px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .table tbody td {
+            padding: 15px 10px;
+            vertical-align: middle;
+            border-color: #f0f0f0;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .user-info i {
+            color: #3D405B;
+            width: 20px;
+            margin-right: 8px;
+        }
+
+        .user-info div {
+            margin-bottom: 5px;
+        }
+
+        .map-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #3D405B;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .map-link:hover {
+            background: #2C2F48;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(61, 64, 91, 0.3);
+        }
+
+        .alert-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .alert-high {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .alert-medium {
+            background: #ffd93d;
+            color: #333;
+        }
+
+        .alert-low {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        .date-badge {
+            background: #e9ecef;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            margin: 15px 0;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 8px 15px;
+            margin: 0 3px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #3D405B !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #3D405B;
+            border-color: #3D405B;
+            color: white !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #2C2F48;
+            border-color: #2C2F48;
+            color: white !important;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 50px !important;
+            color: #6c757d;
+        }
+
+        .no-data i {
+            font-size: 3rem;
+            color: #dee2e6;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            padding: 8px 12px;
+            font-weight: 500;
+        }
+
+        .bg-emergency {
+            background: linear-gradient(45deg, #ff6b6b, #ff8787);
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid #3D405B;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3D405B;
+            margin: 0;
+        }
+
+        .stats-label {
+            color: #6c757d;
+            margin: 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .emergency-title {
+                font-size: 1.8rem;
+            }
+
+            .table-container {
+                padding: 15px;
+            }
+
+            .user-info {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Emergency Header -->
+        <div class="emergency-header text-center">
+            <h1 class="emergency-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                Emergency Alert System
+                <i class="fas fa-exclamation-triangle"></i>
+            </h1>
+            <p class="text-white-50 mt-3">Real-time emergency alerts and user locations</p>
+        </div>
+
+        <!-- Stats Cards -->
+{#        <div class="row mb-4">#}
+{#            <div class="col-md-4">#}
+{#                <div class="stats-card d-flex align-items-center justify-content-between">#}
+{#                    <div>#}
+{#                        <p class="stats-number">{{ data|length }}</p>#}
+{#                        <p class="stats-label">Total Alerts</p>#}
+{#                    </div>#}
+{#                    <i class="fas fa-bell fa-3x" style="color: #3D405B; opacity: 0.2;"></i>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-4">#}
+{#                <div class="stats-card d-flex align-items-center justify-content-between">#}
+{#                    <div>#}
+{#                        <p class="stats-number">{{ data|length }}</p>#}
+{#                        <p class="stats-label">Active Users</p>#}
+{#                    </div>#}
+{#                    <i class="fas fa-users fa-3x" style="color: #3D405B; opacity: 0.2;"></i>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-4">#}
+{#                <div class="stats-card d-flex align-items-center justify-content-between">#}
+{#                    <div>#}
+{#                        <p class="stats-number">24/7</p>#}
+{#                        <p class="stats-label">Monitoring</p>#}
+{#                    </div>#}
+{#                    <i class="fas fa-shield-alt fa-3x" style="color: #3D405B; opacity: 0.2;"></i>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="m-0" style="color: #3D405B;">
+                    <i class="fas fa-list me-2"></i>Emergency Alerts List
+                </h4>
+                <span class="badge bg-emergency text-white">
+                    <i class="fas fa-clock me-1"></i>Live Updates
+                </span>
+            </div>
+
+            <table id="emergencyTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th>User</th>
+                        <th>User Details</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Alert Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in data %}
+                    <tr>
+                        <td>
+                            <span class="badge" style="background: #e9ecef; color: #495057;">{{ forloop.counter }}</span>
+                        </td>
+                        <td>
+                            <strong style="color: #3D405B;">{{ i.user.name }}</strong>
+                        </td>
+                        <td>
+                            <div class="user-info">
+                                <div><i class="fas fa-map-marker-alt"></i> {{ i.user.place }}</div>
+                                <div><i class="fas fa-envelope"></i> {{ i.user.email }}</div>
+                                <div><i class="fas fa-phone"></i> {{ i.user.phone }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="http://www.google.com/maps?q={{ i.longitude }},{{ i.latitude }}"
+                               target="_blank"
+                               class="map-link">
+                                <i class="fas fa-map-marked-alt"></i>
+                                View Location
+                            </a>
+                        </td>
+                        <td>
+                            <span class="date-badge">
+                                <i class="far fa-calendar-alt me-1"></i>
+                                {{ i.date }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if i.alert == 'high' %}
+                                <span class="alert-badge alert-high">
+                                    <i class="fas fa-exclamation-circle me-1"></i>HIGH
+                                </span>
+                            {% elif i.alert == 'medium' %}
+                                <span class="alert-badge alert-medium">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>MEDIUM
+                                </span>
+                            {% else %}
+                                <span class="alert-badge alert-low">
+                                    <i class="fas fa-info-circle me-1"></i>{{ i.alert|upper }}
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="no-data">
+                            <i class="fas fa-bell-slash fa-4x mb-3"></i>
+                            <h5>No Emergency Alerts</h5>
+                            <p class="text-muted">All systems are normal. No active alerts at the moment.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Emergency Contact Info -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="alert alert-info d-flex align-items-center" style="background: #e7f5ff; border: none; border-radius: 12px;">
+                    <i class="fas fa-info-circle fa-2x me-3" style="color: #3D405B;"></i>
+                    <div>
+                        <strong>Emergency Response Protocol:</strong> All alerts are monitored 24/7. Click on the location link to view the exact position of the user in distress. For immediate assistance, contact emergency services.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#emergencyTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                order: [[4, 'desc']], // Sort by date descending
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search alerts...",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ alerts",
+                    infoEmpty: "Showing 0 to 0 of 0 alerts",
+                    infoFiltered: "(filtered from _MAX_ total alerts)",
+                    paginate: {
+                        first: '<i class="fas fa-angle-double-left"></i>',
+                        previous: '<i class="fas fa-angle-left"></i>',
+                        next: '<i class="fas fa-angle-right"></i>',
+                        last: '<i class="fas fa-angle-double-right"></i>'
+                    }
+                }
+            });
+        });
+
+        // Auto-refresh the page every 60 seconds to get new alerts
+        setTimeout(function() {
+            location.reload();
+        }, 60000); // 60 seconds
+    </script>
+</body>
+</html>
+
+{% endblock %}
